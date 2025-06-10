@@ -1,0 +1,111 @@
+import { StyleSheet } from "react-native";
+
+export const TrackingProgressStyles = StyleSheet.create({
+  header: {
+    height: 60,
+    backgroundColor: "#08285e",
+    justifyContent: "center",
+    paddingHorizontal: 15,
+    elevation: 5,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#08285e",
+    textAlign: "center",
+    marginVertical: 20,
+  },
+  carDetails: {
+    backgroundColor: "rgba(255,255,255,0.85)",
+    padding: 30,
+    borderRadius: 16,
+    alignItems: "center",
+    marginBottom: 20,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 8,
+    elevation: 4,
+    
+  },
+  carText: {
+    fontSize: 16,
+    color: "#08285e",
+    marginTop: 6,
+    fontWeight: "600",
+  },
+  timelineItem: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    marginBottom: 30,
+  },
+  iconContainer: {
+    alignItems: "center",
+    marginRight: 15,
+  },
+  activeIconCircle: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: "#08285e",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  inactiveIconCircle: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: "#d3d3d3",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  timelineLine: {
+    width: 2,
+    height: 50,
+    backgroundColor: "#d3d3d3",
+    marginTop: 5,
+  },
+  activeTimelineLine: {
+    backgroundColor: "#08285e",
+  },
+  textContainer: {
+    flex: 1,
+    backgroundColor: "rgba(255,255,255,0.9)",
+    padding: 12,
+    borderRadius: 12,
+  },
+  stepTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#08285e",
+    marginBottom: 4,
+  },
+  stepDesc: {
+    fontSize: 14,
+    color: "#333",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 20,
+  },
+  button: {
+    backgroundColor: "#08285e",
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 14,
+    flex: 1,
+    marginHorizontal: 5,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.15,
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 6,
+    elevation: 4,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: "600",
+  },
+});
