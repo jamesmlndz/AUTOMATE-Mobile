@@ -91,18 +91,35 @@ const Login = () => {
 
         <TouchableOpacity
           style={LoginStyle.sendCodeButton}
-          onPress={validateLogin}
-        >
+          onPress={validateLogin}>
           <Text style={LoginStyle.sendCodeButtonText}>LOGIN</Text>
+
         </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+          <Text style={styles.forgotText}>Forgot Password?</Text>
+        </TouchableOpacity>
+
       </View>
     </ImageBackground>
+
+    
   );
 };
 
 const styles = StyleSheet.create({
   background: {
     flex: 1,
+  },
+  forgotText: {
+    marginTop: 10,
+    color: '#3C6791',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    fontSize: 14,
+    marginBottom: 12,
+    marginRight: 8,
+    fontFamily: 'Poppins',
+    textDecorationLine: 'underline',
   },
 });
 

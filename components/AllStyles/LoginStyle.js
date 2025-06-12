@@ -3,16 +3,16 @@ import { StyleSheet } from "react-native";
 const LoginStyle = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
+    paddingHorizontal: 24,
+    paddingVertical: 32,
     justifyContent: 'center',
-    padding: 16,   
   },
   verifycontainer: {
     flex: 1,
     alignItems: 'center',
-    marginTop:40,
+    marginTop: 40,
     justifyContent: 'center',
-    padding: 16,   
+    padding: 16,
   },
   background: {
     flex: 1,
@@ -54,8 +54,9 @@ const LoginStyle = StyleSheet.create({
   },
   Regtitle: {
     fontSize: 30,
-    marginTop:50,
+    marginTop: 50,
     marginBottom: 24,
+    color: '#08285E',
     fontFamily: "Messina",
     textAlign: 'center',
     fontWeight: 'bold',
@@ -63,6 +64,8 @@ const LoginStyle = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     marginBottom: 24,
+    borderRadius: 10,
+    overflow: 'hidden',
   },
   loginButton: {
     backgroundColor: '#3C6791',
@@ -103,7 +106,8 @@ const LoginStyle = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
-    fontFamily: "Messina-Regular",
+    fontFamily: "Poppins", // Updated for consistency
+    fontSize: 16,          // 🆕 Slight increase for readability
   },
   numBox: {
     width: 50,
@@ -124,6 +128,8 @@ const LoginStyle = StyleSheet.create({
     textAlign: 'center',
     fontSize: 16,
     fontWeight: 'bold',
+    fontFamily: 'Poppins',
+    color: '#1F2937',
   },
   otpContainer: {
     flexDirection: 'row',
@@ -143,18 +149,18 @@ const LoginStyle = StyleSheet.create({
     fontWeight: 'bold',
     color: '#08285E',
     marginHorizontal: 6,
-    elevation: 3,
+    elevation: 4, // 🆕 Slightly increased for focus
   },
   inputContainer: {
     width: '100%',
-    marginBottom: 16,
-    
+    marginBottom: 18,
   },
   label: {
     fontSize: 14,
-    color: 'black',
+    color: '#1F2937', // 🆕 Slightly darker for contrast
     marginBottom: 4,
     fontWeight: 'bold',
+    fontFamily: 'Poppins',
   },
   input: {
     borderWidth: 1,
@@ -162,17 +168,24 @@ const LoginStyle = StyleSheet.create({
     borderRadius: 8,
     padding: 10,
     fontSize: 16,
-    color: '#4A5568',
-    fontWeight: 'bold',
+    color: 'black',
+    fontWeight: '500',
+    backgroundColor: '#FFFFFF',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 2,
   },
   sendCodeButton: {
     backgroundColor: '#D39505',
     paddingVertical: 12,
     paddingHorizontal: 32,
-    borderRadius: 8,
+    borderRadius: 10, // 🆕 more rounded for modern look
     height: 50,
     width: '100%',
-    alignContent: 'center',
+    alignItems: 'center',
+    elevation: 3,
   },
   sendCodeButtonText: {
     color: 'white',
@@ -183,7 +196,7 @@ const LoginStyle = StyleSheet.create({
     fontWeight: 'bold',
   },
   dashContainer: {
-    paadding: 1,
+    padding: 1,
     marginBottom: '100%',
   },
   dashBackground: {
@@ -238,7 +251,16 @@ const LoginStyle = StyleSheet.create({
     fontFamily: 'Poppins',
     fontWeight: 'bold',
   },
-  
+  forgotText: {
+    marginTop: 10,
+    color: '#3C6791',
+    textAlign: 'right',
+    fontSize: 14,
+    marginBottom: 12,
+    marginRight: 8,
+    fontFamily: 'Poppins',
+    textDecorationLine: 'underline',
+  },
 });
 
 export default LoginStyle;

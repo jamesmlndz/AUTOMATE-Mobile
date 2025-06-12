@@ -47,6 +47,9 @@ import UnderchasisSuspension from './components/screens/Services/UnderchasisSusp
 import WheelBalancing from './components/screens/Services/WheelBalancing';
 import LogoutPopup from './components/screens/Login/LogoutPopup';
 import AptScreen from './components/screens/Homepage/AptScreen';
+import ForgotPassword from './components/screens/Login/ForgotPassword';
+import ResetPassword from './components/screens/Login/ResetPassword';
+import VerifyResetOtp from './components/screens/Login/VerifyResetOtp';
 
 
 
@@ -86,8 +89,11 @@ export default function App() {
         <Stack.Screen name="StartScreen2" component={StartScreen2} />
         <Stack.Screen name="StartScreen3" component={StartScreen3} />
         <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="Verify" component={Verify} />
+        <Stack.Screen name="ResetPassword" component={ResetPassword} />
+        <Stack.Screen name="VerifyResetOtp" component={VerifyResetOtp} />
         <Stack.Screen name="AccountCreated" component={AccountCreated} />
 
         <Stack.Screen name="HomePage" component={Homepage} />
