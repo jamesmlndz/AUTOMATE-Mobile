@@ -14,7 +14,47 @@ const UpcomingAppointments = ({ appointments }) => {
   const navigation = useNavigation();
 
   // If no appointments prop passed, fallback to empty array or load from storage/server here
-  const [data, setData] = useState(appointments || []);
+  const [data, setData] = useState(
+    appointments || [
+      {
+        _id: {
+          $oid: "684f02a9916ddeaeefaad218",
+        },
+        customer: {
+          $oid: "684dbe517d6bb73d3127233c",
+        },
+        phone: "09561345525",
+        email: "fmontallana.integr8@gmail.com",
+        contactMethod: "Phone",
+        vehicle: {
+          $oid: "684efcf5301698c13f555f76",
+        },
+        scheduledTime: {
+          $date: "2025-06-15T17:28:02.243Z",
+        },
+        status: "Booked",
+        services: [
+          {
+            service: {
+              $oid: "684e91c0d8150eccdd1062ce",
+            },
+            price: 0,
+            _id: {
+              $oid: "684f02a9916ddeaeefaad219",
+            },
+          },
+        ],
+        parts: [],
+        createdAt: {
+          $date: "2025-06-15T17:28:09.355Z",
+        },
+        updatedAt: {
+          $date: "2025-06-15T17:28:09.355Z",
+        },
+        __v: 0,
+      },
+    ]
+  );
 
   useEffect(() => {
     // Optional: Load appointments from backend or AsyncStorage here

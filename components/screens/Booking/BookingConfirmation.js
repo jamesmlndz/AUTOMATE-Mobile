@@ -10,8 +10,11 @@ import {
 import { useRoute, useNavigation } from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import api from "../../../api"; // ✅ use your existing api.js helper
+import { useAuth } from "../../../context/authContext";
+import authenticatedApi from "../../../api/axiosInstance";
 
 const BookingConfirmation = () => {
+  const { currentUser } = useAuth();
   const route = useRoute();
   const navigation = useNavigation();
 
@@ -25,11 +28,12 @@ const BookingConfirmation = () => {
   };
 
   const name = bookingData.name || bookingData.customerName || "";
-  const date = bookingData.date || bookingData.appointmentDate || "";
-  const time = bookingData.time || bookingData.appointmentTime || "";
+  const date = bookingData.selectedDate || bookingData.date || "";
+  const time = bookingData.selectedTime || bookingData.time || "";
   const service = bookingData.service || "General Service";
   const carModel = bookingData.carModel || "N/A";
-  const userId = bookingData.userId || null; // ✅ passed from Verify or Register
+  const userId =
+    currentUser?.id || currentUser?._id || currentUser?.userId || null;
   console.log("Booking Data:", bookingData);
   const handleConfirmBooking = async () => {
     try {
@@ -39,20 +43,21 @@ const BookingConfirmation = () => {
       }
 
       const appointmentData = {
-        userId,
-        service,
-        date,
-        time,
-        carModel,
         ...bookingData,
+
         vehicle: {
-          brand: "Toyota",
-          model: "Vios",
-          year: "2020",
+          brand: bookingData.brand,
+          model: bookingData.model,
+          year: bookingData.year,
+          transmission: bookingData.transmission || "Automatic",
+          plateNumber: bookingData.plateNumber.toUpperCase() || "N/A",
         },
       };
 
-      const response = await api.post("/appointments", appointmentData);
+      const response = await authenticatedApi.post(
+        "/appointments",
+        appointmentData
+      );
 
       if (response.status === 201) {
         navigation.navigate("BookedScreen", {

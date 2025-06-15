@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  StyleSheet,
-} from "react-native";
+import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
@@ -20,9 +14,9 @@ const BookedScreen = () => {
       <View style={styles.popup}>
         {/* Header */}
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
+          {/* <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
             <Ionicons name="close" size={28} color="#C9A23F" />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <Text style={styles.headerTitle}>Booking Confirmed</Text>
           <View style={{ width: 28 }} />
         </View>
@@ -36,11 +30,16 @@ const BookedScreen = () => {
 
         {/* Thank You Message */}
         <Text style={styles.thankYouText}>Thank You, {name || "Guest"}!</Text>
-        <Text style={styles.subText}>Your appointment has been successfully booked.</Text>
+        <Text style={styles.subText}>
+          Your appointment has been successfully booked.
+        </Text>
 
         {/* Booking Details */}
         <Text style={styles.detailsText}>
-          Date: <Text style={styles.boldText}>{date ? new Date(date).toDateString() : "N/A"}</Text>
+          Date:{" "}
+          <Text style={styles.boldText}>
+            {date ? new Date(date).toDateString() : "N/A"}
+          </Text>
           {"\n"}
           Time: <Text style={styles.boldText}>{time || "N/A"}</Text>
         </Text>
@@ -60,14 +59,14 @@ const BookedScreen = () => {
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: "rgba(18, 38, 74, 0.85)",  // match deep blue with opacity
+    backgroundColor: "rgba(18, 38, 74, 0.85)", // match deep blue with opacity
     justifyContent: "center",
     alignItems: "center",
   },
   popup: {
     width: "85%",
     backgroundColor: "#fff",
-    borderRadius: 20,                     // more rounded for modern look
+    borderRadius: 20, // more rounded for modern look
     padding: 25,
     alignItems: "center",
     elevation: 10,
@@ -89,7 +88,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 20,
     fontWeight: "700",
-    color: "#C9A23F",                 // gold accent color
+    color: "#C9A23F", // gold accent color
     fontFamily: "Messina-Regular",
     letterSpacing: 1,
   },
@@ -101,7 +100,7 @@ const styles = StyleSheet.create({
   thankYouText: {
     fontSize: 26,
     fontWeight: "700",
-    color: "#12264A",                 // deep blue text
+    color: "#12264A", // deep blue text
     marginBottom: 10,
     textAlign: "center",
     fontFamily: "Messina-Regular",
@@ -126,14 +125,14 @@ const styles = StyleSheet.create({
     color: "#0A2146",
   },
   doneButton: {
-    backgroundColor: "#12264A",       // deep blue button to match BookingConfirmation
+    backgroundColor: "#12264A", // deep blue button to match BookingConfirmation
     paddingVertical: 16,
     paddingHorizontal: 50,
     borderRadius: 12,
     elevation: 3,
   },
   doneText: {
-    color: "#C9A23F",                 // gold text
+    color: "#C9A23F", // gold text
     fontWeight: "700",
     fontSize: 18,
     fontFamily: "Messina-Regular",
