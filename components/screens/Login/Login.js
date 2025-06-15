@@ -1,5 +1,5 @@
 // frontend/screens/Login.js
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -8,45 +8,56 @@ import {
   Alert,
   ImageBackground,
   StyleSheet,
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import LoginStyle from '../../AllStyles/LoginStyle';
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import LoginStyle from "../../AllStyles/LoginStyle";
+import authenticatedApi, {
+  getAxiosErrorMessage,
+} from "../../../api/axiosInstance";
+import { useAuth } from "../../../context/authContext";
+import { saveCurrentUser } from "../../../utils/secureStore";
 
 const Login = () => {
   const navigation = useNavigation();
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { signIn, setUser } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const validateLogin = async () => {
+    console.log("Login initiated!");
     if (!email || !password) {
       Alert.alert("Error", "All fields are required.");
       return;
     }
-
+    const loginData = {
+      email,
+      password,
+    };
     try {
-      const response = await fetch('http://10.0.2.2:5000/login', { // use your IP or 10.0.2.2
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+      const response = await authenticatedApi.post("/auth/login", loginData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        Alert.alert("Success", data.message);
-        navigation.navigate('HomePage', { userId: data.userId });
+      const data = response.data;
+      console.log(data);
+      if (response.status === 200) {
+        signIn(data.token);
+        setUser(data.data);
+        Alert.alert("Success", "Logged in successful!");
+        navigation.navigate("HomePage", { userId: data.userId });
       } else {
-        Alert.alert("Error", data.message);
+        Alert.alert("Failed", "Something went wrong.");
       }
     } catch (error) {
-      Alert.alert("Error", "Failed to connect to server.");
+      const message = getAxiosErrorMessage(error);
+      Alert.alert("Error", message);
     }
   };
 
   return (
     <ImageBackground
-      source={require('../../../assets/LoginBG.png')}
+      source={require("../../../assets/LoginBG.png")}
       style={styles.background}
       resizeMode="cover"
     >
@@ -61,7 +72,7 @@ const Login = () => {
           </TouchableOpacity>
           <TouchableOpacity
             style={LoginStyle.registerButton}
-            onPress={() => navigation.navigate('Register')}
+            onPress={() => navigation.navigate("Register")}
           >
             <Text style={LoginStyle.buttonText}>Register</Text>
           </TouchableOpacity>
@@ -91,18 +102,15 @@ const Login = () => {
 
         <TouchableOpacity
           style={LoginStyle.sendCodeButton}
-          onPress={validateLogin}>
+          onPress={validateLogin}
+        >
           <Text style={LoginStyle.sendCodeButtonText}>LOGIN</Text>
-
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+        <TouchableOpacity onPress={() => navigation.navigate("ForgotPassword")}>
           <Text style={styles.forgotText}>Forgot Password?</Text>
         </TouchableOpacity>
-
       </View>
     </ImageBackground>
-
-    
   );
 };
 
@@ -112,14 +120,14 @@ const styles = StyleSheet.create({
   },
   forgotText: {
     marginTop: 10,
-    color: '#3C6791',
-    fontWeight: 'bold',
-    textAlign: 'center',
+    color: "#3C6791",
+    fontWeight: "bold",
+    textAlign: "center",
     fontSize: 14,
     marginBottom: 12,
     marginRight: 8,
-    fontFamily: 'Poppins',
-    textDecorationLine: 'underline',
+    fontFamily: "Poppins",
+    textDecorationLine: "underline",
   },
 });
 

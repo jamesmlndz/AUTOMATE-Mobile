@@ -12,6 +12,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import BookingformStyle from "../../AllStyles/BookingformStyle";
 import { SelectServices } from "../../AllStyles/SelectServices";
+import { useGetAllServices } from "../../../hooks/useServices.query";
 
 const services = [
   "Goodyear tires",
@@ -31,12 +32,14 @@ const services = [
 ];
 
 const SelectServicesScreen = () => {
+  const { data: servicesData, isLoading, error } = useGetAllServices();
   const navigation = useNavigation();
   const route = useRoute();
   const { formData } = route.params;
-
   const [selectedServices, setSelectedServices] = useState([]);
   const [additionalInfo, setAdditionalInfo] = useState("");
+
+  const services = servicesData?.map((service) => service.name) || [];
 
   const toggleService = (service) => {
     setSelectedServices([service]); // single selection logic
@@ -44,7 +47,10 @@ const SelectServicesScreen = () => {
 
   const handleNext = () => {
     if (selectedServices.length === 0) {
-      Alert.alert("No Service Selected", "Please select a service to continue.");
+      Alert.alert(
+        "No Service Selected",
+        "Please select a service to continue."
+      );
       return;
     }
 
@@ -68,7 +74,7 @@ const SelectServicesScreen = () => {
       {/* Header */}
       <View style={SelectServices.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <FontAwesome name="chevron-left" size={24} color="#fff"  />
+          <FontAwesome name="chevron-left" size={24} color="#fff" />
         </TouchableOpacity>
         <Text style={SelectServices.screenTitle}>Choose Service</Text>
       </View>
@@ -100,7 +106,10 @@ const SelectServicesScreen = () => {
                 <View
                   style={[
                     SelectServices.circle,
-                    isSelected && { backgroundColor: "#0A2146", borderColor: "#0A2146" },
+                    isSelected && {
+                      backgroundColor: "#0A2146",
+                      borderColor: "#0A2146",
+                    },
                   ]}
                 >
                   {isSelected && (

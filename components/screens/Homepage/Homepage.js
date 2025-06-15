@@ -11,10 +11,20 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import HomeStyle from "../../AllStyles/HomepageStyles";
+import { useAuth } from "../../../context/authContext";
+import { SvgUri } from "react-native-svg";
 
 const Homepage = () => {
+  const { currentUser } = useAuth();
   const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState("");
+
+  const greetings =
+    new Date().getHours() < 12
+      ? "Good Morning!"
+      : new Date().getHours() < 18
+      ? "Good Afternoon!"
+      : "Good Evening!";
 
   const handleSearch = () => {
     console.log("Searching for:", searchQuery);
@@ -31,7 +41,7 @@ const Homepage = () => {
         <View
           style={{
             flexDirection: "row",
-            justifyContent: "flex-end",  
+            justifyContent: "flex-end",
             alignItems: "center",
             marginHorizontal: 20,
             marginTop: 50,
@@ -39,7 +49,9 @@ const Homepage = () => {
         >
           {/* Removed sidebar hamburger button */}
 
-          <TouchableOpacity onPress={() => navigation.navigate("ProfileScreen")}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("ProfileScreen")}
+          >
             <View
               style={{
                 width: 50,
@@ -51,8 +63,15 @@ const Homepage = () => {
                 shadowOffset: { width: 0, height: 2 },
                 shadowOpacity: 0.2,
                 shadowRadius: 3,
+                overflow: "hidden",
               }}
-            />
+            >
+              <SvgUri
+                uri={`https://api.dicebear.com/9.x/initials/svg?seed=${
+                  currentUser?.name || "User"
+                }`}
+              />
+            </View>
           </TouchableOpacity>
         </View>
 
@@ -65,7 +84,7 @@ const Homepage = () => {
               color: "#000000",
             }}
           >
-            Welcome Ash
+            Welcome {currentUser?.name || "User"}!
           </Text>
           <Text
             style={{
@@ -74,7 +93,7 @@ const Homepage = () => {
               color: "#000000",
             }}
           >
-            Good Morning!
+            {greetings}
           </Text>
         </View>
 
@@ -85,7 +104,10 @@ const Homepage = () => {
             placeholderTextColor="#ffff"
             value={searchQuery}
             onChangeText={setSearchQuery}
-            style={[HomeStyle.searchInput, { fontFamily: "SFdisplay-Semibold" }]}
+            style={[
+              HomeStyle.searchInput,
+              { fontFamily: "SFdisplay-Semibold" },
+            ]}
           />
           <TouchableOpacity onPress={handleSearch}>
             <FontAwesome name="search" size={20} color="white" />
@@ -118,7 +140,12 @@ const Homepage = () => {
             >
               <FontAwesome name="plus" size={32} color="white" />
             </TouchableOpacity>
-            <Text style={[HomeStyle.iconLabel, { fontFamily: "SFdisplay-Semibold" }]}>
+            <Text
+              style={[
+                HomeStyle.iconLabel,
+                { fontFamily: "SFdisplay-Semibold" },
+              ]}
+            >
               Book
             </Text>
           </View>
@@ -130,7 +157,12 @@ const Homepage = () => {
             >
               <FontAwesome name="list" size={32} color="white" />
             </TouchableOpacity>
-            <Text style={[HomeStyle.iconLabel, { fontFamily: "SFdisplay-Semibold" }]}>
+            <Text
+              style={[
+                HomeStyle.iconLabel,
+                { fontFamily: "SFdisplay-Semibold" },
+              ]}
+            >
               Appointments
             </Text>
           </View>
@@ -142,7 +174,12 @@ const Homepage = () => {
             >
               <FontAwesome name="clock-o" size={32} color="white" />
             </TouchableOpacity>
-            <Text style={[HomeStyle.iconLabel, { fontFamily: "SFdisplay-Semibold" }]}>
+            <Text
+              style={[
+                HomeStyle.iconLabel,
+                { fontFamily: "SFdisplay-Semibold" },
+              ]}
+            >
               Service Tracker
             </Text>
           </View>
@@ -177,7 +214,12 @@ const Homepage = () => {
               source={require("../../../assets/services/Change Oil.jpg")}
               style={HomeStyle.categoryImage}
             />
-            <Text style={[HomeStyle.categoryLabel, { fontFamily: "SFdisplay-Semibold" }]}>
+            <Text
+              style={[
+                HomeStyle.categoryLabel,
+                { fontFamily: "SFdisplay-Semibold" },
+              ]}
+            >
               CHANGE OIL
             </Text>
           </TouchableOpacity>
@@ -187,7 +229,12 @@ const Homepage = () => {
               source={require("../../../assets/services/Change Oil.jpg")}
               style={HomeStyle.categoryImage}
             />
-            <Text style={[HomeStyle.categoryLabel, { fontFamily: "SFdisplay-Semibold" }]}>
+            <Text
+              style={[
+                HomeStyle.categoryLabel,
+                { fontFamily: "SFdisplay-Semibold" },
+              ]}
+            >
               BRAKE DISC
             </Text>
           </TouchableOpacity>

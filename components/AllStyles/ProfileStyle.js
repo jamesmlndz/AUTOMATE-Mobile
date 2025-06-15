@@ -52,6 +52,8 @@ export const ProfileStyle = StyleSheet.create({
     borderRadius: 55,
     borderWidth: 4,
     borderColor: "#fff",
+    backgroundColor: "#d9d9d9",
+    overflow: "hidden",
   },
 
   cameraIcon: {

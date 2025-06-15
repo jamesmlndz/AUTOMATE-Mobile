@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import {
   View,
   Text,
@@ -12,12 +12,18 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import styles from "../../AllStyles/EditProfileScreenStyle";
 import { FontAwesome, AntDesign, Entypo } from "@expo/vector-icons";
+import { useAuth } from "../../../context/authContext";
+import { SvgUri } from "react-native-svg";
 
 const EditScreenProfile = ({ navigation, route }) => {
+  const { currentUser } = useAuth();
   const existingProfile = route.params?.profile;
 
   const [image, setImage] = useState(
-    existingProfile?.profileImage || "https://placekitten.com/200/200"
+    existingProfile?.profileImage ||
+      `https://api.dicebear.com/9.x/initials/svg?seed=${
+        currentUser?.name || "User"
+      }`
   );
   const [name, setName] = useState(existingProfile?.name || "");
   const [email, setEmail] = useState(existingProfile?.email || "");
@@ -32,7 +38,8 @@ const EditScreenProfile = ({ navigation, route }) => {
   });
 
   const pickImage = async () => {
-    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    const permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!permissionResult.granted) {
       Alert.alert(
         "Permission required",
@@ -90,7 +97,11 @@ const EditScreenProfile = ({ navigation, route }) => {
           onPress={pickImage}
           activeOpacity={0.8}
         >
-          <Image source={{ uri: image }} style={styles.avatar} />
+          {image && !image.startsWith("http") ? (
+            <Image source={{ uri: image }} style={styles.avatar} />
+          ) : (
+            <SvgUri uri={image} style={styles.avatar} />
+          )}
           <Entypo
             name="camera"
             size={18}
@@ -108,17 +119,16 @@ const EditScreenProfile = ({ navigation, route }) => {
           onChangeText={setName}
           placeholder="Your full name"
         />
-
         <Text style={styles.label}>Email</Text>
         <TextInput
-          style={styles.input}
+          style={{ ...styles.input, backgroundColor: "#f0f0f0" }}
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
           placeholder="your.email@example.com"
           autoCapitalize="none"
+          readOnly={true}
         />
-
         <Text style={styles.label}>Mobile Number</Text>
         <View style={styles.mobileContainer}>
           <View style={styles.countryCode}>
@@ -136,9 +146,7 @@ const EditScreenProfile = ({ navigation, route }) => {
             placeholder="123 123 323"
           />
         </View>
-
-        <Text style={styles.label}>Linked Accounts</Text>
-
+        {/* <Text style={styles.label}>Linked Accounts</Text>
         <View style={styles.linkRow}>
           <View style={styles.linkIconText}>
             <FontAwesome name="google" size={20} color="#DB4437" />
@@ -151,7 +159,6 @@ const EditScreenProfile = ({ navigation, route }) => {
             }
           />
         </View>
-
         <View style={styles.linkRow}>
           <View style={styles.linkIconText}>
             <FontAwesome name="facebook" size={20} color="#4267B2" />
@@ -164,7 +171,6 @@ const EditScreenProfile = ({ navigation, route }) => {
             }
           />
         </View>
-
         <View style={styles.linkRow}>
           <View style={styles.linkIconText}>
             <FontAwesome name="apple" size={20} color="#000" />
@@ -176,13 +182,11 @@ const EditScreenProfile = ({ navigation, route }) => {
               setLinkedAccounts((prev) => ({ ...prev, apple: val }))
             }
           />
-        </View>?
-
+        </View> */}
         {/* Save Button */}
         <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
           <Text style={styles.saveButtonText}>Save</Text>
         </TouchableOpacity>
-
         <TouchableOpacity>
           <Text style={styles.switchAccount}>Switch Account</Text>
         </TouchableOpacity>

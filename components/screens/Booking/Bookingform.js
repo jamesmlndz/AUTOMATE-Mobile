@@ -11,14 +11,15 @@ import { Picker } from "@react-native-picker/picker";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import BookingformStyle from "../../AllStyles/BookingformStyle";
+import { useAuth } from "../../../context/authContext";
 
 const Bookingform = () => {
   const navigation = useNavigation();
-
+  const { currentUser } = useAuth();
   const [formData, setFormData] = useState({
-    name: "",
-    phone: "",
-    email: "",
+    name: currentUser?.name || "",
+    phone: currentUser?.mobileNumber || "",
+    email: currentUser?.email || "",
     plateNumber: "",
     contactMethod: "Phone",
   });
@@ -40,7 +41,10 @@ const Bookingform = () => {
       <View style={BookingformStyle.overlay} />
 
       <View style={BookingformStyle.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={BookingformStyle.backBtn}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={BookingformStyle.backBtn}
+        >
           <Ionicons name="arrow-back" size={24} color="#fff" />
         </TouchableOpacity>
         <Text style={BookingformStyle.headerTitle}>Book your Appointment</Text>
@@ -102,7 +106,11 @@ const Bookingform = () => {
           </Picker>
         </View>
 
-        <TouchableOpacity style={BookingformStyle.nextBtn} onPress={handleNext} activeOpacity={0.8}>
+        <TouchableOpacity
+          style={BookingformStyle.nextBtn}
+          onPress={handleNext}
+          activeOpacity={0.8}
+        >
           <Text style={BookingformStyle.btnText}>Next</Text>
         </TouchableOpacity>
       </View>

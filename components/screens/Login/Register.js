@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -7,18 +7,21 @@ import {
   Alert,
   ImageBackground,
   StyleSheet,
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import LoginStyle from '../../AllStyles/LoginStyle';
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import LoginStyle from "../../AllStyles/LoginStyle";
+import authenticatedApi, {
+  getAxiosErrorMessage,
+} from "../../../api/axiosInstance";
 
 const Register = () => {
   const navigation = useNavigation();
 
-  const [fname, setFname] = useState('');
-  const [lname, setLname] = useState('');
-  const [contactNum, setContactNum] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [fname, setFname] = useState("");
+  const [lname, setLname] = useState("");
+  const [contactNum, setContactNum] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleRegister = async () => {
@@ -40,40 +43,52 @@ const Register = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://192.168.254.127:5000/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          fname,
-          lname,
-          contactNum,
-          email,
-          password
-        }),
-      });
+      // const response = await fetch('http://192.168.254.127:5000/register', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({
+      //     fname,
+      //     lname,
+      //     contactNum,
+      //     email,
+      //     password
+      //   }),
+      // });
 
-      const text = await response.text();
-      let data;
+      // const text = await response.text();
+      // let data;
 
-      try {
-        data = JSON.parse(text);
-      } catch {
-        throw new Error("Invalid or empty response from server.");
+      // try {
+      //   data = JSON.parse(text);
+      // } catch {
+      //   throw new Error("Invalid or empty response from server.");
+      // }
+
+      const registerData = {
+        name: `${fname} ${lname}`,
+        mobileNumber: contactNum,
+        email,
+        password,
+      };
+
+      const response = await authenticatedApi.post(
+        "/auth/register",
+        registerData
+      );
+      let data = response.data.data;
+      if (response.status === 201) {
+        // 201 for successful creation
+        Alert.alert("Success", data.message || "Verification code sent.");
+        navigation.navigate("Verify", {
+          email: data.email,
+          userId: data.userId,
+        });
+      } else {
+        Alert.alert("Failed", "Something went wrong.");
       }
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Registration failed');
-      }
-
-      Alert.alert("Success", data.message || "Verification code sent.");
-      navigation.navigate('Verify', {
-        email: data.email,
-        userId: data.userId,
-      });
-
     } catch (error) {
-      console.error('❌ Register error:', error);
-      Alert.alert("Error", error.message || "Failed to connect to server.");
+      const message = getAxiosErrorMessage(error);
+      Alert.alert("Error", message);
     } finally {
       setIsLoading(false);
     }
@@ -81,7 +96,7 @@ const Register = () => {
 
   return (
     <ImageBackground
-      source={require('../../../assets/RegisterBG.png')}
+      source={require("../../../assets/RegisterBG.png")}
       style={styles.background}
       resizeMode="cover"
     >
@@ -93,7 +108,7 @@ const Register = () => {
         <View style={LoginStyle.buttonContainer}>
           <TouchableOpacity
             style={LoginStyle.loginButton}
-            onPress={() => navigation.navigate('Login')}
+            onPress={() => navigation.navigate("Login")}
             disabled={isLoading}
           >
             <Text style={LoginStyle.buttonText}>Login</Text>
@@ -105,7 +120,7 @@ const Register = () => {
             disabled={isLoading}
           >
             <Text style={LoginStyle.buttonText}>
-              {isLoading ? 'Registering...' : 'Register'}
+              {isLoading ? "Registering..." : "Register"}
             </Text>
           </TouchableOpacity>
         </View>
@@ -179,7 +194,7 @@ const Register = () => {
           disabled={isLoading}
         >
           <Text style={LoginStyle.sendCodeButtonText}>
-            {isLoading ? 'REGISTERING...' : 'REGISTER'}
+            {isLoading ? "REGISTERING..." : "REGISTER"}
           </Text>
         </TouchableOpacity>
       </View>

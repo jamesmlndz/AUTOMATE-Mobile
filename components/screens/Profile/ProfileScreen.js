@@ -12,11 +12,14 @@ import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { ProfileStyle } from "../../AllStyles/ProfileStyle";
 import LogoutPopup from "../../screens/Login/LogoutPopup";
+import { useAuth } from "../../../context/authContext";
+import { getCurrentUser } from "../../../utils/secureStore";
+import { SvgUri } from "react-native-svg";
 
 const ProfileScreen = () => {
+  const { signOut, currentUser } = useAuth();
   const navigation = useNavigation();
   const isFocused = useIsFocused();
-
   const [profile, setProfile] = useState({
     name: "Ash Melendez",
     email: "asdf@gmail.com",
@@ -26,13 +29,16 @@ const ProfileScreen = () => {
       facebook: true,
       apple: true,
     },
-    profileImage:
-      "https://i.kym-cdn.com/entries/icons/original/000/041/120/capybara_header.jpg",
+    ...currentUser,
+    profileImage: `https://api.dicebear.com/9.x/initials/svg?seed=${
+      currentUser?.name || "User"
+    }`,
   });
-
+  console.log(currentUser);
   const [isLogoutVisible, setIsLogoutVisible] = useState(false);
 
   useEffect(() => {
+    console.log(profile);
     if (navigation && navigation.getState) {
       const routes = navigation.getState().routes;
       const lastRoute = routes[routes.length - 1];
@@ -45,6 +51,7 @@ const ProfileScreen = () => {
   }, [isFocused]);
 
   const handleLogout = () => {
+    signOut();
     setIsLogoutVisible(false);
     navigation.reset({
       index: 0,
@@ -64,7 +71,9 @@ const ProfileScreen = () => {
       >
         {/* Header */}
         <View style={ProfileStyle.header}>
-          <Text style={[ProfileStyle.profileText, { color: "white" }]}>PROFILE</Text>
+          <Text style={[ProfileStyle.profileText, { color: "white" }]}>
+            PROFILE
+          </Text>
           <TouchableOpacity
             onPress={() => navigation.navigate("HomePage")}
             style={ProfileStyle.headerArrow}
@@ -75,25 +84,38 @@ const ProfileScreen = () => {
 
         {/* Profile Picture */}
         <View style={ProfileStyle.imageWrapper}>
-          <Image source={{ uri: profile.profileImage }} style={ProfileStyle.profileImage} />
+          <View style={ProfileStyle.profileImage}>
+            <SvgUri uri={profile.profileImage} />
+          </View>
           <TouchableOpacity
             style={ProfileStyle.cameraIcon}
-            onPress={() => navigation.navigate("EditProfileScreen", { profile })}
+            onPress={() =>
+              navigation.navigate("EditProfileScreen", { profile })
+            }
           >
             <FontAwesome name="camera" size={16} color="white" />
           </TouchableOpacity>
         </View>
 
         {/* Profile Info Card */}
-        <View style={[ProfileStyle.profileCard, { backgroundColor: "rgba(255,255,255,0.9)" }]}>
-          <Text style={[ProfileStyle.nameText, { color: "#333" }]}>{profile.name}</Text>
+        <View
+          style={[
+            ProfileStyle.profileCard,
+            { backgroundColor: "rgba(255,255,255,0.9)" },
+          ]}
+        >
+          <Text style={[ProfileStyle.nameText, { color: "#333" }]}>
+            {profile.name}
+          </Text>
 
           <View style={ProfileStyle.infoHeader}>
             <Text style={[ProfileStyle.infoHeaderText, { color: "#222" }]}>
               Personal Information
             </Text>
             <TouchableOpacity
-              onPress={() => navigation.navigate("EditProfileScreen", { profile })}
+              onPress={() =>
+                navigation.navigate("EditProfileScreen", { profile })
+              }
             >
               <FontAwesome name="pencil" size={18} color="#333" />
             </TouchableOpacity>
@@ -148,7 +170,10 @@ const ProfileScreen = () => {
           {/* Buttons */}
           <View style={{ marginTop: 30 }}>
             <TouchableOpacity
-              style={[ProfileStyle.switchAccountButton, { backgroundColor: "#333" }]}
+              style={[
+                ProfileStyle.switchAccountButton,
+                { backgroundColor: "#333" },
+              ]}
               onPress={() => setIsLogoutVisible(true)}
             >
               <Text style={[ProfileStyle.switchAccountText, { color: "#fff" }]}>
@@ -163,7 +188,9 @@ const ProfileScreen = () => {
               ]}
               onPress={() => setIsLogoutVisible(true)}
             >
-              <Text style={[ProfileStyle.switchAccountText, { color: "#fff" }]}>Logout</Text>
+              <Text style={[ProfileStyle.switchAccountText, { color: "#fff" }]}>
+                Logout
+              </Text>
             </TouchableOpacity>
           </View>
         </View>

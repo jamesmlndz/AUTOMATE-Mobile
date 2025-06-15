@@ -30,7 +30,7 @@ const BookingConfirmation = () => {
   const service = bookingData.service || "General Service";
   const carModel = bookingData.carModel || "N/A";
   const userId = bookingData.userId || null; // ✅ passed from Verify or Register
-
+  console.log("Booking Data:", bookingData);
   const handleConfirmBooking = async () => {
     try {
       if (!userId) {
@@ -44,6 +44,12 @@ const BookingConfirmation = () => {
         date,
         time,
         carModel,
+        ...bookingData,
+        vehicle: {
+          brand: "Toyota",
+          model: "Vios",
+          year: "2020",
+        },
       };
 
       const response = await api.post("/appointments", appointmentData);
@@ -91,8 +97,7 @@ const BookingConfirmation = () => {
         <View style={styles.receiptBox}>
           {Object.entries(bookingData)
             .filter(
-              ([key]) =>
-                !["odometer", "drivable"].includes(key.toLowerCase())
+              ([key]) => !["odometer", "drivable"].includes(key.toLowerCase())
             )
             .map(([key, value], index) => {
               let displayValue = value;

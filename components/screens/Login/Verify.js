@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState } from "react";
 import {
   View,
   Text,
@@ -7,14 +7,20 @@ import {
   Alert,
   ImageBackground,
   StyleSheet,
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import LoginStyle from '../../AllStyles/LoginStyle';
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import LoginStyle from "../../AllStyles/LoginStyle";
+import authenticatedApi, {
+  getAxiosErrorMessage,
+} from "../../../api/axiosInstance";
+import e from "cors";
+import { useAuth } from "../../../context/authContext";
 
 const Verify = ({ route }) => {
+  const { signIn, setUser } = useAuth();
   const navigation = useNavigation();
   const userInfo = route?.params || {};
-  const [otp, setOtp] = useState(Array(4).fill(''));
+  const [otp, setOtp] = useState(Array(4).fill(""));
   const inputRefs = useRef([]);
 
   const handleOtpChange = (text, index) => {
@@ -28,38 +34,37 @@ const Verify = ({ route }) => {
   };
 
   const handleVerify = async () => {
-    const fullOtp = otp.join('');
+    console.log(route);
+    const fullOtp = otp.join("");
     if (fullOtp.length !== 4) {
-      Alert.alert('Error', 'Please enter a valid 4-digit code.');
+      Alert.alert("Error", "Please enter a valid 4-digit code.");
       return;
     }
-
     try {
-      const response = await fetch('http://localhost:5000/verify-email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: userInfo.email,
-          otp: fullOtp,
-        }),
-      });
+      const verifyData = {
+        email: userInfo.email,
+        otp: fullOtp,
+      };
 
-      const data = await response.json();
-
-      if (response.ok) {
-        Alert.alert('Success', 'Account verified!');
-        navigation.navigate('Login');
+      const response = await authenticatedApi.post("/auth/verify", verifyData);
+      let data = response.data;
+      if (response.status === 200) {
+        signIn(data.token);
+        setUser(data.data);
+        Alert.alert("Success", "Email verified!");
+        navigation.navigate("HomePage", { userId: data.data.userId });
       } else {
-        Alert.alert('Error', data.message || 'Verification failed.');
+        Alert.alert("Failed", "Something went wrong.");
       }
     } catch (error) {
-      Alert.alert('Error', 'Something went wrong while verifying.');
+      const message = getAxiosErrorMessage(error);
+      Alert.alert("Error", message);
     }
   };
 
   return (
     <ImageBackground
-      source={require('../../../assets/GetBG.png')} // Make sure this path is correct
+      source={require("../../../assets/GetBG.png")} // Make sure this path is correct
       style={styles.background}
       resizeMode="cover"
     >
@@ -86,7 +91,9 @@ const Verify = ({ route }) => {
           <Text style={LoginStyle.sendCodeButtonText}>Verify</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => Alert.alert('Resend code functionality here')}>
+        <TouchableOpacity
+          onPress={() => Alert.alert("Resend code functionality here")}
+        >
           <Text style={LoginStyle.resendText}>Didn't get the code? Resend</Text>
         </TouchableOpacity>
       </View>
