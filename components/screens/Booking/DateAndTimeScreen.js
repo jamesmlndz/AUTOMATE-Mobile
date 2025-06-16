@@ -79,8 +79,8 @@ const DateAndTimeScreen = ({ navigation, route }) => {
 
     const combinedData = {
       ...prevFormData,
-      selectedDate: date.toISOString(),
-      selectedTime: chosenTime.toTimeString(),
+      scheduledDate: date.toISOString(),
+      scheduledTime: chosenTime.toTimeString(),
     };
 
     navigation.navigate("BookingConfirmation", { formData: combinedData });
@@ -115,7 +115,7 @@ const DateAndTimeScreen = ({ navigation, route }) => {
             textStyle={{ color: "#0A2146", fontWeight: "600" }}
             previousTitle="<"
             nextTitle=">"
-            width={width - 20}  // nearly full width with slight margin
+            width={width - 20} // nearly full width with slight margin
             scaleFactor={375}
           />
 
@@ -150,9 +150,7 @@ const DateAndTimeScreen = ({ navigation, route }) => {
                 >
                   <Text
                     style={
-                      isSelected
-                        ? DateTime.timeTextSelected
-                        : DateTime.timeText
+                      isSelected ? DateTime.timeTextSelected : DateTime.timeText
                     }
                   >
                     {formatTimeLabel(slot)}
@@ -197,7 +195,10 @@ const DateAndTimeScreen = ({ navigation, route }) => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={[DateTime.amPmButton, !isAM && DateTime.amPmButtonSelected]}
+              style={[
+                DateTime.amPmButton,
+                !isAM && DateTime.amPmButtonSelected,
+              ]}
               onPress={() => {
                 if (isAM) {
                   const newTime = new Date(time);

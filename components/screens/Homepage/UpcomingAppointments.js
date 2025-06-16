@@ -14,82 +14,54 @@ import { useGetAllAppointments } from "../../../hooks/useAppointments.query";
 const UpcomingAppointments = ({ appointments }) => {
   const navigation = useNavigation();
   const { data, loading, error, isError } = useGetAllAppointments();
-  // If no appointments prop passed, fallback to empty array or load from storage/server here
-  // const [data, setData] = useState(
-  //   appointments || [
-  //     {
-  //       _id: {
-  //         $oid: "684f02a9916ddeaeefaad218",
-  //       },
-  //       customer: {
-  //         $oid: "684dbe517d6bb73d3127233c",
-  //       },
-  //       phone: "09561345525",
-  //       email: "fmontallana.integr8@gmail.com",
-  //       contactMethod: "Phone",
-  //       vehicle: {
-  //         $oid: "684efcf5301698c13f555f76",
-  //       },
-  //       scheduledTime: {
-  //         $date: "2025-06-15T17:28:02.243Z",
-  //       },
-  //       status: "Booked",
-  //       services: [
-  //         {
-  //           service: {
-  //             $oid: "684e91c0d8150eccdd1062ce",
-  //           },
-  //           price: 0,
-  //           _id: {
-  //             $oid: "684f02a9916ddeaeefaad219",
-  //           },
-  //         },
-  //       ],
-  //       parts: [],
-  //       createdAt: {
-  //         $date: "2025-06-15T17:28:09.355Z",
-  //       },
-  //       updatedAt: {
-  //         $date: "2025-06-15T17:28:09.355Z",
-  //       },
-  //       __v: 0,
-  //     },
-  //   ]
-  // );
-  console.log({ data: [data?.appointments] });
-  useEffect(() => {
-    // Optional: Load appointments from backend or AsyncStorage here
-    // Example:
-    // async function fetchAppointments() {
-    //   const stored = await AsyncStorage.getItem('appointments');
-    //   if (stored) setData(JSON.parse(stored));
-    // }
-    // fetchAppointments();
-  }, []);
+
+  if (loading) {
+    return (
+      <View style={styles.emptyContainer}>
+        <Text style={styles.emptyText}>Loading appointments...</Text>
+      </View>
+    );
+  }
+
+  if (isError) {
+    console.error("Error fetching appointments:", error);
+    return (
+      <View style={styles.emptyContainer}>
+        <Text style={styles.emptyText}>Error loading appointments</Text>
+      </View>
+    );
+  }
+  if (!data || !data.appointments || data.appointments.length === 0) {
+    return (
+      <View style={styles.emptyContainer}>
+        <Text style={styles.emptyText}>No upcoming appointments</Text>
+      </View>
+    );
+  }
 
   const renderItem = ({ item, index }) => {
-    console.log({ item });
+    console.log({ ...item });
     return (
       <TouchableOpacity
         style={styles.card}
         activeOpacity={0.8}
         onPress={() =>
           navigation.navigate("AptScreen", {
-            bookingData: item.details,
+            bookingData: { ...item },
           })
         }
       >
         <View style={styles.cardHeader}>
           <View style={styles.dateBox}>
             <Text style={styles.dateText}>
-              {item.date || new Date().getDay()}
+              {new Date(item.scheduledTime).getDate()}
             </Text>
             <Text style={styles.monthText}>
-              {item.month || new Date().toDateString().split(" ")[0]}
+              {new Date(item.scheduledTime).toDateString().split(" ")[0]}
             </Text>
           </View>
           <Text style={styles.titleText}>
-            {item.title || "General Service"}
+            {item.services[0].service.name || "General Service"}
           </Text>
           <Ionicons name="chevron-forward" size={22} color="#F9D342" />
         </View>
@@ -100,14 +72,6 @@ const UpcomingAppointments = ({ appointments }) => {
       </TouchableOpacity>
     );
   };
-
-  if (data?.results === 0) {
-    return (
-      <View style={styles.emptyContainer}>
-        <Text style={styles.emptyText}>No upcoming appointments</Text>
-      </View>
-    );
-  }
 
   return (
     <ImageBackground

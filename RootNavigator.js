@@ -50,6 +50,7 @@ import AptScreen from "./components/screens/Homepage/AptScreen";
 import ForgotPassword from "./components/screens/Login/ForgotPassword";
 import ResetPassword from "./components/screens/Login/ResetPassword";
 import VerifyResetOtp from "./components/screens/Login/VerifyResetOtp";
+import ServiceDetails from "./components/screens/Services/ServiceDetails";
 
 const Stack = createNativeStackNavigator();
 
@@ -125,6 +126,7 @@ export default function RootNavigator() {
         <Stack.Screen name="BookedScreen" component={BookedScreen} />
         <Stack.Screen name="LogoutPopup" component={LogoutPopup} />
 
+        <Stack.Screen name="ServiceDetails" component={ServiceDetails} />
         <Stack.Screen name="GoodYearTire" component={GoodYearTire} />
         <Stack.Screen name="WheelBalancing" component={WheelBalancing} />
         <Stack.Screen name="Comuterized" component={Comuterized4WAlignment} />

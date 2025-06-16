@@ -6,12 +6,15 @@ import {
   TouchableOpacity,
   ImageBackground,
   StyleSheet,
+  Alert,
 } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import api from "../../../api"; // ✅ use your existing api.js helper
 import { useAuth } from "../../../context/authContext";
-import authenticatedApi from "../../../api/axiosInstance";
+import authenticatedApi, {
+  getAxiosErrorMessage,
+} from "../../../api/axiosInstance";
 
 const BookingConfirmation = () => {
   const { currentUser } = useAuth();
@@ -28,8 +31,8 @@ const BookingConfirmation = () => {
   };
 
   const name = bookingData.name || bookingData.customerName || "";
-  const date = bookingData.selectedDate || bookingData.date || "";
-  const time = bookingData.selectedTime || bookingData.time || "";
+  const date = bookingData.scheduledDate || bookingData.date || "";
+  const time = bookingData.scheduledTime || bookingData.time || "";
   const service = bookingData.service || "General Service";
   const carModel = bookingData.carModel || "N/A";
   const userId =
@@ -69,8 +72,11 @@ const BookingConfirmation = () => {
         alert("Failed to book appointment. Please try again.");
       }
     } catch (error) {
-      console.error("❌ Error saving appointment:", error.message);
-      alert("Failed to book appointment. Please try again.");
+      const message = getAxiosErrorMessage(error);
+      Alert.alert(
+        "Failed to book appointment",
+        message || "Failed to book appointment."
+      );
     }
   };
 

@@ -102,7 +102,7 @@ const Bookingform = () => {
           >
             <Picker.Item label="Phone" value="Phone" />
             <Picker.Item label="Email" value="Email" />
-            <Picker.Item label="Sms" value="Sms" />
+            <Picker.Item label="SMS" value="SMS" />
           </Picker>
         </View>
 

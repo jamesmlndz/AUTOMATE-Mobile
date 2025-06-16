@@ -36,7 +36,11 @@ const SelectServicesScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { formData } = route.params;
-  const [selectedServices, setSelectedServices] = useState([]);
+  const { service } =
+    navigation.getState().routes.find((route) => route.name === "Booking")
+      ?.params || {}; //selected service from services list
+
+  const [selectedServices, setSelectedServices] = useState([service]);
   const [additionalInfo, setAdditionalInfo] = useState("");
 
   const services = servicesData?.map((service) => service.name) || [];
@@ -57,7 +61,7 @@ const SelectServicesScreen = () => {
     const updatedFormData = {
       ...formData,
       selectedServices,
-      additionalInfo,
+      customerNotes: additionalInfo,
     };
 
     navigation.navigate("DateAndTimeScreen", { formData: updatedFormData });

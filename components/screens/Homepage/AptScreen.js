@@ -22,6 +22,70 @@ const AptScreen = () => {
       .replace(/_/g, " ")
       .replace(/\b\w/g, (c) => c.toUpperCase());
   };
+  const RenderDetail = () =>
+    Object.entries(bookingData).map(([key, value]) => {
+      // --- 1. Filter out keys you don't want to display ---
+      const hiddenKeys = [
+        "__v",
+        "_id",
+        "customer",
+        "parts",
+        "createdAt",
+        "updatedAt",
+      ];
+      if (hiddenKeys.includes(key)) {
+        return null; // Skip rendering for these keys
+      }
+
+      let displayValue = value;
+
+      // --- 2. Handle specific object keys like 'vehicle' ---
+      if (key === "vehicle" && value) {
+        // Format the vehicle object into a readable string
+        displayValue = `${value.brand} ${value.model} (${value.year}) - ${value.plateNumber}`;
+      }
+      // --- 3. Improve handling for arrays of objects like 'services' ---
+      else if (key === "services" && Array.isArray(value)) {
+        if (
+          value.length > 0 &&
+          typeof value[0] === "object" &&
+          value[0] !== null
+        ) {
+          // Corrected path: map over each item and access item.service.name
+          displayValue = value.map((item) => item.service.name).join(", ");
+        } else {
+          displayValue = "No services listed.";
+        }
+      }
+      // --- 4. Improve Date and Time Formatting ---
+      else if (key.toLowerCase().includes("date")) {
+        displayValue = new Date(value).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        });
+      } else if (key.toLowerCase().includes("time")) {
+        displayValue = new Date(value).toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+        });
+      }
+      // Handle any other simple value
+      else if (typeof value !== "object" || value === null) {
+        displayValue = String(value);
+      } else {
+        // If it's an unhandled object, don't render it to avoid errors
+        return null;
+      }
+
+      return (
+        <View key={key} style={styles.row}>
+          <Text style={styles.label}>{formatLabel(key)}</Text>
+          <Text style={styles.value}>{displayValue}</Text>
+        </View>
+      );
+    });
 
   return (
     <ImageBackground
@@ -47,27 +111,8 @@ const AptScreen = () => {
         showsVerticalScrollIndicator={false}
       >
         <Text style={styles.title}>Details</Text>
-
-        <View style={styles.detailsBox}>
-          {Object.entries(bookingData).map(([key, value], index) => {
-            let displayValue = value;
-            if (key.toLowerCase().includes("date")) {
-              displayValue = new Date(value).toDateString();
-            }
-            if (key.toLowerCase().includes("time")) {
-              displayValue = String(value).slice(0, 5);
-            }
-            if (Array.isArray(value)) {
-              displayValue = value.join(", ");
-            }
-            return (
-              <View key={index} style={styles.row}>
-                <Text style={styles.label}>{formatLabel(key)}</Text>
-                <Text style={styles.value}>{displayValue}</Text>
-              </View>
-            );
-          })}
-        </View>
+        <RenderDetail />
+        <View style={styles.detailsBox}></View>
       </ScrollView>
     </ImageBackground>
   );
