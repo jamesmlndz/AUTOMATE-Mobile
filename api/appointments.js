@@ -1,10 +1,8 @@
 import authenticatedApi, { getAxiosErrorMessage } from "./axiosInstance";
 
-export const getAllServices = async () => {
+export const getAllAppointments = async () => {
   try {
     const response = await authenticatedApi.get("/appointments");
-    console.log(Object.keys(response.data));
-    console.log("Response data:", response.data);
     return response.data;
   } catch (error) {
     throw new Error(getAxiosErrorMessage(error));
