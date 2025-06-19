@@ -133,14 +133,13 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     backgroundColor: "#0A2156",
-    paddingTop: 40,
     paddingHorizontal: 20,
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 25,
+    paddingVertical: 20,
     paddingHorizontal: 5,
   },
   backBtn: {

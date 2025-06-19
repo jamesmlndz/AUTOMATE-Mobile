@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { format } from "date-fns";
 
 const BookedScreen = () => {
   const navigation = useNavigation();
@@ -38,7 +39,8 @@ const BookedScreen = () => {
         <Text style={styles.detailsText}>
           Date:{" "}
           <Text style={styles.boldText}>
-            {date ? new Date(date).toDateString() : "N/A"}
+            {" "}
+            {date ? format(new Date(date), "yyyy-MM-dd") : "N/A"}
           </Text>
           {"\n"}
           Time: <Text style={styles.boldText}>{time || "N/A"}</Text>

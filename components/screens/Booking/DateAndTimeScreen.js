@@ -11,6 +11,7 @@ import {
 import { FontAwesome } from "@expo/vector-icons";
 import CalendarPicker from "react-native-calendar-picker";
 import authenticatedApi from "../../../api/axiosInstance"; // Adjust this import to your actual API instance
+import { format } from "date-fns";
 
 const { width } = Dimensions.get("window");
 const MAX_CUSTOMERS_PER_SLOT = 4; // Max customers per slot
@@ -34,23 +35,21 @@ const DateAndTimeScreen = ({ navigation, route }) => {
   // Function to fetch availability data from the backend
   const fetchBookingData = async (dateToFetch) => {
     try {
-      const formattedDate = dateToFetch.split("T")[0]; // Format as YYYY-MM-DD
+      const formattedDate = format(new Date(dateToFetch), "yyyy-MM-dd");
       const response = await authenticatedApi.get(
         `/booking/availability?date=${formattedDate}`
       );
       const { availableSlots: backendSlots, specialDates } = response.data;
 
-      // Update available slots from the backend
       setAvailableSlots(backendSlots);
 
-      // Create custom styles for the calendar based on special dates
       const styles = specialDates.map((sd) => ({
         date: new Date(sd.date),
         style: {
           backgroundColor: sd.isFullyBooked
-            ? "#d9534f" // Red for fully booked
+            ? "#d9534f"
             : sd.isHoliday
-            ? "#f0ad4e" // Orange for holidays
+            ? "#f0ad4e"
             : "transparent",
         },
         textStyle: {
@@ -61,10 +60,10 @@ const DateAndTimeScreen = ({ navigation, route }) => {
       setCustomDatesStyles(styles);
     } catch (error) {
       console.error("Error fetching booking data:", error);
-      setAvailableSlots([]); // Clear slots on error
+      setAvailableSlots([]);
       setCustomDatesStyles([]);
     }
-    setSelectedSlot(null); // Reset selected slot when the date changes
+    setSelectedSlot(null);
   };
 
   // Handler for date changes in the calendar
@@ -83,7 +82,7 @@ const DateAndTimeScreen = ({ navigation, route }) => {
     // Combine previous form data with the selected date and time
     const combinedData = {
       ...prevFormData,
-      scheduledDate: selectedDate.split("T")[0],
+      scheduledDate: format(selectedDate, "yyyy-MM-dd"),
       scheduledTime: selectedSlot.time,
     };
 
