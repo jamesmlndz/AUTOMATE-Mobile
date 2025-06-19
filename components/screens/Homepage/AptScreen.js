@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { Ionicons as Ionicon } from "@expo/vector-icons"; // For displaying stars
 
 const AptScreen = () => {
   const route = useRoute();
@@ -32,6 +33,7 @@ const AptScreen = () => {
         "parts",
         "createdAt",
         "updatedAt",
+        "feedback", // Exclude feedback object from generic rendering
       ];
       if (hiddenKeys.includes(key)) {
         return null; // Skip rendering for these keys
@@ -113,6 +115,40 @@ const AptScreen = () => {
         <Text style={styles.title}>Details</Text>
         <RenderDetail />
         <View style={styles.detailsBox}></View>
+
+        {/* Display Feedback if available */}
+        {bookingData.feedback && (
+          <View style={styles.feedbackDisplayContainer}>
+            <Text style={styles.feedbackDisplayHeader}>Customer Feedback</Text>
+            {bookingData.rating > 0 && (
+              <View style={styles.starDisplayContainer}>
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <Ionicon
+                    key={star}
+                    name={star <= bookingData.rating ? "star" : "star-outline"}
+                    size={20}
+                    color="#D4AF37"
+                  />
+                ))}
+              </View>
+            )}
+            <Text style={styles.feedbackDisplayText}>
+              {bookingData.feedback.comment}
+            </Text>
+          </View>
+        )}
+
+        {/* Leave Feedback Button (conditionally rendered) */}
+        {bookingData.status !== "completed" && !bookingData.feedback && (
+          <TouchableOpacity
+            style={styles.leaveFeedbackButton}
+            onPress={() =>
+              navigation.navigate("LeaveFeedbackScreen", { bookingData })
+            }
+          >
+            <Text style={styles.leaveFeedbackButtonText}>Leave Feedback</Text>
+          </TouchableOpacity>
+        )}
       </ScrollView>
     </ImageBackground>
   );
@@ -122,7 +158,7 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     backgroundColor: "#0A2156",
-    paddingTop: 40,
+    paddingVertical: 20,
     paddingHorizontal: 20,
   },
   header: {
@@ -175,14 +211,51 @@ const styles = StyleSheet.create({
   label: {
     fontFamily: "Courier",
     fontSize: 15,
+    fontWeight: "bold",
     color: "#555",
   },
   value: {
+    flex: 1,
     fontFamily: "Courier",
     fontSize: 15,
     color: "#0A2146",
-    maxWidth: "60%",
     textAlign: "right",
+  },
+  leaveFeedbackButton: {
+    backgroundColor: "#D4AF37",
+    padding: 15,
+    borderRadius: 8,
+    alignItems: "center",
+    marginTop: 30,
+  },
+  leaveFeedbackButtonText: {
+    color: "#0A2146",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  feedbackDisplayContainer: {
+    marginTop: 30,
+    paddingTop: 20,
+    borderTopWidth: 1,
+    borderTopColor: "#eee",
+  },
+  feedbackDisplayHeader: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#0A2146",
+    marginBottom: 10,
+    textAlign: "center",
+  },
+  starDisplayContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginBottom: 10,
+  },
+  feedbackDisplayText: {
+    fontSize: 16,
+    color: "#555",
+    textAlign: "center",
+    fontStyle: "italic",
   },
 });
 

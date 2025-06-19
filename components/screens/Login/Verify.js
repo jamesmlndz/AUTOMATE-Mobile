@@ -52,7 +52,8 @@ const Verify = ({ route }) => {
         signIn(data.token);
         setUser(data.data);
         Alert.alert("Success", "Email verified!");
-        navigation.navigate("HomePage", { userId: data.data.userId });
+        // navigation.navigate("HomePage", { userId: data.data.userId });
+        navigation.navigate("AccountCreated");
       } else {
         Alert.alert("Failed", "Something went wrong.");
       }

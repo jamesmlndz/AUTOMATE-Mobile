@@ -9,8 +9,8 @@ const getBaseUrl = () => {
 
   if (__DEV__ && ip) {
     // In development, use the machine's IP with your API's port.
-    console.log(`🔌 Using development API URL: http://${ip}:5000/api`);
-    return `http://${ip}:5000/api`;
+    console.log(`🔌 Using development API URL: http://${ip}:5001/api`);
+    return `http://${ip}:5001/api`;
   } else {
     // In production, use your deployed API URL.
     return (

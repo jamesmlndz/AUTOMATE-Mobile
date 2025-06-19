@@ -22,10 +22,18 @@ const Register = () => {
   const [contactNum, setContactNum] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleRegister = async () => {
-    if (!fname || !lname || !contactNum || !email || !password) {
+    if (
+      !fname ||
+      !lname ||
+      !contactNum ||
+      !email ||
+      !password ||
+      !passwordConfirm
+    ) {
       Alert.alert("Error", "Please fill out all fields.");
       return;
     }
@@ -69,6 +77,7 @@ const Register = () => {
         mobileNumber: contactNum,
         email,
         password,
+        passwordConfirm,
       };
 
       const response = await authenticatedApi.post(
@@ -182,6 +191,19 @@ const Register = () => {
             placeholder="Enter Password"
             value={password}
             onChangeText={setPassword}
+            secureTextEntry
+            autoCapitalize="none"
+            editable={!isLoading}
+          />
+        </View>
+
+        <View style={LoginStyle.inputContainer}>
+          <Text style={LoginStyle.label}>Confirm Password</Text>
+          <TextInput
+            style={LoginStyle.input}
+            placeholder="Confirm Password"
+            value={passwordConfirm}
+            onChangeText={setPasswordConfirm}
             secureTextEntry
             autoCapitalize="none"
             editable={!isLoading}

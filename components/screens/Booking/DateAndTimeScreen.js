@@ -4,236 +4,277 @@ import {
   Text,
   TouchableOpacity,
   ImageBackground,
-  Platform,
   Dimensions,
   ScrollView,
+  StyleSheet, // Import StyleSheet
 } from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import { FontAwesome } from "@expo/vector-icons";
 import CalendarPicker from "react-native-calendar-picker";
-import { DateTime } from "../../AllStyles/DateTime";
+import authenticatedApi from "../../../api/axiosInstance"; // Adjust this import to your actual API instance
 
 const { width } = Dimensions.get("window");
+const MAX_CUSTOMERS_PER_SLOT = 4; // Max customers per slot
 
-const generateTimeSlots = (startHour = 9, endHour = 17, interval = 30) => {
-  const slots = [];
-  for (let hour = startHour; hour < endHour; hour++) {
-    for (let min = 0; min < 60; min += interval) {
-      const time = new Date();
-      time.setHours(hour);
-      time.setMinutes(min);
-      time.setSeconds(0);
-      slots.push(time);
-    }
-  }
-  return slots;
-};
-
-const formatTimeLabel = (date) => {
-  let hours = date.getHours();
-  const minutes = date.getMinutes();
-  const ampm = hours >= 12 ? "PM" : "AM";
-  hours = hours % 12 || 12;
-  return `${hours}:${minutes.toString().padStart(2, "0")} ${ampm}`;
-};
-
+// Main component
 const DateAndTimeScreen = ({ navigation, route }) => {
   const { formData: prevFormData = {} } = route.params || {};
 
-  const [date, setDate] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [time, setTime] = useState(new Date());
-  const [isAM, setIsAM] = useState(true);
-  const [showTimePicker, setShowTimePicker] = useState(false);
-
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [availableSlots, setAvailableSlots] = useState([]);
   const [selectedSlot, setSelectedSlot] = useState(null);
+  const [customDatesStyles, setCustomDatesStyles] = useState([]);
 
+  // Fetch data when the component mounts or when the selected date changes
   useEffect(() => {
-    const slots = generateTimeSlots();
-    setAvailableSlots(slots);
-    setSelectedSlot(null);
+    if (selectedDate) {
+      fetchBookingData(selectedDate);
+    }
   }, [selectedDate]);
 
-  const handleDateChange = (newDate) => {
-    setSelectedDate(newDate);
-    setDate(new Date(newDate));
-  };
+  // Function to fetch availability data from the backend
+  const fetchBookingData = async (dateToFetch) => {
+    try {
+      const formattedDate = dateToFetch.split("T")[0]; // Format as YYYY-MM-DD
+      const response = await authenticatedApi.get(
+        `/booking/availability?date=${formattedDate}`
+      );
+      const { availableSlots: backendSlots, specialDates } = response.data;
 
-  const handleTimeChange = (event, selected) => {
-    if (selected) {
-      setTime(selected);
-      setIsAM(selected.getHours() < 12);
-      setSelectedSlot(null);
+      // Update available slots from the backend
+      setAvailableSlots(backendSlots);
+
+      // Create custom styles for the calendar based on special dates
+      const styles = specialDates.map((sd) => ({
+        date: new Date(sd.date),
+        style: {
+          backgroundColor: sd.isFullyBooked
+            ? "#d9534f" // Red for fully booked
+            : sd.isHoliday
+            ? "#f0ad4e" // Orange for holidays
+            : "transparent",
+        },
+        textStyle: {
+          color: sd.isFullyBooked || sd.isHoliday ? "white" : "#0A2146",
+        },
+        containerStyle: [],
+      }));
+      setCustomDatesStyles(styles);
+    } catch (error) {
+      console.error("Error fetching booking data:", error);
+      setAvailableSlots([]); // Clear slots on error
+      setCustomDatesStyles([]);
     }
-    setShowTimePicker(false);
+    setSelectedSlot(null); // Reset selected slot when the date changes
   };
 
-  const handleNext = () => {
-    const chosenTime = selectedSlot || time;
+  // Handler for date changes in the calendar
+  const handleDateChange = (newDate) => {
+    console.log(newDate);
+    setSelectedDate(newDate);
+  };
 
-    if (!chosenTime) {
+  // Handler for the "Next" button
+  const handleNext = () => {
+    if (!selectedSlot) {
       alert("Please select a time slot.");
       return;
     }
 
+    // Combine previous form data with the selected date and time
     const combinedData = {
       ...prevFormData,
-      scheduledDate: date.toISOString(),
-      scheduledTime: chosenTime.toTimeString(),
+      scheduledDate: selectedDate.split("T")[0],
+      scheduledTime: selectedSlot.time,
     };
 
+    // Navigate to the confirmation screen
     navigation.navigate("BookingConfirmation", { formData: combinedData });
   };
 
   return (
     <ImageBackground
-      source={require("../../../assets/automatebg.jpg")}
-      style={{ flex: 1 }}
+      source={require("../../../assets/automatebg.jpg")} // Make sure the path is correct
+      style={styles.backgroundImage}
       resizeMode="cover"
     >
-      <View style={DateTime.container}>
+      <View style={styles.container}>
         {/* Header */}
-        <View style={DateTime.header}>
+        <View style={styles.header}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <FontAwesome name="chevron-left" size={24} color="#F9D342" />
           </TouchableOpacity>
-          <Text style={DateTime.title}>Date and Time</Text>
+          <Text style={styles.title}>Date and Time</Text>
           <View style={{ width: 24 }} />
         </View>
 
-        {/* Card with Calendar and Time Selection */}
-        <View style={[DateTime.card, DateTime.calendarWrapper]}>
-          <Text style={DateTime.selectLabel}>Choose a Date</Text>
+        {/* Main Card */}
+        <View style={styles.card}>
+          <Text style={styles.selectLabel}>Choose a Date</Text>
 
           <CalendarPicker
             onDateChange={handleDateChange}
-            selectedStartDate={selectedDate || date}
+            selectedStartDate={selectedDate}
+            minDate={new Date()} // Prevent booking past dates
             todayBackgroundColor="#F9D342"
             selectedDayColor="#0A2146"
             selectedDayTextColor="#fff"
-            textStyle={{ color: "#0A2146", fontWeight: "600" }}
+            textStyle={styles.calendarText}
             previousTitle="<"
             nextTitle=">"
-            width={width - 20} // nearly full width with slight margin
+            width={width - 40}
             scaleFactor={375}
+            customDatesStyles={customDatesStyles}
           />
 
-          <Text style={[DateTime.selectLabel, { marginTop: 20 }]}>
-            Available Time Slots for {date.toDateString()}
+          <Text style={styles.selectLabel}>
+            Available Slots for {selectedDate.toDateString()}
           </Text>
 
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
-            style={{ marginBottom: 15 }}
-            contentContainerStyle={{ paddingHorizontal: 10 }}
+            contentContainerStyle={styles.slotsContainer}
           >
-            {availableSlots.map((slot, index) => {
-              const isSelected =
-                selectedSlot &&
-                slot.getHours() === selectedSlot.getHours() &&
-                slot.getMinutes() === selectedSlot.getMinutes();
+            {availableSlots.length > 0 ? (
+              availableSlots.map((slot, index) => {
+                const isSelected =
+                  selectedSlot && selectedSlot.time === slot.time;
+                const isAvailable =
+                  slot.available && slot.bookings < MAX_CUSTOMERS_PER_SLOT;
 
-              return (
-                <TouchableOpacity
-                  key={index}
-                  style={[
-                    DateTime.timeButton,
-                    isSelected && DateTime.timeButtonSelected,
-                  ]}
-                  onPress={() => {
-                    setSelectedSlot(slot);
-                    setTime(slot);
-                    setIsAM(slot.getHours() < 12);
-                  }}
-                >
-                  <Text
-                    style={
-                      isSelected ? DateTime.timeTextSelected : DateTime.timeText
-                    }
+                return (
+                  <TouchableOpacity
+                    key={index}
+                    style={[
+                      styles.timeButton,
+                      isSelected && styles.timeButtonSelected,
+                      !isAvailable && styles.timeButtonDisabled,
+                    ]}
+                    onPress={() => isAvailable && setSelectedSlot(slot)}
+                    disabled={!isAvailable}
                   >
-                    {formatTimeLabel(slot)}
-                  </Text>
-                </TouchableOpacity>
-              );
-            })}
+                    <Text
+                      style={
+                        isSelected ? styles.timeTextSelected : styles.timeText
+                      }
+                    >
+                      {slot.time}
+                    </Text>
+                    <Text style={styles.bookingCountText}>
+                      {isAvailable
+                        ? `${
+                            MAX_CUSTOMERS_PER_SLOT - slot.bookings
+                          }/${MAX_CUSTOMERS_PER_SLOT} available`
+                        : "Full"}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })
+            ) : (
+              <Text style={styles.noSlotsText}>
+                No available slots for this date.
+              </Text>
+            )}
           </ScrollView>
 
-          {/* Manual Time Picker + AM/PM Buttons */}
-          <View style={DateTime.amPmRow}>
-            <TouchableOpacity
-              style={DateTime.timeButton}
-              onPress={() => {
-                setShowTimePicker(true);
-                setSelectedSlot(null);
-              }}
-            >
-              <Text style={DateTime.timeText}>
-                {time.getHours().toString().padStart(2, "0")}:
-                {time.getMinutes().toString().padStart(2, "0")}
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[DateTime.amPmButton, isAM && DateTime.amPmButtonSelected]}
-              onPress={() => {
-                if (!isAM) {
-                  const newTime = new Date(time);
-                  newTime.setHours(newTime.getHours() - 12);
-                  setTime(newTime);
-                  setIsAM(true);
-                  setSelectedSlot(null);
-                }
-              }}
-            >
-              <Text
-                style={isAM ? DateTime.amPmTextSelected : DateTime.amPmText}
-              >
-                AM
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[
-                DateTime.amPmButton,
-                !isAM && DateTime.amPmButtonSelected,
-              ]}
-              onPress={() => {
-                if (isAM) {
-                  const newTime = new Date(time);
-                  newTime.setHours(newTime.getHours() + 12);
-                  setTime(newTime);
-                  setIsAM(false);
-                  setSelectedSlot(null);
-                }
-              }}
-            >
-              <Text
-                style={!isAM ? DateTime.amPmTextSelected : DateTime.amPmText}
-              >
-                PM
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          {showTimePicker && (
-            <DateTimePicker
-              value={time}
-              mode="time"
-              is24Hour={false}
-              display={Platform.OS === "ios" ? "spinner" : "default"}
-              onChange={handleTimeChange}
-            />
-          )}
-
-          <TouchableOpacity style={DateTime.nextButton} onPress={handleNext}>
-            <Text style={DateTime.buttonText}>Next</Text>
+          <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
+            <Text style={styles.buttonText}>Next</Text>
           </TouchableOpacity>
         </View>
       </View>
     </ImageBackground>
   );
 };
+
+// Styles
+const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+  },
+  container: {
+    flex: 1,
+    padding: 10,
+    backgroundColor: "rgba(0,0,0,0.4)",
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 15,
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#fff",
+  },
+  card: {
+    backgroundColor: "#fff",
+    borderRadius: 15,
+    padding: 15,
+    alignItems: "center",
+  },
+  selectLabel: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#0A2146",
+    marginVertical: 15,
+  },
+  calendarText: {
+    color: "#0A2146",
+    fontWeight: "600",
+  },
+  slotsContainer: {
+    paddingHorizontal: 10,
+    marginBottom: 15,
+  },
+  timeButton: {
+    backgroundColor: "#f0f0f0",
+    padding: 15,
+    borderRadius: 10,
+    marginHorizontal: 5,
+    alignItems: "center",
+  },
+  timeButtonSelected: {
+    backgroundColor: "#0A2146",
+  },
+  timeButtonDisabled: {
+    backgroundColor: "#ccc",
+    opacity: 0.6,
+  },
+  timeText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#0A2146",
+  },
+  timeTextSelected: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#fff",
+  },
+  bookingCountText: {
+    fontSize: 12,
+    color: "#555",
+    marginTop: 4,
+  },
+  noSlotsText: {
+    textAlign: "center",
+    color: "#888",
+    marginTop: 20,
+    width: width - 60,
+  },
+  nextButton: {
+    backgroundColor: "#F9D342",
+    paddingVertical: 15,
+    borderRadius: 10,
+    alignItems: "center",
+    width: "100%",
+    marginTop: 10,
+  },
+  buttonText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#0A2146",
+  },
+});
 
 export default DateAndTimeScreen;

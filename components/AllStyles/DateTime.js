@@ -10,11 +10,10 @@ export const DateTime = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
-    paddingTop: 50,
+    paddingVertical: 20,
     paddingHorizontal: 20,
-    paddingBottom: 10,
     backgroundColor: "rgba(10, 33, 70, 0.8)",
-    backgroundColor: "#0A2156"
+    backgroundColor: "#0A2156",
     // Removed border radius for full width
   },
   title: {
@@ -27,7 +26,7 @@ export const DateTime = StyleSheet.create({
   },
   card: {
     backgroundColor: "#fff",
-    borderRadius: 0,  // no rounding on edges
+    borderRadius: 0, // no rounding on edges
     paddingHorizontal: 10,
     paddingVertical: 10,
     marginHorizontal: 0,

@@ -11,10 +11,9 @@ export default StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
-    paddingTop: 50,
     paddingHorizontal: 20,
-    paddingBottom: 10,
-    backgroundColor: "#0A2156",  // semi-transparent dark blue
+    paddingVertical: 20,
+    backgroundColor: "#0A2156", // semi-transparent dark blue
   },
 
   backBtn: {
@@ -28,8 +27,8 @@ export default StyleSheet.create({
     fontSize: 22,
     fontWeight: "700",
     textAlign: "center",
-    paddingLeft:2,
-    paddingRight:18,
+    paddingLeft: 2,
+    paddingRight: 18,
     fontFamily: "SF-Pro-Text", // or fallback
   },
 
@@ -52,7 +51,6 @@ export default StyleSheet.create({
     color: "#0A2156", // deep blue
     marginBottom: 25,
     textAlign: "center",
-    
   },
 
   label: {

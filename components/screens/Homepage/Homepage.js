@@ -37,64 +37,71 @@ const Homepage = () => {
       resizeMode="cover"
     >
       <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Header */}
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "flex-end",
-            alignItems: "center",
-            marginHorizontal: 20,
-            marginTop: 50,
+            flex: 1,
+            flexDirection: "row-reverse",
           }}
         >
-          {/* Removed sidebar hamburger button */}
-
-          <TouchableOpacity
-            onPress={() => navigation.navigate("ProfileScreen")}
+          {/* Header */}
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "flex-end",
+              alignItems: "center",
+              marginHorizontal: 20,
+              marginTop: 20,
+            }}
           >
-            <View
+            {/* Removed sidebar hamburger button */}
+
+            <TouchableOpacity
+              onPress={() => navigation.navigate("ProfileScreen")}
+            >
+              <View
+                style={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: 25,
+                  backgroundColor: "#D9D9D9",
+                  elevation: 3,
+                  shadowColor: "#000",
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.2,
+                  shadowRadius: 3,
+                  overflow: "hidden",
+                }}
+              >
+                <SvgUri
+                  uri={`https://api.dicebear.com/9.x/initials/svg?seed=${
+                    currentUser?.name || "User"
+                  }`}
+                />
+              </View>
+            </TouchableOpacity>
+          </View>
+
+          {/* Greeting */}
+          <View style={{ flex: 1, marginHorizontal: 20, marginTop: 20 }}>
+            <Text
               style={{
-                width: 50,
-                height: 50,
-                borderRadius: 25,
-                backgroundColor: "#D9D9D9",
-                elevation: 3,
-                shadowColor: "#000",
-                shadowOffset: { width: 0, height: 2 },
-                shadowOpacity: 0.2,
-                shadowRadius: 3,
-                overflow: "hidden",
+                fontFamily: "SFdisplay-Semibold",
+                fontSize: 18,
+                color: "#000000",
               }}
             >
-              <SvgUri
-                uri={`https://api.dicebear.com/9.x/initials/svg?seed=${
-                  currentUser?.name || "User"
-                }`}
-              />
-            </View>
-          </TouchableOpacity>
-        </View>
-
-        {/* Greeting */}
-        <View style={{ marginHorizontal: 20, marginTop: 20 }}>
-          <Text
-            style={{
-              fontFamily: "SFdisplay-Semibold",
-              fontSize: 18,
-              color: "#000000",
-            }}
-          >
-            Welcome {currentUser?.name || "User"}!
-          </Text>
-          <Text
-            style={{
-              fontFamily: "SFdisplay-Light",
-              fontSize: 16,
-              color: "#000000",
-            }}
-          >
-            {greetings}
-          </Text>
+              Welcome {currentUser?.name || "User"}!
+            </Text>
+            <Text
+              style={{
+                fontFamily: "SFdisplay-Light",
+                fontSize: 16,
+                color: "#000000",
+              }}
+            >
+              {greetings}
+            </Text>
+          </View>
         </View>
 
         {/* Search Bar */}

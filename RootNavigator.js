@@ -47,6 +47,7 @@ import UnderchasisSuspension from "./components/screens/Services/UnderchasisSusp
 import WheelBalancing from "./components/screens/Services/WheelBalancing";
 import LogoutPopup from "./components/screens/Login/LogoutPopup";
 import AptScreen from "./components/screens/Homepage/AptScreen";
+import LeaveFeedbackScreen from "./components/screens/Homepage/LeaveFeedbackScreen";
 import ForgotPassword from "./components/screens/Login/ForgotPassword";
 import ResetPassword from "./components/screens/Login/ResetPassword";
 import VerifyResetOtp from "./components/screens/Login/VerifyResetOtp";
@@ -112,6 +113,10 @@ export default function RootNavigator() {
         <Stack.Screen name="MyAppointment" component={MyAppointment} />
         <Stack.Screen name="Services" component={Services} />
         <Stack.Screen name="AptScreen" component={AptScreen} />
+        <Stack.Screen
+          name="LeaveFeedbackScreen"
+          component={LeaveFeedbackScreen}
+        />
 
         <Stack.Screen name="Booking" component={Bookingform} />
         <Stack.Screen name="VehicleDetails" component={VehicleDetails} />

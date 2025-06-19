@@ -79,6 +79,19 @@ const UpcomingAppointments = ({ appointments }) => {
       style={styles.background}
       imageStyle={{ opacity: 0.05 }}
     >
+      {/* Header */}
+      <View style={styles.header}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.backBtn}
+          activeOpacity={0.7}
+        >
+          <Ionicons name="arrow-back" size={28} color="#F9D342" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>My Appointments</Text>
+        <View style={{ width: 28 }} />
+      </View>
+
       {data?.appointments && (
         <FlatList
           data={[...data?.appointments]}
@@ -97,6 +110,22 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: "#0A2156",
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 25,
+    paddingHorizontal: 5,
+  },
+  backBtn: {
+    padding: 8,
+  },
+  headerTitle: {
+    color: "#F9D342",
+    fontSize: 20,
+    fontWeight: "800",
+    letterSpacing: 1.2,
   },
   listContent: {
     paddingBottom: 20,
