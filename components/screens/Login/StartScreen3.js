@@ -7,6 +7,11 @@ const StartScreen3 = () => {
   const navigation = useNavigation();
 
   return (
+    <ImageBackground
+    source={require("../../../assets/StartBG1 (1).png")}
+    style={styles.background} // Make sure this style exists!
+    resizeMode="cover"
+  >
     <View style={styles.container}>
       <Text style={styles.title}>Track your Service</Text>
 
@@ -41,6 +46,7 @@ const StartScreen3 = () => {
         <Text style={styles.buttonText}>Next</Text>
       </TouchableOpacity>
     </View>
+    </ImageBackground>
   );
 };
 

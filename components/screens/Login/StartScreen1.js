@@ -14,7 +14,7 @@ const StartScreen1 = () => {
 
   return (
     <ImageBackground
-      source={require("../../../assets/StartBG.png")}
+      source={require("../../../assets/StartBG1 (1).png")}
       style={styles.background} // Make sure this style exists!
       resizeMode="cover"
     >

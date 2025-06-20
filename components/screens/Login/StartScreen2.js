@@ -7,6 +7,11 @@ const StartScreen2 = () => {
   const navigation = useNavigation();
 
   return (
+    <ImageBackground
+    source={require("../../../assets/StartBG1 (1).png")}
+    style={styles.background} // Make sure this style exists!
+    resizeMode="cover"
+  >
     <View style={styles.container}>
       <Text style={styles.title}>Book with Ease</Text>
 
@@ -40,6 +45,7 @@ const StartScreen2 = () => {
         <Text style={styles.buttonText}>Next</Text>
       </TouchableOpacity>
     </View>
+    </ImageBackground>
   );
 };
 

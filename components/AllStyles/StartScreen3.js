@@ -1,19 +1,19 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  background:{
+  background: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
+
   container: {
     flex: 1,
-    backgroundColor: "#ffffff",
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: 30,
     paddingTop: 60,
     paddingBottom: 40,
+    // ❌ Removed backgroundColor so it doesn’t block background image
+    // backgroundColor: "#ffffff",
   },
 
   title: {
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#08285E",
     marginBottom: 20,
-    textAlign: "center",
+    
   },
 
   image: {
@@ -74,12 +74,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 5,
+    marginTop: 10,
   },
 
   buttonText: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#ffff",
+    color: "#fff", // ✅ Corrected from "#ffff" (which is invalid)
   },
 });
 

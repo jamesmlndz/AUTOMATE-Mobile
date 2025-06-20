@@ -111,7 +111,7 @@ const Register = () => {
     >
       <View style={LoginStyle.container}>
         <View style={LoginStyle.section}>
-          <Text style={LoginStyle.Regtitle}>REGISTER</Text>
+          <Text style={LoginStyle.Regtitle}></Text>
         </View>
 
         <View style={LoginStyle.buttonContainer}>
