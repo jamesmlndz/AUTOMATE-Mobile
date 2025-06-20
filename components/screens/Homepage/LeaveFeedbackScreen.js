@@ -17,7 +17,7 @@ const LeaveFeedbackScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { bookingData } = route.params;
-
+  console.log(bookingData);
   const [feedback, setFeedback] = useState(
     bookingData?.feedback?.comment || ""
   );
@@ -49,7 +49,7 @@ const LeaveFeedbackScreen = () => {
       });
       setFeedback(""); // Clear feedback after submission
       setRating(0); // Clear rating after submission
-      navigation.goBack(); // Go back to AptScreen after submission
+      navigation.navigate("TrackingProgress");
     } catch (error) {
       Toast.show({
         type: "error",

@@ -6,3 +6,9 @@ export const useGetAllAppointments = () =>
     queryKey: ["appointments"],
     queryFn: getAllAppointments,
   });
+
+export const useGetAppointmentById = (id) =>
+  useQuery({
+    queryKey: ["appointments", id],
+    queryFn: () => getAllAppointments(id),
+  });

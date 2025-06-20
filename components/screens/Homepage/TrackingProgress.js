@@ -7,42 +7,68 @@ import {
   ImageBackground,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { MaterialIcons } from "@expo/vector-icons";
+import { Feather, MaterialIcons } from "@expo/vector-icons";
 import { TrackingProgressStyles } from "../../AllStyles/TrackingProgressStyles";
+import { useGetTodayAppointment } from "../../../hooks/useServices.query";
+import AppointmentTrackerCard from "./AppointmentTrackerCard";
+
+export const getStatusStyle = (status) => {
+  switch (status) {
+    case "In Progress":
+      return { backgroundColor: "#E0E7FF", color: "#4338CA" }; // Indigo
+    case "Completed":
+      return { backgroundColor: "#D1FAE5", color: "#065F46" }; // Green
+    case "Booked":
+      return { backgroundColor: "#DBEAFE", color: "#1E40AF" }; // Blue
+    case "Vehicle Arrived":
+      return { backgroundColor: "#FEF3C7", color: "#92400E" }; // Amber
+    default:
+      return { backgroundColor: "#F3F4F6", color: "#4B5563" }; // Gray
+  }
+};
 
 const steps = [
   {
-    title: "Arrival Time",
+    title: "Booked",
+    description: "Your appointment has been booked.",
+    icon: "event-available",
+  },
+  {
+    title: "Vehicle Arrived",
     description: "Your vehicle has arrived at the service center.",
     icon: "access-time",
   },
   {
-    title: "Vehicle Assessment",
+    title: "Assessment",
     description: "Mechanics are assessing the condition of your vehicle.",
     icon: "search",
   },
   {
-    title: "Repair Progress",
+    title: "In Progress",
     description: "Repairs are currently being done.",
     icon: "build",
   },
   {
-    title: "Repair Completion",
-    description: "Repair has been completed. Ready for review.",
-    icon: "done",
+    title: "Completed",
+    description: "Repair has been completed. Ready for review/pickup.",
+    icon: "done-all",
   },
-  {
-    title: "Vehicle Release",
-    description: "Vehicle is released and ready for pickup.",
-    icon: "directions-car",
-  },
+];
+
+const backendStatusOrder = [
+  "Booked",
+  "Vehicle Arrived",
+  "Assessment",
+  "In Progress",
+  "Completed",
 ];
 
 const TrackingProgress = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { appointmentId } = route.params || {};
 
+  const { data: appointment } = useGetTodayAppointment();
+  const appointmentId = appointment?.data?._id;
   const [currentStep, setCurrentStep] = useState(0);
   const [vehicleInfo, setVehicleInfo] = useState({
     plateNumber: "",
@@ -50,29 +76,17 @@ const TrackingProgress = () => {
   });
 
   useEffect(() => {
-    if (!appointmentId) {
-      console.error("No appointment ID provided");
-      return;
+    console.log(appointment);
+    if (appointment) {
+      // Check if appointment data exists
+      if (appointment?.status === "Completed") {
+        setCurrentStep(steps.length - 1); // Set to the index of the last step to color all steps
+      } else {
+        const stepIndex = backendStatusOrder.indexOf(appointment?.status);
+        setCurrentStep(stepIndex !== -1 ? stepIndex : 0); // Default to 0 if status not found
+      }
     }
-
-    fetch(`http://localhost:5000/api/appointments/${appointmentId}`)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`HTTP error! Status: ${res.status}`);
-        }
-        return res.json();
-      })
-      .then((data) => {
-        setCurrentStep(data.trackingStep ?? 0);
-        setVehicleInfo({
-          plateNumber: data.plateNumber || "N/A",
-          vehicle: data.carModel || data.vehicle || "N/A",
-        });
-      })
-      .catch((error) => {
-        console.error("Error fetching appointment:", error);
-      });
-  }, [appointmentId]);
+  }, [appointment]);
 
   return (
     <ImageBackground
@@ -88,77 +102,129 @@ const TrackingProgress = () => {
           </TouchableOpacity>
         </View>
 
-        {/* Scrollable content */}
-        <ScrollView
-          contentContainerStyle={{
-            padding: 20,
-            paddingBottom: 100,
-          }}
-          showsVerticalScrollIndicator={false}
-        >
-          <Text style={TrackingProgressStyles.title}>TRACKING PROGRESS</Text>
+        {appointment?.data ? (
+          <>
+            {/* Scrollable content */}
+            <ScrollView
+              contentContainerStyle={{
+                padding: 20,
+                paddingBottom: 100,
+              }}
+              showsVerticalScrollIndicator={false}
+            >
+              <Text style={TrackingProgressStyles.title}>
+                TRACKING PROGRESS
+              </Text>
+              <AppointmentTrackerCard appointment={appointment?.data} />
+              {/* <View style={TrackingProgressStyles.carDetails}>
+                <MaterialIcons name="directions-car" size={60} color="#08285e" />
+                <Text style={TrackingProgressStyles.carText}>
+                  {appointment?.vehicle?.plateNumber}
+                </Text>
+                <Text style={TrackingProgressStyles.carText}>
+                  {appointment?.vehicle?.brand} {appointment?.vehicle?.model}
+                </Text>
+              </View> */}
+              <View style={{ marginBottom: 10 }}></View>
+              {steps.map((step, index) => (
+                <View style={[TrackingProgressStyles.timelineItem]} key={index}>
+                  <View style={TrackingProgressStyles.iconContainer}>
+                    <View
+                      style={
+                        index <= currentStep
+                          ? TrackingProgressStyles.activeIconCircle
+                          : TrackingProgressStyles.inactiveIconCircle
+                      }
+                    >
+                      <MaterialIcons
+                        name={step.icon}
+                        size={20}
+                        color={index <= currentStep ? "white" : "#666"}
+                      />
+                    </View>
+                    {index < steps.length - 1 && (
+                      <View
+                        style={[
+                          TrackingProgressStyles.timelineLine,
+                          index < currentStep &&
+                            TrackingProgressStyles.activeTimelineLine,
+                        ]}
+                      />
+                    )}
+                  </View>
 
-          <View style={TrackingProgressStyles.carDetails}>
-            <MaterialIcons name="directions-car" size={60} color="#08285e" />
-            <Text style={TrackingProgressStyles.carText}>{vehicleInfo.plateNumber}</Text>
-            <Text style={TrackingProgressStyles.carText}>{vehicleInfo.vehicle}</Text>
-          </View>
-
-          {steps.map((step, index) => (
-            <View style={TrackingProgressStyles.timelineItem} key={index}>
-              <View style={TrackingProgressStyles.iconContainer}>
-                <View
-                  style={
-                    index <= currentStep
-                      ? TrackingProgressStyles.activeIconCircle
-                      : TrackingProgressStyles.inactiveIconCircle
-                  }
-                >
-                  <MaterialIcons
-                    name={step.icon}
-                    size={20}
-                    color={index <= currentStep ? "white" : "#666"}
-                  />
-                </View>
-                {index < steps.length - 1 && (
                   <View
                     style={[
-                      TrackingProgressStyles.timelineLine,
-                      index < currentStep &&
-                        TrackingProgressStyles.activeTimelineLine,
+                      TrackingProgressStyles.textContainer,
+                      {
+                        backgroundColor:
+                          index <= currentStep &&
+                          getStatusStyle(step.title).backgroundColor,
+                      },
                     ]}
-                  />
-                )}
-              </View>
+                  >
+                    <Text style={TrackingProgressStyles.stepTitle}>
+                      {step.title}
+                    </Text>
+                    <Text style={TrackingProgressStyles.stepDesc}>
+                      {step.description}
+                    </Text>
+                  </View>
+                </View>
+              ))}
+            </ScrollView>
 
-              <View style={TrackingProgressStyles.textContainer}>
-                <Text style={TrackingProgressStyles.stepTitle}>{step.title}</Text>
-                <Text style={TrackingProgressStyles.stepDesc}>{step.description}</Text>
-              </View>
+            {/* Bottom buttons */}
+            <View style={TrackingProgressStyles.footerButtonContainer}>
+              <TouchableOpacity
+                style={TrackingProgressStyles.footerButton}
+                onPress={() =>
+                  navigation.navigate("Invoice", {
+                    bookingData: appointment?.data,
+                  })
+                }
+              >
+                <Text style={TrackingProgressStyles.footerButtonText}>
+                  SEE INVOICE
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={TrackingProgressStyles.footerButton}
+                onPress={() =>
+                  navigation.navigate("AptScreen", {
+                    bookingData: appointment?.data,
+                  })
+                }
+              >
+                <Text style={TrackingProgressStyles.footerButtonText}>
+                  YOUR BOOKING FORM
+                </Text>
+              </TouchableOpacity>
+              {appointment?.data?.status === "Completed" && (
+                <TouchableOpacity
+                  style={TrackingProgressStyles.footerButton}
+                  onPress={() =>
+                    navigation.navigate("LeaveFeedbackScreen", {
+                      bookingData: appointment?.data,
+                    })
+                  }
+                >
+                  <Text style={TrackingProgressStyles.footerButtonText}>
+                    LEAVE FEEDBACK
+                  </Text>
+                </TouchableOpacity>
+              )}
             </View>
-          ))}
-        </ScrollView>
-
-        {/* Bottom buttons */}
-        <View
-          style={[
-            TrackingProgressStyles.buttonContainer,
-            { paddingHorizontal: 20, paddingBottom: 20 },
-          ]}
-        >
-          <TouchableOpacity
-            style={TrackingProgressStyles.button}
-            onPress={() => navigation.navigate("Invoice")}
+          </>
+        ) : (
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
           >
-            <Text style={TrackingProgressStyles.buttonText}>SEE INVOICE</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={TrackingProgressStyles.button}
-            onPress={() => navigation.navigate("AptScreen")}
-          >
-            <Text style={TrackingProgressStyles.buttonText}>YOUR BOOKING FORM</Text>
-          </TouchableOpacity>
-        </View>
+            <Text style={{ fontSize: 18, color: "#4B5563" }}>
+              No appointment found for today.
+            </Text>
+          </View>
+        )}
       </View>
     </ImageBackground>
   );

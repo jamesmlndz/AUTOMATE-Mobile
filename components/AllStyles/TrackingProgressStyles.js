@@ -26,7 +26,8 @@ export const TrackingProgressStyles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
     elevation: 4,
-    
+    borderWidth: 1,
+    borderColor: "#e0e0e0",
   },
   carText: {
     fontSize: 16,
@@ -37,7 +38,6 @@ export const TrackingProgressStyles = StyleSheet.create({
   timelineItem: {
     flexDirection: "row",
     alignItems: "flex-start",
-    marginBottom: 30,
   },
   iconContainer: {
     alignItems: "center",
@@ -55,24 +55,27 @@ export const TrackingProgressStyles = StyleSheet.create({
     width: 30,
     height: 30,
     borderRadius: 15,
-    backgroundColor: "#d3d3d3",
+    backgroundColor: "#e0e0e0",
     justifyContent: "center",
     alignItems: "center",
   },
   timelineLine: {
     width: 2,
-    height: 50,
+    flex: 1,
     backgroundColor: "#d3d3d3",
-    marginTop: 5,
   },
   activeTimelineLine: {
     backgroundColor: "#08285e",
+    width: 3, // Make active line slightly thicker
   },
   textContainer: {
     flex: 1,
     backgroundColor: "rgba(255,255,255,0.9)",
-    padding: 12,
+    padding: 15, // Slightly more padding
     borderRadius: 12,
+    borderWidth: 1, // Add border
+    borderColor: "#e0e0e0", // Light border color
+    marginBottom: 20,
   },
   stepTitle: {
     fontSize: 16,
@@ -84,26 +87,28 @@ export const TrackingProgressStyles = StyleSheet.create({
     fontSize: 14,
     color: "#333",
   },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 20,
+  footerButtonContainer: {
+    flexDirection: "column",
+    justifyContent: "flex-end",
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+    gap: 10, // Space between buttons
   },
-  button: {
+  footerButton: {
     backgroundColor: "#08285e",
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 14,
-    flex: 1,
-    marginHorizontal: 5,
     alignItems: "center",
     shadowColor: "#000",
     shadowOpacity: 0.15,
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 6,
     elevation: 4,
+    borderWidth: 1,
+    borderColor: "#08285e",
   },
-  buttonText: {
+  footerButtonText: {
     color: "#fff",
     fontSize: 14,
     fontWeight: "600",

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -7,39 +7,44 @@ import {
   Alert,
   ImageBackground,
   StyleSheet,
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import LoginStyle from '../../AllStyles/LoginStyle';
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import LoginStyle from "../../AllStyles/LoginStyle";
+import authenticatedApi, {
+  getAxiosErrorMessage,
+} from "../../../api/axiosInstance";
 
 const ForgotPassword = () => {
   const navigation = useNavigation();
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSendReset = async () => {
     if (!email) {
-      Alert.alert('Error', 'Please enter your email address.');
+      Alert.alert("Error", "Please enter your email address.");
       return;
     }
 
     setIsLoading(true);
     try {
-      const response = await fetch('http://10.0.2.2:5000/forgot-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+      const response = await authenticatedApi.post("/auth/forgot-password", {
+        email,
       });
 
-      const data = await response.json();
+      const data = await response.data;
 
-      if (response.ok) {
-        Alert.alert('Success', data.message || 'Check your email for reset instructions.');
-        navigation.navigate('Login');
+      if (response.status === 200) {
+        Alert.alert(
+          "Success",
+          data.message || "Check your email for reset instructions."
+        );
+        navigation.navigate("Login");
       } else {
-        Alert.alert('Error', data.message || 'Unable to send reset link.');
+        Alert.alert("Error", data.message || "Unable to send reset link.");
       }
     } catch (error) {
-      Alert.alert('Error', 'Something went wrong. Please try again later.');
+      const message = getAxiosErrorMessage(error);
+      Alert.alert("Error", message);
     } finally {
       setIsLoading(false);
     }
@@ -47,7 +52,7 @@ const ForgotPassword = () => {
 
   return (
     <ImageBackground
-      source={require('../../../assets/LoginBG.png')}
+      source={require("../../../assets/LoginBG.png")}
       style={styles.background}
       resizeMode="cover"
     >
@@ -74,11 +79,11 @@ const ForgotPassword = () => {
           disabled={isLoading}
         >
           <Text style={LoginStyle.sendCodeButtonText}>
-            {isLoading ? 'SENDING...' : 'SEND RESET LINK'}
+            {isLoading ? "SENDING..." : "SEND RESET LINK"}
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
           <Text style={LoginStyle.resendText}>Back to Login</Text>
         </TouchableOpacity>
       </View>

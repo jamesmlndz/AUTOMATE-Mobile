@@ -10,6 +10,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useGetAllAppointments } from "../../../hooks/useAppointments.query";
+import { getStatusStyle } from "./TrackingProgress";
 
 const UpcomingAppointments = ({ appointments }) => {
   const navigation = useNavigation();
@@ -65,9 +66,26 @@ const UpcomingAppointments = ({ appointments }) => {
           </Text>
           <Ionicons name="chevron-forward" size={22} color="#F9D342" />
         </View>
-        <View style={styles.cardFooter}>
-          <Ionicons name="person" size={18} color="#F9D342" />
-          <Text style={styles.userText}>{item.name || "Juan Dela Cruz"}</Text>
+        <View style={[styles.cardFooter]}>
+          <View style={{ flex: 1, flexDirection: "row" }}>
+            <Ionicons name="person" size={18} color="#F9D342" />
+            <Text style={styles.userText}>{item.name || "Juan Dela Cruz"}</Text>
+          </View>
+          <View
+            style={[
+              styles.statusBadge,
+              { backgroundColor: getStatusStyle(item.status).backgroundColor },
+            ]}
+          >
+            <Text
+              style={[
+                styles.statusText,
+                { color: getStatusStyle(item.status).color },
+              ]}
+            >
+              {item?.status}
+            </Text>
+          </View>
         </View>
       </TouchableOpacity>
     );
@@ -195,6 +213,15 @@ const styles = StyleSheet.create({
     color: "#F9D342",
     fontSize: 18,
     fontWeight: "700",
+  },
+  statusBadge: {
+    paddingVertical: 2,
+    paddingHorizontal: 12,
+    borderRadius: 999, // Pill shape
+  },
+  statusText: {
+    fontSize: 10,
+    fontWeight: "500",
   },
 });
 

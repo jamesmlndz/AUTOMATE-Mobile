@@ -139,7 +139,7 @@ const AptScreen = () => {
         )}
 
         {/* Leave Feedback Button (conditionally rendered) */}
-        {bookingData.status !== "completed" && !bookingData.feedback && (
+        {bookingData.status == "Completed" && !bookingData.feedback && (
           <TouchableOpacity
             style={styles.leaveFeedbackButton}
             onPress={() =>
