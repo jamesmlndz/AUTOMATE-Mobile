@@ -77,16 +77,16 @@ const TrackingProgress = () => {
 
   useEffect(() => {
     console.log(appointment);
-    if (appointment) {
+    if (appointment?.data) {
       // Check if appointment data exists
-      if (appointment?.status === "Completed") {
+      if (appointment.data.status === "Completed") {
         setCurrentStep(steps.length - 1); // Set to the index of the last step to color all steps
       } else {
-        const stepIndex = backendStatusOrder.indexOf(appointment?.status);
+        const stepIndex = backendStatusOrder.indexOf(appointment.data.status);
         setCurrentStep(stepIndex !== -1 ? stepIndex : 0); // Default to 0 if status not found
       }
     }
-  }, [appointment]);
+  }, [appointment?.data?.status]);
 
   return (
     <ImageBackground
