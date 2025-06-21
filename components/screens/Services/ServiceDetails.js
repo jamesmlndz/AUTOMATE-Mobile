@@ -15,6 +15,7 @@ export default function ServiceDetails() {
   const navigation = useNavigation();
   const route = useRoute();
   const { service } = route.params;
+  console.log(service);
   return (
     <ImageBackground
       source={require("../../../assets/automatebg.jpg")}

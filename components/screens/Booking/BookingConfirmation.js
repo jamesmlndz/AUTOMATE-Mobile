@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import api from "../../../api"; // ✅ use your existing api.js helper
 import { useAuth } from "../../../context/authContext";
 import authenticatedApi, {
   getAxiosErrorMessage,

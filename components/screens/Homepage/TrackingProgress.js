@@ -11,7 +11,7 @@ import { Feather, MaterialIcons } from "@expo/vector-icons";
 import { TrackingProgressStyles } from "../../AllStyles/TrackingProgressStyles";
 import { useGetTodayAppointment } from "../../../hooks/useServices.query";
 import AppointmentTrackerCard from "./AppointmentTrackerCard";
-import { getStatusStyle } from "../../utils/statusStyles";
+import { getStatusStyle } from "../../../utils/statusStyles.js";
 
 const steps = [
   {

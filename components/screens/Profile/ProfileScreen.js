@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
-  Image,
   TouchableOpacity,
   ScrollView,
   Alert,
@@ -13,7 +12,6 @@ import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { ProfileStyle } from "../../AllStyles/ProfileStyle";
 import LogoutPopup from "../../screens/Login/LogoutPopup";
 import { useAuth } from "../../../context/authContext";
-import { getCurrentUser } from "../../../utils/secureStore";
 import { SvgUri } from "react-native-svg";
 
 const ProfileScreen = () => {

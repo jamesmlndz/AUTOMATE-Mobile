@@ -1,6 +1,6 @@
 import { StyleSheet, View, Text } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import { getStatusStyle } from "../../utils/statusStyles";
+import { getStatusStyle } from "../../../utils/statusStyles";
 
 // --- Reusable Appointment Tracker Card Component ---
 export default AppointmentTrackerCard = ({ appointment }) => {
