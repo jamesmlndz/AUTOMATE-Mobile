@@ -10,7 +10,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useGetAllAppointments } from "../../../hooks/useAppointments.query";
-import { getStatusStyle } from "./TrackingProgress";
+import { getStatusStyle } from "../../../utils/statusStyles";
 
 const UpcomingAppointments = ({ appointments }) => {
   const navigation = useNavigation();
