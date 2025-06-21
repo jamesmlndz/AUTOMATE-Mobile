@@ -233,7 +233,7 @@ const Homepage = () => {
 
           <TouchableOpacity style={HomeStyle.categoryBox}>
             <Image
-              source={require("../../../assets/services/Change Oil.jpg")}
+              source={require("../../../assets/services/Check engine scanning.jpg")}
               style={HomeStyle.categoryImage}
             />
             <Text
