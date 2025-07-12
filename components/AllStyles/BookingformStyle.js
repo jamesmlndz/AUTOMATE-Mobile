@@ -3,6 +3,9 @@ import { StyleSheet, Dimensions } from "react-native";
 const { width } = Dimensions.get("window");
 
 export default StyleSheet.create({
+  keyboardView: {
+    flex: 1,
+  },
   bg: {
     flex: 1,
     resizeMode: "cover",
@@ -80,7 +83,7 @@ export default StyleSheet.create({
     overflow: "hidden",
     borderWidth: 1,
     borderColor: "#ccc",
-    marginBottom: 25,
+    marginBottom: 8,
     backgroundColor: "#F5F7FA",
     elevation: 3,
   },

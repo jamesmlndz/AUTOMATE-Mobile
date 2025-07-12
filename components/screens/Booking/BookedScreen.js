@@ -7,7 +7,7 @@ const BookedScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
 
-  const { name, date, time } = route.params || {};
+  const { name, date, time, refNo } = route.params || {};
 
   return (
     <View style={styles.overlay}>
@@ -36,9 +36,8 @@ const BookedScreen = () => {
 
         {/* Booking Details */}
         <Text style={styles.detailsText}>
-          Date:{" "}
+          Date:
           <Text style={styles.boldText}>
-            {" "}
             {date ? format(new Date(date), "yyyy-MM-dd") : "N/A"}
           </Text>
           {"\n"}

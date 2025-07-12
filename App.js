@@ -6,6 +6,7 @@ import { AuthProvider } from "./context/authContext"; // Adjust path
 import RootNavigator from "./RootNavigator"; // Your main navigator component
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Toast from "react-native-toast-message";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function App() {
   const queryClient = new QueryClient();

@@ -38,7 +38,7 @@ export default AppointmentTrackerCard = ({ appointment }) => {
         </View>
       </View>
       <View>
-        <Text style={styles.bookingId}>{appointment?._id}</Text>
+        <Text style={styles.bookingId}>{appointment?.refNo}</Text>
       </View>
 
       {/* Vehicle Details */}

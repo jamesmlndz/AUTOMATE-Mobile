@@ -1,6 +1,6 @@
 import { StyleSheet, Dimensions } from "react-native";
 
-const { width } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
 export const SelectServices = StyleSheet.create({
   // Matching BookingForm header
@@ -35,13 +35,14 @@ export const SelectServices = StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 12,
     elevation: 10,
+    justifyContent: "space-between", // Distribute space between sections
   },
 
   sectionTitle: {
     fontSize: 20,
     fontWeight: "700",
     color: "#0A2146",
-    marginBottom: 20,
+    marginBottom: 8,
   },
 
   serviceItem: {
@@ -131,5 +132,9 @@ export const SelectServices = StyleSheet.create({
 
   scrollContent: {
     paddingBottom: 20,
+  },
+  servicesContainer: {
+    maxHeight: height * 0.45, // Dynamic height based on screen height
+    marginBottom: 10,
   },
 });

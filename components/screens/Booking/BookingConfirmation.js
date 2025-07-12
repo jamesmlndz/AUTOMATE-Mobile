@@ -62,7 +62,9 @@ const BookingConfirmation = () => {
       );
 
       if (response.status === 201) {
+        const data = response.data;
         navigation.navigate("BookedScreen", {
+          refNo: data?.refNo,
           name,
           date,
           time,
