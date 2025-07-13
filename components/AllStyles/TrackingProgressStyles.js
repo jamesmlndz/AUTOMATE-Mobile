@@ -113,4 +113,37 @@ export const TrackingProgressStyles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600",
   },
+  buttonContainer: {
+    flex: 1,
+    flexDirection: "row",
+    marginTop: 5,
+    gap: 10,
+  },
+  button: {
+    flex: 1,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1.5,
+  },
+  yesButtonOutline: {
+    borderColor: "#28a745",
+    backgroundColor: "transparent",
+  },
+  noButtonOutline: {
+    borderColor: "#dc3545",
+    backgroundColor: "transparent",
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  yesButtonText: {
+    color: "#333",
+  },
+  noButtonText: {
+    color: "#333",
+  },
 });

@@ -1,5 +1,7 @@
 export const getStatusStyle = (status) => {
   switch (status) {
+    case "Pending":
+      return { backgroundColor: "#F3F4F6", color: "#4B5563" }; // Gray
     case "In Progress":
       return { backgroundColor: "#E0E7FF", color: "#4338CA" }; // Indigo
     case "Completed":

@@ -192,6 +192,25 @@ const Homepage = () => {
           </View>
         </View>
 
+        <View style={HomeStyle.serviceOptions}>
+          <View style={{ alignItems: "center" }}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Booking")}
+              style={HomeStyle.iconButton}
+            >
+              <FontAwesome name="car" size={32} color="white" />
+            </TouchableOpacity>
+            <Text
+              style={[
+                HomeStyle.iconLabel,
+                { fontFamily: "SFdisplay-Semibold" },
+              ]}
+            >
+              Vehicle
+            </Text>
+          </View>
+        </View>
+
         {/* Categories Header */}
         <View style={HomeStyle.servicesHeader}>
           <Text

@@ -5,6 +5,8 @@ import {
   TouchableOpacity,
   ScrollView,
   ImageBackground,
+  Pressable,
+  StyleSheet,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
@@ -12,8 +14,15 @@ import { TrackingProgressStyles } from "../../AllStyles/TrackingProgressStyles";
 import { useGetTodayAppointment } from "../../../hooks/useServices.query";
 import AppointmentTrackerCard from "./AppointmentTrackerCard";
 import { getStatusStyle } from "../../../utils/statusStyles.js";
+import { Button } from "react-native-web";
+import ConfirmDialog from "../../ConfirmDialog.js";
 
 const steps = [
+  {
+    title: "Pending",
+    description: "Waiting for confirmation.",
+    icon: "event-available",
+  },
   {
     title: "Booked",
     description: "Your appointment has been booked.",
@@ -42,6 +51,7 @@ const steps = [
 ];
 
 const backendStatusOrder = [
+  "Pending",
   "Booked",
   "Vehicle Arrived",
   "Assessment",
@@ -60,6 +70,22 @@ const TrackingProgress = () => {
     plateNumber: "",
     vehicle: "",
   });
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleOpenModal = () => {
+    setModalVisible(true);
+  };
+
+  const handleConfirm = () => {
+    console.log("Confirmed!");
+    // Add any logic you want to execute on confirmation
+    setModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    console.log("Cancelled!");
+    setModalVisible(false);
+  };
 
   useEffect(() => {
     console.log(appointment);
@@ -123,7 +149,7 @@ const TrackingProgress = () => {
                       }
                     >
                       <MaterialIcons
-                        name={step.icon}
+                        name={index <= currentStep ? "check" : step.icon}
                         size={20}
                         color={index <= currentStep ? "white" : "#666"}
                       />
@@ -138,23 +164,90 @@ const TrackingProgress = () => {
                       />
                     )}
                   </View>
-
-                  <View
-                    style={[
-                      TrackingProgressStyles.textContainer,
-                      {
-                        backgroundColor:
-                          index <= currentStep &&
-                          getStatusStyle(step.title).backgroundColor,
-                      },
-                    ]}
-                  >
-                    <Text style={TrackingProgressStyles.stepTitle}>
-                      {step.title}
-                    </Text>
-                    <Text style={TrackingProgressStyles.stepDesc}>
-                      {step.description}
-                    </Text>
+                  <View style={{ flex: 1 }}>
+                    <View
+                      style={[
+                        TrackingProgressStyles.textContainer,
+                        {
+                          backgroundColor:
+                            index <= currentStep &&
+                            getStatusStyle(steps[currentStep].title)
+                              .backgroundColor,
+                        },
+                      ]}
+                    >
+                      <Text style={TrackingProgressStyles.stepTitle}>
+                        {step.title}
+                      </Text>
+                      <Text style={TrackingProgressStyles.stepDesc}>
+                        {step.description}
+                      </Text>
+                      {step.title === "Booked" &&
+                        appointment?.data?.status === "Booked" && (
+                          <View
+                            style={{
+                              flex: 1,
+                              backgroundColor: "rgba(255,255,255,0.9)",
+                              padding: 15, // Slightly more padding
+                              borderRadius: 12,
+                              borderWidth: 1, // Add border
+                              borderColor: "#e0e0e0", // Light border color
+                              marginTop: 20,
+                            }}
+                          >
+                            <Text style={TrackingProgressStyles.stepDesc}>
+                              Does your vehicle arrived?
+                            </Text>
+                            <View
+                              style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                marginTop: 10,
+                                gap: 10,
+                              }}
+                            >
+                              <View
+                                style={TrackingProgressStyles.buttonContainer}
+                              >
+                                {/* Using a function in the style prop to handle press state */}
+                                <Pressable
+                                  onPress={handleOpenModal}
+                                  style={({ pressed }) => [
+                                    TrackingProgressStyles.button,
+                                    TrackingProgressStyles.yesButtonOutline,
+                                    pressed && { backgroundColor: "#e9f5ec" }, // Light green tint on press
+                                  ]}
+                                >
+                                  <Text
+                                    style={[
+                                      TrackingProgressStyles.buttonText,
+                                      TrackingProgressStyles.yesButtonText,
+                                    ]}
+                                  >
+                                    Yes
+                                  </Text>
+                                </Pressable>
+                                {/* <Pressable
+                                  style={({ pressed }) => [
+                                    TrackingProgressStyles.button,
+                                    TrackingProgressStyles.noButtonOutline,
+                                    pressed && { backgroundColor: "#fdeded" }, // Light red tint on press
+                                  ]}
+                                >
+                                  <Text
+                                    style={[
+                                      TrackingProgressStyles.buttonText,
+                                      TrackingProgressStyles.yesButtonText,
+                                    ]}
+                                  >
+                                    No
+                                  </Text>
+                                </Pressable> */}
+                              </View>
+                            </View>
+                          </View>
+                        )}
+                    </View>
                   </View>
                 </View>
               ))}
@@ -212,8 +305,59 @@ const TrackingProgress = () => {
           </View>
         )}
       </View>
+      <ConfirmDialog
+        visible={modalVisible}
+        title="Confirm Action"
+        message="Are you sure you want to perform this action? This cannot be undone."
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+      />
     </ImageBackground>
   );
 };
 
 export default TrackingProgress;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "rgba(255,255,255,0.9)",
+    padding: 15,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#e0e0e0",
+    marginTop: 20,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    marginTop: 15,
+    gap: 10,
+  },
+  button: {
+    flex: 1,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1.5,
+  },
+  yesButtonOutline: {
+    borderColor: "#28a745",
+    backgroundColor: "transparent",
+  },
+  noButtonOutline: {
+    borderColor: "#dc3545",
+    backgroundColor: "transparent",
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  yesButtonText: {
+    color: "#28a745",
+  },
+  noButtonText: {
+    color: "#dc3545",
+  },
+});
