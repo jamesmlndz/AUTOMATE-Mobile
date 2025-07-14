@@ -12,9 +12,14 @@ export const getAllAppointments = async () => {
 };
 
 export const getSingleAppointment = async (id) => {
+  console.log("🚀 ~ getSingleAppointment ~ id:", id);
   try {
     const response = await authenticatedApi.get("/appointments/" + id);
-    return response.data;
+    console.log(
+      "🚀 ~ getSingleAppointment ~ response:",
+      response.data.data.appointment
+    );
+    return { data: response.data.data.appointment };
   } catch (error) {
     throw new Error(getAxiosErrorMessage(error));
   }

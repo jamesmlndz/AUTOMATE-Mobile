@@ -6,14 +6,17 @@ import {
   TouchableOpacity,
   ImageBackground,
   StyleSheet,
+  Alert,
 } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Ionicons as Ionicon } from "@expo/vector-icons"; // For displaying stars
+import { useAppointmentsMutation } from "../../../hooks/useAppointments.mutation";
 
 const AptScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
+  const { updateAppointment } = useAppointmentsMutation();
 
   const bookingData = route.params?.bookingData || {};
 
@@ -89,6 +92,40 @@ const AptScreen = () => {
       );
     });
 
+  const handleCancelBooking = async () => {
+    Alert.alert(
+      "Cancel Appointment",
+      "Are you sure you want to cancel this appointment?",
+      [
+        {
+          text: "No",
+          onPress: () => console.log("No Pressed"),
+          style: "cancel",
+        },
+        {
+          text: "Yes, cancel now",
+          onPress: () =>
+            updateAppointment.mutate(
+              {
+                id: bookingData._id,
+                status: "Canceled",
+              },
+              {
+                onSuccess: () => {
+                  alert("Booking canceled successfully.");
+                  navigation.goBack();
+                  navigation.goBack();
+                },
+                onError: (error) => {
+                  alert(`Error canceling booking: ${error.message}`);
+                },
+              }
+            ),
+        },
+      ]
+    );
+  };
+
   return (
     <ImageBackground
       source={require("../../../assets/automatebg.jpg")}
@@ -138,8 +175,28 @@ const AptScreen = () => {
           </View>
         )}
 
+        {bookingData.status !== "Canceled" && (
+          <TouchableOpacity
+            style={styles.leaveFeedbackButton}
+            onPress={() =>
+              navigation.navigate("TrackingProgress", { id: bookingData._id })
+            }
+          >
+            <Text style={styles.leaveFeedbackButtonText}>Track Progress</Text>
+          </TouchableOpacity>
+        )}
+
+        {bookingData.status === "Pending" && (
+          <TouchableOpacity
+            style={styles.leaveFeedbackButton}
+            onPress={handleCancelBooking}
+          >
+            <Text style={styles.leaveFeedbackButtonText}>Cancel Booking</Text>
+          </TouchableOpacity>
+        )}
+
         {/* Leave Feedback Button (conditionally rendered) */}
-        {bookingData.status == "Completed" && !bookingData.feedback && (
+        {/* {bookingData.status == "Completed" && !bookingData.feedback && (
           <TouchableOpacity
             style={styles.leaveFeedbackButton}
             onPress={() =>
@@ -148,7 +205,7 @@ const AptScreen = () => {
           >
             <Text style={styles.leaveFeedbackButtonText}>Leave Feedback</Text>
           </TouchableOpacity>
-        )}
+        )} */}
       </ScrollView>
     </ImageBackground>
   );

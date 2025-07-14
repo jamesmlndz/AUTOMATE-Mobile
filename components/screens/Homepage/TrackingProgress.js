@@ -16,6 +16,10 @@ import AppointmentTrackerCard from "./AppointmentTrackerCard";
 import { getStatusStyle } from "../../../utils/statusStyles.js";
 import { Button } from "react-native-web";
 import ConfirmDialog from "../../ConfirmDialog.js";
+import {
+  useAppointmentsMutation,
+  useUpdateAppointment,
+} from "../../../hooks/useAppointments.mutation.js";
 
 const steps = [
   {
@@ -62,9 +66,12 @@ const backendStatusOrder = [
 const TrackingProgress = () => {
   const navigation = useNavigation();
   const route = useRoute();
-
-  const { data: appointment } = useGetTodayAppointment();
-  const appointmentId = appointment?.data?._id;
+  const { id } = route.params || {}; //appointment ID from route params
+  console.log("🚀 ~ TrackingProgress ~ id:", id);
+  const { updateAppointment } = useAppointmentsMutation();
+  const { data: appointment, refetch } = useGetTodayAppointment(id);
+  console.log("🚀 ~ TrackingProgress ~ appointment:", appointment);
+  const appointmentId = id ? appointment?._id : appointment?.data?._id;
   const [currentStep, setCurrentStep] = useState(0);
   const [vehicleInfo, setVehicleInfo] = useState({
     plateNumber: "",
@@ -77,8 +84,12 @@ const TrackingProgress = () => {
   };
 
   const handleConfirm = () => {
-    console.log("Confirmed!");
+    console.log("Confirmed!", appointmentId);
     // Add any logic you want to execute on confirmation
+    updateAppointment.mutate({
+      id: appointmentId,
+      status: "Vehicle Arrived",
+    });
     setModalVisible(false);
   };
 
@@ -100,6 +111,9 @@ const TrackingProgress = () => {
     }
   }, [appointment?.data?.status]);
 
+  useEffect(() => {
+    refetch();
+  }, [id]);
   return (
     <ImageBackground
       source={require("../../../assets/automatebg.jpg")} // adjust path if needed
