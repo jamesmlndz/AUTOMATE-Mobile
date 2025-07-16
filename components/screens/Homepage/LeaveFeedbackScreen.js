@@ -84,7 +84,7 @@ const LeaveFeedbackScreen = () => {
         <Text style={styles.title}>Provide Your Feedback</Text>
         <Text style={styles.subtitle}>
           Help us improve by sharing your experience for appointment ID:{" "}
-          {bookingData._id}
+          {bookingData.refNo}
         </Text>
 
         <View style={styles.ratingContainer}>

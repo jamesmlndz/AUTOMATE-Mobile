@@ -10,6 +10,7 @@ import {
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import styles from "../../AllStyles/Services style/AllServicesStyle";
+import { formatToPHP } from "../../../utils/formatters";
 
 export default function ServiceDetails() {
   const navigation = useNavigation();
@@ -30,7 +31,7 @@ export default function ServiceDetails() {
           <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
 
-        <Image source={service.image} style={styles.serviceImage} />
+        <Image source={{ uri: service.image }} style={styles.serviceImage} />
 
         <View style={styles.infoCard}>
           <View style={styles.cardHeader}>
@@ -40,18 +41,32 @@ export default function ServiceDetails() {
                 Tierodman Auto Center, Makati
               </Text>
             </View>
-            <View style={styles.ratingContainer}>
+            {/* <View style={styles.ratingContainer}>
               <Text style={styles.ratingText}>4.5/5</Text>
               <FontAwesome name="star" size={16} color="#0A2E5C" />
-            </View>
+            </View> */}
           </View>
           <Text style={styles.description}>{service.description}</Text>
+          {/* Price range */}
+          <View style={styles.priceContainer}>
+            <Text style={styles.priceText}>Price Range:</Text>
+            <Text style={styles.priceValue}>
+              {formatToPHP(service.rangeMin)} - {formatToPHP(service.rangeMax)}
+            </Text>
+          </View>
+          {/* Estimated completion time */}
+          <View style={styles.timeContainer}>
+            <Text style={styles.timeText}>Est. Completion:</Text>
+            <Text style={styles.timeValue}>{service.ETC || 30} minutes</Text>
+          </View>
         </View>
 
         <Text style={styles.inquiryHeader}>Call for inquiries</Text>
         <View style={styles.inquiryCard}>
           <Image
-            source={{ uri: "https://i.ibb.co/QNnD2RJ/profile.png" }}
+            source={{
+              uri: "https://ui-avatars.com/api/?name=Noreen+Diaz&background=0A2E5C&color=fff",
+            }}
             style={styles.profileImage}
           />
           <View style={styles.providerInfo}>

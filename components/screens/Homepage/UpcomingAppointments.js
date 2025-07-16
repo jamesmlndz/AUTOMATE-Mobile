@@ -7,38 +7,32 @@ import {
   StyleSheet,
   ImageBackground,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useGetAllAppointments } from "../../../hooks/useAppointments.query";
 import { getStatusStyle } from "../../../utils/statusStyles";
 
 const UpcomingAppointments = ({ appointments }) => {
   const navigation = useNavigation();
-  const { data, loading, error, isError } = useGetAllAppointments();
+  const route = useRoute();
+  const { filter, vehicle } = route.params || {};
 
-  if (loading) {
-    return (
-      <View style={styles.emptyContainer}>
-        <Text style={styles.emptyText}>Loading appointments...</Text>
-      </View>
-    );
-  }
+  const { data, isLoading, error, isError } = useGetAllAppointments(filter);
 
-  if (isError) {
-    console.error("Error fetching appointments:", error);
-    return (
-      <View style={styles.emptyContainer}>
-        <Text style={styles.emptyText}>Error loading appointments</Text>
-      </View>
-    );
-  }
-  if (!data || !data.appointments || data.appointments.length === 0) {
-    return (
-      <View style={styles.emptyContainer}>
-        <Text style={styles.emptyText}>No upcoming appointments</Text>
-      </View>
-    );
-  }
+  const renderHeader = () => {
+    if (filter) {
+      return (
+        <View style={styles.headerTitleContainer}>
+          <Text style={styles.headerTitle}>HISTORY</Text>
+          <Text style={styles.headerSubTitle}>
+            ({vehicle.brand} {vehicle.model} - {filter.plateNumber})
+          </Text>
+        </View>
+      );
+    } else {
+      return <Text style={styles.headerTitle}>MY APPOINTMENTS</Text>;
+    }
+  };
 
   const renderItem = ({ item, index }) => {
     console.log({ ...item });
@@ -106,9 +100,26 @@ const UpcomingAppointments = ({ appointments }) => {
         >
           <Ionicons name="arrow-back" size={28} color="#F9D342" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>My Appointments</Text>
+        {renderHeader()}
         <View style={{ width: 28 }} />
       </View>
+      {isLoading && (
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyText}>Loading appointments...</Text>
+        </View>
+      )}
+      {data?.appointments && data.appointments.length === 0 && (
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyText}>No upcoming appointments</Text>
+        </View>
+      )}
+      {isError && (
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyText}>
+            Error loading appointments: {error.message}
+          </Text>
+        </View>
+      )}
 
       {data?.appointments && (
         <FlatList
@@ -139,10 +150,19 @@ const styles = StyleSheet.create({
   backBtn: {
     padding: 8,
   },
+  headerTitleContainer: {
+    alignItems: "center",
+  },
   headerTitle: {
     color: "#F9D342",
     fontSize: 20,
     fontWeight: "800",
+    letterSpacing: 1.2,
+  },
+  headerSubTitle: {
+    color: "#F9D342",
+    fontSize: 14,
+    fontWeight: "600",
     letterSpacing: 1.2,
   },
   listContent: {

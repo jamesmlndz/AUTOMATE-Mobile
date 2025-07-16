@@ -52,6 +52,7 @@ import ForgotPassword from "./components/screens/Login/ForgotPassword";
 import ResetPassword from "./components/screens/Login/ResetPassword";
 import VerifyResetOtp from "./components/screens/Login/VerifyResetOtp";
 import ServiceDetails from "./components/screens/Services/ServiceDetails";
+import Vehicles from "./components/screens/Homepage/Vehicles";
 
 const Stack = createNativeStackNavigator();
 
@@ -117,6 +118,7 @@ export default function RootNavigator() {
           name="LeaveFeedbackScreen"
           component={LeaveFeedbackScreen}
         />
+        <Stack.Screen name="Vehicles" component={Vehicles} />
 
         <Stack.Screen name="Booking" component={Bookingform} />
         <Stack.Screen name="VehicleDetails" component={VehicleDetails} />

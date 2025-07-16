@@ -1,24 +1,24 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions } from "react-native";
 
-const { width } = Dimensions.get('window');
+const { width } = Dimensions.get("window");
 const cardSize = (width - 40) / 2;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F0F4FA', // soft bluish background
+    backgroundColor: "#F0F4FA", // soft bluish background
   },
   header: {
-    backgroundColor: '#0B2B66',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    backgroundColor: "#0B2B66",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingTop: 50,
     paddingHorizontal: 16,
     paddingBottom: 20,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 5,
@@ -26,9 +26,9 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 22,
-    fontWeight: '700',
-    color: 'white',
-    textAlign: 'center',
+    fontWeight: "700",
+    color: "white",
+    textAlign: "center",
   },
   backIcon: {
     width: 24, // width matches spacer
@@ -38,33 +38,49 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   serviceCard: {
-    backgroundColor: '#0B2B66', // muted soft blue
+    backgroundColor: "#0B2B66", // muted soft blue
     borderRadius: 14,
-    overflow: 'hidden',
+    overflow: "hidden",
     margin: 6,
     width: cardSize,
-    shadowColor: '#0B2B66',
+    shadowColor: "#0B2B66",
     shadowOpacity: 0.15,
     shadowRadius: 6,
     shadowOffset: { width: 0, height: 3 },
     elevation: 4,
   },
   serviceImage: {
-    width: '100%',
+    width: "100%",
     height: 110,
-    resizeMode: 'cover',
+    resizeMode: "cover",
   },
   textContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     padding: 12,
   },
   serviceText: {
     fontSize: 14,
-    fontWeight: '600',
-    color: '#fff',
+    fontWeight: "600",
+    color: "#fff",
     flexShrink: 1,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  errorText: {
+    color: "red",
+    fontSize: 16,
+    textAlign: "center",
+    marginTop: 20,
+  },
+  loadingText: {
+    fontSize: 16,
+    color: "#666",
+    marginTop: 10,
   },
 });
 

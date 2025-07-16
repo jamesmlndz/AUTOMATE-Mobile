@@ -1,11 +1,18 @@
 import React from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { InvoiceStyles } from "../../AllStyles/InvoiceStyles";
+import { useGetAppointmentById } from "../../../hooks/useAppointments.query";
 
 const Invoice = () => {
   const navigation = useNavigation();
+  const route = useRoute();
+  const { bookingData } = route.params;
+  // const { data } = useGetAppointmentById(appointmentId, {
+  //   withInvoice: true,
+  // });
+  console.log("🚀 ~ Invoice ~ data:", bookingData);
 
   return (
     <View style={InvoiceStyles.container}>
@@ -21,7 +28,16 @@ const Invoice = () => {
 
       {/* Receipt Image Placeholder */}
       <View style={InvoiceStyles.receiptContainer}>
-        <Text style={InvoiceStyles.receiptText}>IMAGE OF RECEIPT</Text>
+        {bookingData.invoiceImgUrl ? (
+          <Image
+            source={{ uri: bookingData.invoiceImgUrl }}
+            style={InvoiceStyles.receiptImage}
+          />
+        ) : (
+          <Text style={InvoiceStyles.noImageText}>
+            No receipt image available.
+          </Text>
+        )}
       </View>
     </View>
   );

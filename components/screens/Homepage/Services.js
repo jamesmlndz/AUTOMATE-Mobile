@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity, FlatList } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import styles from "../../AllStyles/ServicesStyles";
 import { useGetAllServices } from "../../../hooks/useServices.query";
 
@@ -101,20 +101,23 @@ const getServiceImage = (service) => {
 };
 const Services = () => {
   const navigation = useNavigation();
-  const { data: services, isLoading, error } = useGetAllServices();
+  const route = useRoute();
+  const { filter } = route.params || {};
+
+  const { data: services, isLoading, error } = useGetAllServices(filter);
+  console.log("🚀 ~ Services ~ services:", services);
 
   const renderItem = ({ item }) => {
-    const imageSource = getServiceImage(item);
     return (
       <TouchableOpacity
         style={styles.serviceCard}
         onPress={() =>
           navigation.navigate("ServiceDetails", {
-            service: { ...item, image: imageSource },
+            service: { ...item, image: item.imageUrl },
           })
         }
       >
-        <Image source={imageSource} style={styles.serviceImage} />
+        <Image source={{ uri: item.imageUrl }} style={styles.serviceImage} />
         <View style={styles.textContainer}>
           <Text style={styles.serviceText}>{item.title || item.name}</Text>
           <AntDesign name="right" size={16} color="white" />
@@ -137,15 +140,24 @@ const Services = () => {
         <Text style={styles.headerText}>ALL SERVICES</Text>
         <View style={{ width: 24 }} />
       </View>
-
-      <FlatList
-        data={services}
-        keyExtractor={(item) => item._id.toString()}
-        numColumns={2}
-        renderItem={renderItem}
-        contentContainerStyle={styles.gridContainer}
-        showsVerticalScrollIndicator={false}
-      />
+      {isLoading ? (
+        <View style={styles.loadingContainer}>
+          <Text style={styles.loadingText}>Loading services...</Text>
+        </View>
+      ) : error ? (
+        <Text style={styles.errorText}>
+          Error loading services: {error.message}
+        </Text>
+      ) : (
+        <FlatList
+          data={services ? services.data : []}
+          keyExtractor={(item) => item._id.toString()}
+          numColumns={2}
+          renderItem={renderItem}
+          contentContainerStyle={styles.gridContainer}
+          showsVerticalScrollIndicator={false}
+        />
+      )}
     </View>
   );
 };
