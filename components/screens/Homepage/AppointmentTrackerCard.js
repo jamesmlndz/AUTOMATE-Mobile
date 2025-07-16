@@ -4,6 +4,7 @@ import { getStatusStyle } from "../../../utils/statusStyles";
 
 // --- Reusable Appointment Tracker Card Component ---
 export default AppointmentTrackerCard = ({ appointment }) => {
+  console.log("🚀 ~ appointment:", appointment);
   // Helper function to determine badge style based on status
 
   // Format the services list into a single string
@@ -13,11 +14,17 @@ export default AppointmentTrackerCard = ({ appointment }) => {
 
   // Format the estimated completion time (assuming you add this to your schema)
   // For now, we'll use a placeholder.
-  // const estCompletionTime = appointment?.estCompletionTime
-  //   ? `Est. Completion: ${new Date(
-  //       appointment.estCompletionTime
-  //     ).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`
-  //   : "Est. Completion: TBD";
+  const estCompletionTime = appointment?.services[0]?.service.ETC
+    ? `Est. Completion: ${appointment?.services[0]?.service.ETC} minutes`
+    : "Est. Completion: TBD";
+
+  const estCost = appointment?.services[0]?.service?.rangeMin
+    ? `Est. Cost: ₱${appointment?.services[0]?.service.rangeMin} - ₱${appointment?.services[0]?.service.rangeMax}`
+    : "Est. Cost: TBD";
+
+  const estFinalCost = appointment?.finalCost
+    ? `Final Cost: ₱${appointment?.finalCost}`
+    : "Final Cost: TBD";
 
   const statusStyle = getStatusStyle(appointment?.status);
 
@@ -56,10 +63,22 @@ export default AppointmentTrackerCard = ({ appointment }) => {
       </View>
 
       {/* Estimated Completion Time */}
-      {/* <View style={styles.detailRow}>
+      <View style={styles.detailRow}>
         <Feather name="clock" size={16} color="#4B5563" />
         <Text style={styles.detailText}>{estCompletionTime}</Text>
-      </View> */}
+      </View>
+
+      {/* Estimated Cost */}
+      <View style={styles.detailRow}>
+        <Feather name="tag" size={16} color="#4B5563" />
+        <Text style={styles.detailText}>{estCost}</Text>
+      </View>
+
+      {/* Estimated Final Cost */}
+      <View style={styles.detailRow}>
+        <Feather name="credit-card" size={16} color="#4B5563" />
+        <Text style={styles.detailText}>{estFinalCost}</Text>
+      </View>
     </View>
   );
 };

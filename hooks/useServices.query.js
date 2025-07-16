@@ -3,14 +3,15 @@ import { getAllServices, getMyTodaysAppointments } from "../api/services";
 import { useGetAppointmentById } from "./useAppointments.query";
 import { getSingleAppointment } from "../api/appointments";
 
-export const useGetAllServices = () => {
+export const useGetAllServices = (filter) => {
   return useQuery({
-    queryKey: ["services"],
-    queryFn: getAllServices,
+    queryKey: ["services", filter],
+    queryFn: () => getAllServices(filter),
   });
 };
 
 export const useGetTodayAppointment = (id) => {
+  console.log("🚀 ~ useGetTodayAppointment ~ id:", id);
   const today = new Date();
   const todayString = today.toISOString().split("T")[0]; // Format as YYYY-MM-DD
 

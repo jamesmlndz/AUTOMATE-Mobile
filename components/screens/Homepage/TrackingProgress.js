@@ -69,7 +69,7 @@ const TrackingProgress = () => {
   const { id } = route.params || {}; //appointment ID from route params
   console.log("🚀 ~ TrackingProgress ~ id:", id);
   const { updateAppointment } = useAppointmentsMutation();
-  const { data: appointment, refetch } = useGetTodayAppointment(id);
+  const { data: appointment, isLoading, refetch } = useGetTodayAppointment(id);
   console.log("🚀 ~ TrackingProgress ~ appointment:", appointment);
   const appointmentId = id ? appointment?._id : appointment?.data?._id;
   const [currentStep, setCurrentStep] = useState(0);
@@ -127,8 +127,15 @@ const TrackingProgress = () => {
             <MaterialIcons name="arrow-back" size={24} color="white" />
           </TouchableOpacity>
         </View>
-
-        {appointment?.data ? (
+        {isLoading ? (
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
+            <Text style={{ fontSize: 18, color: "#4B5563" }}>
+              Loading appointment details...
+            </Text>
+          </View>
+        ) : appointment?.data ? (
           <>
             {/* Scrollable content */}
             <ScrollView

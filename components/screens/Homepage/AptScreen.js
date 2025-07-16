@@ -37,6 +37,8 @@ const AptScreen = () => {
         "createdAt",
         "updatedAt",
         "feedback", // Exclude feedback object from generic rendering
+        "invoiceImgUrl", // Exclude invoice image URL
+        "status", // Exclude status as it's handled separately
       ];
       if (hiddenKeys.includes(key)) {
         return null; // Skip rendering for these keys

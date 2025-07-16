@@ -28,6 +28,10 @@ const Homepage = () => {
 
   const handleSearch = () => {
     console.log("Searching for:", searchQuery);
+    setSearchQuery("");
+    navigation.navigate("Services", {
+      filter: { name: searchQuery.trim() },
+    });
   };
 
   return (
@@ -195,7 +199,7 @@ const Homepage = () => {
         <View style={HomeStyle.serviceOptions}>
           <View style={{ alignItems: "center" }}>
             <TouchableOpacity
-              onPress={() => navigation.navigate("Booking")}
+              onPress={() => navigation.navigate("Vehicles")}
               style={HomeStyle.iconButton}
             >
               <FontAwesome name="car" size={32} color="white" />
@@ -206,7 +210,7 @@ const Homepage = () => {
                 { fontFamily: "SFdisplay-Semibold" },
               ]}
             >
-              Vehicle
+              My Vehicle
             </Text>
           </View>
         </View>

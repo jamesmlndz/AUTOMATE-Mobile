@@ -46,7 +46,7 @@ const SelectServicesScreen = () => {
   );
   const [additionalInfo, setAdditionalInfo] = useState("");
 
-  const services = servicesData?.map((service) => service.name) || [];
+  const services = servicesData?.data?.map((service) => service.name) || [];
 
   const toggleService = (service) => {
     setSelectedServices([service]); // single selection logic
@@ -95,47 +95,54 @@ const SelectServicesScreen = () => {
         {/* Card */}
         <View style={SelectServices.card}>
           <Text style={SelectServices.sectionTitle}>Available Services</Text>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            style={SelectServices.servicesContainer}
-          >
-            {services.map((service) => {
-              const isSelected = selectedServices.includes(service);
-              return (
-                <TouchableOpacity
-                  key={service}
-                  style={[
-                    SelectServices.serviceItem,
-                    isSelected && SelectServices.selectedService,
-                  ]}
-                  onPress={() => toggleService(service)}
-                >
-                  <Text
+          {isLoading ? (
+            <Text style={SelectServices.loadingText}>Loading services...</Text>
+          ) : error ? (
+            <Text style={SelectServices.errorText}>
+              Error loading services: {error.message}
+            </Text>
+          ) : (
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              style={SelectServices.servicesContainer}
+            >
+              {services.map((service) => {
+                const isSelected = selectedServices.includes(service);
+                return (
+                  <TouchableOpacity
+                    key={service}
                     style={[
-                      SelectServices.serviceText,
-                      isSelected && { color: "#fff" },
+                      SelectServices.serviceItem,
+                      isSelected && SelectServices.selectedService,
                     ]}
+                    onPress={() => toggleService(service)}
                   >
-                    {service}
-                  </Text>
-                  <View
-                    style={[
-                      SelectServices.circle,
-                      isSelected && {
-                        backgroundColor: "#0A2146",
-                        borderColor: "#0A2146",
-                      },
-                    ]}
-                  >
-                    {isSelected && (
-                      <FontAwesome name="check" size={14} color="#fff" />
-                    )}
-                  </View>
-                </TouchableOpacity>
-              );
-            })}
-          </ScrollView>
-
+                    <Text
+                      style={[
+                        SelectServices.serviceText,
+                        isSelected && { color: "#fff" },
+                      ]}
+                    >
+                      {service}
+                    </Text>
+                    <View
+                      style={[
+                        SelectServices.circle,
+                        isSelected && {
+                          backgroundColor: "#0A2146",
+                          borderColor: "#0A2146",
+                        },
+                      ]}
+                    >
+                      {isSelected && (
+                        <FontAwesome name="check" size={14} color="#fff" />
+                      )}
+                    </View>
+                  </TouchableOpacity>
+                );
+              })}
+            </ScrollView>
+          )}
           {/* Additional Info */}
           <Text style={SelectServices.sectionTitle}>Other Issues</Text>
           <TextInput

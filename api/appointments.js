@@ -1,9 +1,16 @@
 import authenticatedApi, { getAxiosErrorMessage } from "./axiosInstance";
 
-export const getAllAppointments = async () => {
+export const getAllAppointments = async (filter) => {
+  let queryParams = "";
+  if (filter) {
+    queryParams = Object.keys(filter)
+      .map((key) => `${key}=${encodeURIComponent(filter[key])}`)
+      .join("&");
+  }
+  console.log("🚀 ~ getAllAppointments ~ queryParams:", queryParams);
   try {
     const response = await authenticatedApi.get(
-      "/appointments/my-appointments"
+      `/appointments/my-appointments?${queryParams}`
     );
     return response.data;
   } catch (error) {
@@ -11,10 +18,20 @@ export const getAllAppointments = async () => {
   }
 };
 
-export const getSingleAppointment = async (id) => {
+export const getSingleAppointment = async (id, filter) => {
   console.log("🚀 ~ getSingleAppointment ~ id:", id);
+  let queryParams = "";
+  if (filter) {
+    queryParams = Object.keys(filter)
+      .map((key) => `${key}=${encodeURIComponent(filter[key])}`)
+      .join("&");
+  }
+  console.log("🚀 ~ getSingleAppointment ~ queryParams:", queryParams);
+
   try {
-    const response = await authenticatedApi.get("/appointments/" + id);
+    const response = await authenticatedApi.get(
+      `/appointments/${id}?${queryParams}`
+    );
     console.log(
       "🚀 ~ getSingleAppointment ~ response:",
       response.data.data.appointment

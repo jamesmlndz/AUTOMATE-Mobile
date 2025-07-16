@@ -2,16 +2,16 @@ import { useQuery } from "@tanstack/react-query";
 import { getAllAppointments, getSingleAppointment } from "../api/appointments";
 import authenticatedApi, { getAxiosErrorMessage } from "../api/axiosInstance";
 
-export const useGetAllAppointments = () =>
+export const useGetAllAppointments = (filter) =>
   useQuery({
-    queryKey: ["appointments"],
-    queryFn: getAllAppointments,
+    queryKey: ["appointments", filter],
+    queryFn: () => getAllAppointments(filter),
   });
 
-export const useGetAppointmentById = (id) =>
+export const useGetAppointmentById = (id, filter) =>
   useQuery({
-    queryKey: ["appointments", id],
-    queryFn: () => getSingleAppointment(id),
+    queryKey: ["appointments", id, filter],
+    queryFn: () => getSingleAppointment(id, filter),
   });
 
 export const useGetVehicles = () => {

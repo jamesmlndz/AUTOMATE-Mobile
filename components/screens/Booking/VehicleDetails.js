@@ -117,8 +117,20 @@ const VehicleDetails = () => {
               {vehiclesData?.data?.carMakes.map((car) => (
                 <Picker.Item key={car} label={car} value={car} />
               ))}
+              <Picker.Item key={"other"} label={"Others"} value={"Others"} />
             </Picker>
           </View>
+          {/* <Text style={BookingformStyle.label}>Name</Text> */}
+          {/* {brand === "other" && (
+            <TextInput
+              style={BookingformStyle.input}
+              placeholder="Enter Vehicle Brand"
+              placeholderTextColor="#aaa"
+              value={otherBrand}
+              onChangeText={(text) => setOtherBrand(text)}
+            />
+          )} */}
+
           {brandError ? (
             <Text
               style={{
@@ -146,19 +158,30 @@ const VehicleDetails = () => {
           )}
 
           <Text style={BookingformStyle.label}>Model</Text>
-          <View style={BookingformStyle.pickerWrapper}>
-            <Picker
-              selectedValue={model}
-              onValueChange={(itemValue) => setModel(itemValue)}
-              style={BookingformStyle.picker}
-              dropdownIconColor="#000"
-            >
-              <Picker.Item label="Select Model" value="" />
-              {carModels?.map((model) => (
-                <Picker.Item key={model} label={model} value={model} />
-              ))}
-            </Picker>
-          </View>
+          {brand === "Others" ? (
+            <TextInput
+              style={BookingformStyle.input}
+              placeholder="Enter Vehicle Model"
+              placeholderTextColor="#aaa"
+              value={model}
+              onChangeText={setModel}
+            />
+          ) : (
+            <View style={BookingformStyle.pickerWrapper}>
+              <Picker
+                selectedValue={model}
+                onValueChange={(itemValue) => setModel(itemValue)}
+                style={BookingformStyle.picker}
+                dropdownIconColor="#000"
+              >
+                <Picker.Item label="Select Model" value="" />
+                {carModels?.map((model) => (
+                  <Picker.Item key={model} label={model} value={model} />
+                ))}
+              </Picker>
+            </View>
+          )}
+
           {modelError ? (
             <Text
               style={{
