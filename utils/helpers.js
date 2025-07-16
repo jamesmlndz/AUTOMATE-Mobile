@@ -14,7 +14,8 @@ const getBaseUrl = () => {
   } else {
     // In production, use your deployed API URL.
     return (
-      process.env.EXPO_PUBLIC_API_URL || "https://your-production-api.com/api"
+      process.env.EXPO_PUBLIC_API_URL ||
+      "https://automate-backend-gdgr.onrender.com/api"
     );
   }
 };
