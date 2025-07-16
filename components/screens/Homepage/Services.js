@@ -108,7 +108,6 @@ const Services = () => {
   console.log("🚀 ~ Services ~ services:", services);
 
   const renderItem = ({ item }) => {
-    const imageSource = getServiceImage(item);
     return (
       <TouchableOpacity
         style={styles.serviceCard}
@@ -141,15 +140,24 @@ const Services = () => {
         <Text style={styles.headerText}>ALL SERVICES</Text>
         <View style={{ width: 24 }} />
       </View>
-
-      <FlatList
-        data={services ? services.data : []}
-        keyExtractor={(item) => item._id.toString()}
-        numColumns={2}
-        renderItem={renderItem}
-        contentContainerStyle={styles.gridContainer}
-        showsVerticalScrollIndicator={false}
-      />
+      {isLoading ? (
+        <View style={styles.loadingContainer}>
+          <Text style={styles.loadingText}>Loading services...</Text>
+        </View>
+      ) : error ? (
+        <Text style={styles.errorText}>
+          Error loading services: {error.message}
+        </Text>
+      ) : (
+        <FlatList
+          data={services ? services.data : []}
+          keyExtractor={(item) => item._id.toString()}
+          numColumns={2}
+          renderItem={renderItem}
+          contentContainerStyle={styles.gridContainer}
+          showsVerticalScrollIndicator={false}
+        />
+      )}
     </View>
   );
 };
