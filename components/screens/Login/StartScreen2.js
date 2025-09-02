@@ -1,6 +1,12 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity, ImageBackground } from "react-native";
-import styles from "../../AllStyles/StartScreen2";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ImageBackground,
+} from "react-native";
+import styles from "../../AllStyles/StartScreen1"; // ✅ Use same styles as StartScreen1
 import { useNavigation } from "@react-navigation/native";
 
 const StartScreen2 = () => {
@@ -8,43 +14,47 @@ const StartScreen2 = () => {
 
   return (
     <ImageBackground
-    source={require("../../../assets/StartBG1 (1).png")}
-    style={styles.background} // Make sure this style exists!
-    resizeMode="cover"
-  >
-    <View style={styles.container}>
-      <Text style={styles.title}>Book with Ease</Text>
+      source={require("../../../assets/StartBG1 (1).png")}
+      style={styles.background}
+      resizeMode="cover"
+    >
+      <View style={styles.container}>
+        {/* Title */}
+        <Text style={styles.title}>Track Repairs</Text>
 
-      <ImageBackground source={require('../../../assets/StartBG.png')} 
-    style={styles.background}
-    resizeMode="cover"
-    ></ImageBackground>
+        {/* Image */}
+        <Image
+          source={require("../../../assets/StartScreen2.png")}
+          style={styles.image}
+          resizeMode="contain"
+        />
 
-      <Image
-        source={require("../../../assets/StartScreen2.png")} // Replace with your image path
-        style={styles.image}
-        resizeMode="contain"
-      />
+        {/* Subtitle */}
+        <Text style={styles.subtitle}>
+          Stay Updated on Every Service Step
+        </Text>
 
-      <Text style={styles.subtitle}>Schedule Services in Seconds</Text>
+        {/* Description */}
+        <Text style={styles.description}>
+          Know exactly what’s happening with your vehicle.
+          Get real-time updates from inspection to completion.
+        </Text>
 
-      <Text style={styles.description}>
-        Choose from a wide range of vehicle services from oil changes to full body repairs right from your phone. Just a few taps and you’re all set.
-      </Text>
+        {/* Pagination Dots */}
+        <View style={styles.pagination}>
+          <View style={styles.dot} />
+          <View style={[styles.dot, styles.activeDot]} />
+          <View style={styles.dot} />
+        </View>
 
-      <View style={styles.pagination}>
-        <View style={styles.dot} />
-        <View style={[styles.dot, styles.activeDot]} />
-        <View style={styles.dot} />
+        {/* Button */}
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("StartScreen3")}
+        >
+          <Text style={styles.buttonText}>Next</Text>
+        </TouchableOpacity>
       </View>
-
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("StartScreen3")}
-      >
-        <Text style={styles.buttonText}>Next</Text>
-      </TouchableOpacity>
-    </View>
     </ImageBackground>
   );
 };

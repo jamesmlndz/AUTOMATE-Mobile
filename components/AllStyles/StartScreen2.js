@@ -1,5 +1,4 @@
-import { StyleSheet } from "react-native";
-import { Dimensions } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
 const { height } = Dimensions.get("window");
 
@@ -11,26 +10,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 30,
-    paddingTop: 60,
-    paddingBottom: 40,
-    // ❌ Removed backgroundColor so it doesn’t block background image
-    // backgroundColor: "#ffffff",
+    justifyContent: "space-between", // ✅ Pushes content up & button down
+    paddingHorizontal: 20,
+    paddingTop: height * 0.05, // ✅ Smaller top padding (~5% of screen)
+    paddingBottom: height * 0.03, // ✅ Smaller bottom padding
+  },
+
+  content: {
+    alignItems: "center",
   },
 
   title: {
-    fontSize: 28,
+    fontSize: 26,
     fontWeight: "bold",
     color: "#08285E",
-    marginBottom: 20,
-    
+    marginBottom: 8, // ✅ Tighter spacing
   },
 
   image: {
-    width: 220,
-    height: 500,
-    marginBottom: 5,
+    width: height * 0.35,
+    height: height * 0.25,
+    resizeMode: "contain",
+    marginBottom: 12,
   },
 
   subtitle: {
@@ -38,21 +39,22 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#08285E",
     textAlign: "center",
-    marginBottom: 10,
+    marginBottom: 4,
   },
 
   description: {
     fontSize: 14,
     color: "#333",
     textAlign: "center",
-    marginBottom: 20,
-    lineHeight: 22,
+    marginBottom: 10,
+    paddingHorizontal: 20,
+    lineHeight: 20,
   },
 
   pagination: {
     flexDirection: "row",
     justifyContent: "center",
-    marginBottom: 30,
+    marginTop: 8,
   },
 
   dot: {
@@ -60,7 +62,7 @@ const styles = StyleSheet.create({
     height: 8,
     borderRadius: 4,
     backgroundColor: "#ccc",
-    marginHorizontal: 4,
+    marginHorizontal: 3,
   },
 
   activeDot: {
@@ -70,20 +72,19 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "#D39505",
     paddingVertical: 14,
-    paddingHorizontal: 100,
-    borderRadius: 12,
+    paddingHorizontal: 80,
+    borderRadius: 10,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 5,
-    marginTop: 10,
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3,
+    elevation: 4,
   },
 
   buttonText: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#fff", // ✅ Corrected from "#ffff" (which is invalid)
+    color: "#fff",
   },
 });
 

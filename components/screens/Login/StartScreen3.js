@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity, ImageBackground } from "react-native";
-import styles from "../../AllStyles/StartScreen3";
+import styles from "../../AllStyles/StartScreen1"; // ✅ Use the same style for consistency
 import { useNavigation } from "@react-navigation/native";
 
 const StartScreen3 = () => {
@@ -8,44 +8,39 @@ const StartScreen3 = () => {
 
   return (
     <ImageBackground
-    source={require("../../../assets/StartBG1 (1).png")}
-    style={styles.background} // Make sure this style exists!
-    resizeMode="cover"
-  >
-    <View style={styles.container}>
-      <Text style={styles.title}>Track your Service</Text>
+      source={require("../../../assets/StartBG1 (1).png")}
+      style={styles.background}
+      resizeMode="cover"
+    >
+      <View style={styles.container}>
+        <Text style={styles.title}>Track your Service</Text>
 
-      <ImageBackground source={require('../../../assets/StartBG.png')} 
-    style={styles.background}     
-    resizeMode="cover"
-    ></ImageBackground>
+        <Image
+          source={require("../../../assets/StartScreen3.png")}
+          style={styles.image}
+          resizeMode="contain"
+        />
 
-      <Image
-        source={require("../../../assets/StartScreen3.png")} // Use your actual image path
-        style={styles.image}
-        resizeMode="contain"
-      />
+        <Text style={styles.subtitle}>Stay Informed Every Step</Text>
 
-      <Text style={styles.subtitle}>Stay Informed Every Step</Text>
+        <Text style={styles.description}>
+          Monitor the status of your car in real-time. Get updates on repairs,
+          payments, and completion all in one place.
+        </Text>
 
-      <Text style={styles.description}>
-        Monitor the status of your car in real-time. Get updates on repairs, payments, and
-        completion all in one place.
-      </Text>
+        <View style={styles.pagination}>
+          <View style={styles.dot} />
+          <View style={styles.dot} />
+          <View style={[styles.dot, styles.activeDot]} />
+        </View>
 
-      <View style={styles.pagination}>
-        <View style={styles.dot} />
-        <View style={styles.dot} />
-        <View style={[styles.dot, styles.activeDot]} />
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("Login")}
+        >
+          <Text style={styles.buttonText}>Next</Text>
+        </TouchableOpacity>
       </View>
-
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("Login")}
-      >
-        <Text style={styles.buttonText}>Next</Text>
-      </TouchableOpacity>
-    </View>
     </ImageBackground>
   );
 };
