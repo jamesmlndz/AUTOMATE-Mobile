@@ -3,91 +3,98 @@ import { StyleSheet } from "react-native";
 export const ProfileStyle = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.6)", // darker overlay for contrast
+    backgroundColor: "#f4f6fb", // clean modern background
   },
 
   header: {
-    backgroundColor: "#102c5b",
+    backgroundColor: "#0d2147",
     height: 140,
     paddingHorizontal: 20,
-    paddingTop: 10,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
     alignItems: "center",
     position: "relative",
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
+    borderBottomLeftRadius: 24,
+    borderBottomRightRadius: 24,
     elevation: 8,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.25,
     shadowRadius: 8,
-  },
-
-  profileText: {
-    color: "white",
-    fontSize: 22,
-    fontWeight: "bold",
-    letterSpacing: 1.2,
   },
 
   headerArrow: {
     position: "absolute",
     top: 50,
-    right: 20,
+    left: 20,
     padding: 8,
     zIndex: 10,
   },
 
+  profileText: {
+    color: "#fff",
+    fontSize: 23,
+    fontWeight: "700",
+    letterSpacing: 1.2,
+    position: "absolute",
+    top: 58,
+    left: 155,
+  },
+
   imageWrapper: {
     alignSelf: "center",
-    marginTop: -50,
+    marginTop: -60,
     zIndex: 2,
-    marginBottom: 30,
+    marginBottom: 25,
+    shadowColor: "#102c5b",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
   },
 
   profileImage: {
-    width: 110,
-    height: 110,
-    borderRadius: 55,
+    width: 115,
+    height: 115,
+    borderRadius: 57.5,
     borderWidth: 4,
     borderColor: "#fff",
     backgroundColor: "#d9d9d9",
     overflow: "hidden",
+    marginTop: 20,
   },
 
   cameraIcon: {
     position: "absolute",
     bottom: 0,
     right: 0,
-    backgroundColor: "#102c5b",
-    padding: 6,
-    borderRadius: 18,
+    backgroundColor: "#0d2147",
+    padding: 7,
+    borderRadius: 20,
     borderWidth: 2,
     borderColor: "#fff",
     zIndex: 3,
   },
 
   profileCard: {
-    backgroundColor: "rgba(255, 255, 255, 0.95)",
-    marginHorizontal: 16,
-    marginTop: -20,
-    borderRadius: 24,
-    padding: 24,
-    paddingBottom: 60,
-    alignItems: "center",
+    backgroundColor: "#ffffff",
+    marginHorizontal: 18,
+    marginTop: 20,
+    borderRadius: 26,
+    padding: 28,
+    alignItems: "stretch",
     shadowColor: "#000",
-    shadowOpacity: 0.18,
+    shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 5 },
     shadowRadius: 12,
-    elevation: 7,
+    elevation: 5,
   },
 
   nameText: {
-    fontSize: 22,
-    fontWeight: "bold",
-    marginBottom: 16,
-    color: "#102c5b",
+    fontSize: 25,
+    fontFamily: "Poppins-Bold",
+    fontWeight: "700",
+    marginBottom: 14,
+    color: "#0d2147",
     textAlign: "center",
   },
 
@@ -95,15 +102,59 @@ export const ProfileStyle = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignSelf: "stretch",
-    marginBottom: 16,
+    marginBottom: 14,
   },
 
   infoHeaderText: {
     fontSize: 17,
+    fontFamily: "Poppins-Bold",
     fontWeight: "600",
     color: "#333",
   },
 
+  // 💡 Enhanced form section for text inputs
+  formContainer: {
+    marginTop: 10,
+    width: "100%",
+  },
+
+  formGroup: {
+    marginBottom: 16,
+  },
+
+  label: {
+    fontSize: 14,
+    color: "#555",
+    marginBottom: 6,
+    fontWeight: "500",
+    letterSpacing: 0.3,
+    
+  },
+
+  inputField: {
+    backgroundColor: "#f9fbff",
+    borderWidth: 1.2,
+    borderColor: "#d8deeb",
+    borderRadius: 14,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    fontSize: 15,
+    color: "#333",
+    shadowColor: "#e4e9f2",
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 2,
+  },
+
+  inputFocused: {
+    borderColor: "#0d2147",
+    shadowColor: "#0d2147",
+    shadowOpacity: 0.25,
+    elevation: 4,
+  },
+
+  // Info boxes remain consistent with other sections
   infoGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -113,7 +164,7 @@ export const ProfileStyle = StyleSheet.create({
 
   infoBox: {
     width: "48%",
-    backgroundColor: "#f7f9fc",
+    backgroundColor: "#f9fbff",
     padding: 12,
     borderRadius: 14,
     flexDirection: "row",
@@ -121,49 +172,54 @@ export const ProfileStyle = StyleSheet.create({
     gap: 8,
     marginBottom: 10,
     borderWidth: 1,
-    borderColor: "#e0e0e0",
+    borderColor: "#e1e5ee",
+    shadowColor: "#d1d9e6",
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 2,
   },
 
   infoText: {
+    fontFamily: "Poppins-Regular",
     fontSize: 14,
     color: "#333",
     flexShrink: 1,
   },
 
   switchAccountButton: {
-    backgroundColor: "#102c5b",
+    backgroundColor: "#0d2147",
     paddingVertical: 14,
     paddingHorizontal: 30,
-    borderRadius: 28,
+    borderRadius: 30,
     alignItems: "center",
     alignSelf: "stretch",
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.22,
-    shadowRadius: 8,
-    elevation: 6,
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.25,
+    shadowRadius: 6,
+    elevation: 5,
   },
 
   logoutButton: {
     backgroundColor: "#c0392b",
     paddingVertical: 14,
     paddingHorizontal: 30,
-    borderRadius: 28,
+    borderRadius: 30,
     alignItems: "center",
     alignSelf: "stretch",
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.22,
-    shadowRadius: 8,
-    elevation: 6,
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.25,
+    shadowRadius: 6,
+    elevation: 5,
     marginTop: 12,
   },
 
   switchAccountText: {
     color: "#fff",
+    fontFamily: "Poppins-Bold",
     fontSize: 16,
-    fontWeight: "bold",
-    fontFamily: "System",
-    letterSpacing: 0.5,
+    fontWeight: "700",
+    letterSpacing: 0.4,
   },
 });
