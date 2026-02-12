@@ -1,19 +1,20 @@
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   TextInput,
   Image,
-  Switch,
   TouchableOpacity,
   ScrollView,
   Alert,
+  SafeAreaView,
+  ImageBackground,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import styles from "../../AllStyles/EditProfileScreenStyle";
 import { FontAwesome, AntDesign, Entypo } from "@expo/vector-icons";
 import { useAuth } from "../../../context/authContext";
 import { SvgUri } from "react-native-svg";
+import styles from "../../AllStyles/EditProfileScreenStyle";
 
 const EditScreenProfile = ({ navigation, route }) => {
   const { currentUser } = useAuth();
@@ -78,120 +79,102 @@ const EditScreenProfile = ({ navigation, route }) => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      {/* Plain View header with same styling but no background image */}
-      <View style={styles.header}>
-        {/* Back arrow button */}
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.headerArrowLeft}
-          activeOpacity={0.7}
+    <SafeAreaView style={styles.safeArea}>
+      <ImageBackground
+        source={require("../../../assets/tierodmanbg.png")} 
+        style={styles.backgroundImage}
+      >
+        <View style={styles.overlay} />
+
+        <ScrollView
+          contentContainerStyle={{ paddingBottom: 50 }}
+          showsVerticalScrollIndicator={false}
         >
-          <AntDesign name="left" size={24} color="white" />
-        </TouchableOpacity>
+          {/* Header */}
+          <View style={styles.header}>
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={styles.headerArrowLeft}
+              activeOpacity={0.7}
+            >
+              <FontAwesome name="chevron-left" size={24} color="white" />
+            </TouchableOpacity>
+            <Text style={styles.headerTitle}>Edit Profile</Text>
+          </View>
 
-        <Text style={styles.headerText}></Text>
+          {/* Avatar */}
+          <View style={styles.avatarSection}>
+            <TouchableOpacity
+              style={styles.avatarWrapper}
+              onPress={pickImage}
+              activeOpacity={0.85}
+            >
+              {image && !image.startsWith("http") ? (
+                <Image source={{ uri: image }} style={styles.avatar} />
+              ) : (
+                <SvgUri uri={image} style={styles.avatar} />
+              )}
+              <View style={styles.cameraButton}>
+                <Entypo name="camera" size={18} color="#fff" />
+              </View>
+            </TouchableOpacity>
+          </View>
 
-        <TouchableOpacity
-          style={styles.avatarWrapper}
-          onPress={pickImage}
-          activeOpacity={0.8}
-        >
-          {image && !image.startsWith("http") ? (
-            <Image source={{ uri: image }} style={styles.avatar} />
-          ) : (
-            <SvgUri uri={image} style={styles.avatar} />
-          )}
-          <Entypo
-            name="camera"
-            size={18}
-            color="white"
-            style={styles.cameraIcon}
-          />
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.formContainer}>
-        <Text style={styles.label}>Name</Text>
-        <TextInput
-          style={styles.input}
-          value={name}
-          onChangeText={setName}
-          placeholder="Your full name"
-        />
-        <Text style={styles.label}>Email</Text>
-        <TextInput
-          style={{ ...styles.input, backgroundColor: "#f0f0f0" }}
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          placeholder="your.email@example.com"
-          autoCapitalize="none"
-          readOnly={true}
-        />
-        <Text style={styles.label}>Mobile Number</Text>
-        <View style={styles.mobileContainer}>
-          <View style={styles.countryCode}>
-            <Image
-              source={{ uri: "https://flagcdn.com/w40/ph.png" }}
-              style={styles.flag}
+          {/* Card */}
+          <View style={styles.formCard}>
+            <Text style={styles.label}>Full Name</Text>
+            <TextInput
+              style={styles.input}
+              value={name}
+              onChangeText={setName}
+              placeholder="Enter your name"
+              placeholderTextColor="#777"
             />
-            <Text style={styles.codeText}>+63</Text>
+
+            <Text style={styles.label}>Email Address</Text>
+            <TextInput
+              style={[styles.input, { backgroundColor: "#f1f1f1" }]}
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              placeholder="your.email@example.com"
+              autoCapitalize="none"
+              readOnly
+            />
+
+            <Text style={styles.label}>Mobile Number</Text>
+            <View style={styles.mobileContainer}>
+              <View style={styles.countryCode}>
+                <Image
+                  source={{ uri: "https://flagcdn.com/w40/ph.png" }}
+                  style={styles.flag}
+                />
+                <Text style={styles.codeText}>+63</Text>
+              </View>
+              <TextInput
+                style={styles.phoneInput}
+                value={mobileNumber}
+                onChangeText={setMobileNumber}
+                keyboardType="phone-pad"
+                placeholder="912 345 6789"
+              />
+            </View>
+
+            <TouchableOpacity
+              style={styles.saveButton}
+              onPress={handleSave}
+              activeOpacity={0.85}
+            >
+              <Text style={styles.saveButtonText}>Save Changes</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.switchButton}>
+              <Text style={styles.switchButtonText}>Switch Account</Text>
+            </TouchableOpacity>
           </View>
-          <TextInput
-            style={styles.phoneInput}
-            value={mobileNumber}
-            onChangeText={setMobileNumber}
-            keyboardType="phone-pad"
-            placeholder="123 123 323"
-          />
-        </View>
-        {/* <Text style={styles.label}>Linked Accounts</Text>
-        <View style={styles.linkRow}>
-          <View style={styles.linkIconText}>
-            <FontAwesome name="google" size={20} color="#DB4437" />
-            <Text style={styles.linkText}>Google</Text>
-          </View>
-          <Switch
-            value={linkedAccounts.google}
-            onValueChange={(val) =>
-              setLinkedAccounts((prev) => ({ ...prev, google: val }))
-            }
-          />
-        </View>
-        <View style={styles.linkRow}>
-          <View style={styles.linkIconText}>
-            <FontAwesome name="facebook" size={20} color="#4267B2" />
-            <Text style={styles.linkText}>Facebook</Text>
-          </View>
-          <Switch
-            value={linkedAccounts.facebook}
-            onValueChange={(val) =>
-              setLinkedAccounts((prev) => ({ ...prev, facebook: val }))
-            }
-          />
-        </View>
-        <View style={styles.linkRow}>
-          <View style={styles.linkIconText}>
-            <FontAwesome name="apple" size={20} color="#000" />
-            <Text style={styles.linkText}>Apple</Text>
-          </View>
-          <Switch
-            value={linkedAccounts.apple}
-            onValueChange={(val) =>
-              setLinkedAccounts((prev) => ({ ...prev, apple: val }))
-            }
-          />
-        </View> */}
-        {/* Save Button */}
-        <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-          <Text style={styles.saveButtonText}>Save</Text>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Text style={styles.switchAccount}>Switch Account</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+        </ScrollView>
+      </ImageBackground>
+    </SafeAreaView>
   );
 };
 

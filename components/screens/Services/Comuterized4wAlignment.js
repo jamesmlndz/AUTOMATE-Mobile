@@ -9,7 +9,7 @@ export default function Comuterized4WAlignment() {
 
   return (
     <ImageBackground
-      source={require('../../../assets/automatebg.jpg')}
+      source={require('../../../assets/tierodmanbg.png')}
       style={styles.background}
       resizeMode="cover"
     >

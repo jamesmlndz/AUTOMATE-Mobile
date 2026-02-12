@@ -1,86 +1,112 @@
 import { StyleSheet, Dimensions } from "react-native";
 
 const { width } = Dimensions.get("window");
-const cardSize = (width - 40) / 2;
+const cardSize = (width - 50) / 2;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F0F4FA", // soft bluish background
+    backgroundColor: "#E5E8F0", // slightly darker soft background
   },
+
+  /* TESLA HEADER */
   header: {
-    backgroundColor: "#0B2B66",
+    paddingTop: 40, // shortened from 55
+    paddingBottom: 12, // shortened from 18
+    paddingHorizontal: 20,
+    backgroundColor: "#0B1B3F", // slightly darker than #0D2147
     flexDirection: "row",
-    alignItems: "center",
     justifyContent: "space-between",
-    paddingTop: 50,
-    paddingHorizontal: 16,
-    paddingBottom: 20,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    elevation: 6,
+    alignItems: "center",
+    borderBottomWidth: 1,
+    borderBottomColor: "#E5E5E5",
   },
+
   headerText: {
     fontSize: 22,
-    fontWeight: "700",
-    color: "white",
-    textAlign: "center",
+    fontWeight: "600",
+    color: "#FFFFFF", // white text
+    letterSpacing: 0.3,
   },
-  backIcon: {
-    width: 24, // width matches spacer
+
+  headerArrow: {
+    tintColor: "#FFFFFF", // white arrow/icon
   },
-  gridContainer: {
-    padding: 10,
-    paddingBottom: 20,
+
+  /* SEARCH BAR */
+  searchWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#DCE0EB", // slightly darker input
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    marginHorizontal: 18,
+    marginTop: 12,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#C5CAE9",
   },
-  serviceCard: {
-    backgroundColor: "#0B2B66", // muted soft blue
-    borderRadius: 14,
-    overflow: "hidden",
-    margin: 6,
+
+  searchInput: {
+    flex: 1,
+    fontSize: 15,
+    color: "#111",
+  },
+
+  /* GRID */
+  grid: {
+    paddingHorizontal: 14,
+    paddingTop: 10,
+    paddingBottom: 50,
+  },
+
+  /* TESLA CARD */
+  card: {
     width: cardSize,
-    shadowColor: "#0B2B66",
-    shadowOpacity: 0.15,
-    shadowRadius: 6,
-    shadowOffset: { width: 0, height: 3 },
-    elevation: 4,
+    borderRadius: 18,
+    overflow: "hidden",
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: "#EAEAEA",
+    margin: 8,
   },
-  serviceImage: {
+
+  cardImage: {
     width: "100%",
-    height: 110,
-    resizeMode: "cover",
+    height: 120,
   },
-  textContainer: {
+
+  cardFooter: {
+    padding: 14,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: 12,
   },
-  serviceText: {
+
+  cardTitle: {
     fontSize: 14,
     fontWeight: "600",
-    color: "#fff",
+    color: "#0D2147", // card title uses theme color
     flexShrink: 1,
   },
+
+  /* STATES */
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
-  errorText: {
-    color: "red",
-    fontSize: 16,
-    textAlign: "center",
-    marginTop: 20,
-  },
+
   loadingText: {
     fontSize: 16,
-    color: "#666",
-    marginTop: 10,
+    color: "#888",
+  },
+
+  errorText: {
+    color: "red",
+    textAlign: "center",
+    fontSize: 16,
+    marginTop: 20,
   },
 });
 

@@ -53,7 +53,7 @@ import ResetPassword from "./components/screens/Login/ResetPassword";
 import VerifyResetOtp from "./components/screens/Login/VerifyResetOtp";
 import ServiceDetails from "./components/screens/Services/ServiceDetails";
 import Vehicles from "./components/screens/Homepage/Vehicles";
-
+import AllReviewsScreen from "./components/screens/Homepage/AllReviewsScreen";
 const Stack = createNativeStackNavigator();
 
 // 🔹 Load fonts before rendering the app
@@ -61,7 +61,9 @@ const loadFonts = async () => {
   await Font.loadAsync({
     "SFdisplay-Light": require("./assets/fonts/SF-Pro-Display-Light.ttf"),
     "SFdisplay-Semibold": require("./assets/fonts/SF-Pro-Display-Semibold.ttf"),
-    "Poppins-Black": require("./assets/fonts/Poppins-Black.ttf"),
+    "poppins.black": require("./assets/fonts/Poppins-Black.ttf"),
+    "Poppins-Regular": require("./assets/fonts/Poppins-Medium.ttf"),
+    "Poppins-Bold": require("./assets/fonts/Poppins-Bold.ttf"),
     Messina: require("./assets/fonts/Messina.ttf"),
   });
 };
@@ -89,6 +91,7 @@ export default function RootNavigator() {
         <Stack.Screen name="StartScreen2" component={StartScreen2} />
         <Stack.Screen name="StartScreen3" component={StartScreen3} />
         <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="AllReviewsScreen"component={AllReviewsScreen}options={{ headerShown: false }}/>
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="Verify" component={Verify} />

@@ -59,7 +59,7 @@ const ProfileScreen = () => {
 
   return (
     <ImageBackground
-      source={require("../../../assets/automatebg.jpg")}
+      source={require("../../../assets/tierodmanbg.png")}
       style={{ flex: 1 }}
       resizeMode="cover"
     >
@@ -76,7 +76,7 @@ const ProfileScreen = () => {
             onPress={() => navigation.navigate("HomePage")}
             style={ProfileStyle.headerArrow}
           >
-            <FontAwesome name="chevron-right" size={24} color="white" />
+            <FontAwesome name="chevron-left" size={24} color="white" />
           </TouchableOpacity>
         </View>
 
@@ -144,25 +144,25 @@ const ProfileScreen = () => {
 
           {/* Additional Info */}
           <View style={[ProfileStyle.infoGrid, { marginTop: 15 }]}>
-            <View style={ProfileStyle.infoBox}>
+            {/* <View style={ProfileStyle.infoBox}>
               <FontAwesome name="calendar" size={18} color="#444" />
               <Text style={ProfileStyle.infoText}>Member since: 2025</Text>
-            </View>
+            </View> */}
 
-            <View style={ProfileStyle.infoBox}>
+            {/* <View style={ProfileStyle.infoBox}>
               <FontAwesome name="map-marker" size={18} color="#444" />
               <Text style={ProfileStyle.infoText}>Philippines</Text>
-            </View>
+            </View> */}
 
             <View style={ProfileStyle.infoBox}>
               <FontAwesome name="briefcase" size={18} color="#444" />
               <Text style={ProfileStyle.infoText}>Customer</Text>
             </View>
 
-            <View style={ProfileStyle.infoBox}>
+            {/* <View style={ProfileStyle.infoBox}>
               <FontAwesome name="star" size={18} color="#f1c40f" />
               <Text style={ProfileStyle.infoText}>★★★★☆</Text>
-            </View>
+            </View> */}
           </View>
 
           {/* Buttons */}

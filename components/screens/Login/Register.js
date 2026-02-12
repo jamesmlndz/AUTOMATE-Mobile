@@ -1,3 +1,4 @@
+// frontend/screens/Register.js
 import React, { useState } from "react";
 import {
   View,
@@ -51,27 +52,6 @@ const Register = () => {
     setIsLoading(true);
 
     try {
-      // const response = await fetch('http://192.168.254.127:5000/register', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({
-      //     fname,
-      //     lname,
-      //     contactNum,
-      //     email,
-      //     password
-      //   }),
-      // });
-
-      // const text = await response.text();
-      // let data;
-
-      // try {
-      //   data = JSON.parse(text);
-      // } catch {
-      //   throw new Error("Invalid or empty response from server.");
-      // }
-
       const registerData = {
         name: `${fname} ${lname}`,
         mobileNumber: contactNum,
@@ -86,7 +66,6 @@ const Register = () => {
       );
       let data = response.data.data;
       if (response.status === 201) {
-        // 201 for successful creation
         Alert.alert("Success", data.message || "Verification code sent.");
         navigation.navigate("Verify", {
           email: data.email,
@@ -105,15 +84,18 @@ const Register = () => {
 
   return (
     <ImageBackground
-      source={require("../../../assets/RegisterBG.png")}
+      source={require("../../../assets/tierodmanbg.png")}
       style={styles.background}
       resizeMode="cover"
     >
-      <View style={LoginStyle.container}>
-        <View style={LoginStyle.section}>
-          <Text style={LoginStyle.Regtitle}></Text>
-        </View>
+      {/* Dark overlay for better readability */}
+      <View style={styles.overlay} />
 
+      {/* Card container for form */}
+      <View style={styles.card}>
+        <Text style={LoginStyle.Regtitle}>CREATE ACCOUNT</Text>
+
+        {/* Toggle Buttons */}
         <View style={LoginStyle.buttonContainer}>
           <TouchableOpacity
             style={LoginStyle.loginButton}
@@ -134,6 +116,7 @@ const Register = () => {
           </TouchableOpacity>
         </View>
 
+        {/* Input Fields */}
         <View style={LoginStyle.inputContainer}>
           <Text style={LoginStyle.label}>First Name</Text>
           <TextInput
@@ -210,6 +193,7 @@ const Register = () => {
           />
         </View>
 
+        {/* Register Button */}
         <TouchableOpacity
           style={LoginStyle.sendCodeButton}
           onPress={handleRegister}
@@ -227,6 +211,23 @@ const Register = () => {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0,0,0,0.3)", 
+  },
+  card: {
+    width: "90%",
+    backgroundColor: "rgba(255,255,255,0.95)",
+    padding: 24,
+    borderRadius: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.15,
+    shadowRadius: 10,
+    elevation: 6,
   },
 });
 

@@ -83,7 +83,7 @@ const BookingConfirmation = () => {
 
   return (
     <ImageBackground
-      source={require("../../../assets/automatebg.jpg")}
+      source={require("../../../assets/tierodmanbg.png")}
       style={styles.background}
       imageStyle={{ opacity: 0.08 }}
     >

@@ -90,7 +90,7 @@ const VehicleDetails = () => {
       scrollEnabled={true}
     >
       <ImageBackground
-        source={require("../../../assets/automatebg.jpg")}
+        source={require("../../../assets/tierodmanbg.png")}
         style={BookingformStyle.bg}
       >
         <View style={BookingformStyle.header}>

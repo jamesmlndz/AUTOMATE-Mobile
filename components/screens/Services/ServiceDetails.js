@@ -6,8 +6,9 @@ import {
   TouchableOpacity,
   ImageBackground,
   Linking,
+  ScrollView,
 } from "react-native";
-import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import styles from "../../AllStyles/Services style/AllServicesStyle";
 import { formatToPHP } from "../../../utils/formatters";
@@ -16,71 +17,79 @@ export default function ServiceDetails() {
   const navigation = useNavigation();
   const route = useRoute();
   const { service } = route.params;
-  console.log(service);
+  const phoneNumber = "09171234567";
+  const smsBody = `Hi! I'm interested in your ${service.name} service.`;
+
   return (
     <ImageBackground
-      source={require("../../../assets/automatebg.jpg")}
+      source={require("../../../assets/tierodmanbg.png")}
       style={styles.background}
       resizeMode="cover"
     >
-      <View style={styles.container}>
+      <ScrollView contentContainerStyle={localStyles.scrollContainer}>
+        {/* Back Button */}
         <TouchableOpacity
-          style={styles.backButton}
+          style={localStyles.backButton}
           onPress={() => navigation.goBack()}
         >
-          <Ionicons name="arrow-back" size={24} color="white" />
+          <FontAwesome name="chevron-left" size={24} color="white" />
         </TouchableOpacity>
 
-        <Image source={{ uri: service.image }} style={styles.serviceImage} />
+        {/* Service Image */}
+        <View style={localStyles.imageWrapper}>
+          <Image source={{ uri: service.image }} style={localStyles.serviceImage} />
+        </View>
 
-        <View style={styles.infoCard}>
-          <View style={styles.cardHeader}>
-            <View>
-              <Text style={styles.serviceTitle}>{service.name}</Text>
-              <Text style={styles.locationText}>
-                Tierodman Auto Center, Makati
-              </Text>
-            </View>
-            {/* <View style={styles.ratingContainer}>
-              <Text style={styles.ratingText}>4.5/5</Text>
-              <FontAwesome name="star" size={16} color="#0A2E5C" />
-            </View> */}
+        {/* Service Info Card */}
+        <View style={localStyles.infoCard}>
+          <View style={localStyles.headerSection}>
+            <Text style={localStyles.serviceTitle}>{service.name}</Text>
+            <Text style={localStyles.locationText}>
+              Tierodman Auto Center, Makati
+            </Text>
           </View>
-          <Text style={styles.description}>{service.description}</Text>
-          {/* Price range */}
-          <View style={styles.priceContainer}>
-            <Text style={styles.priceText}>Price Range:</Text>
-            <Text style={styles.priceValue}>
+
+          <Text style={localStyles.description}>{service.description}</Text>
+
+          {/* Price */}
+          <View style={localStyles.detailBox}>
+            <Text style={localStyles.detailLabel}>Price Range</Text>
+            <Text style={localStyles.detailValue}>
               {formatToPHP(service.rangeMin)} - {formatToPHP(service.rangeMax)}
             </Text>
           </View>
-          {/* Estimated completion time */}
-          <View style={styles.timeContainer}>
-            <Text style={styles.timeText}>Est. Completion:</Text>
-            <Text style={styles.timeValue}>{service.ETC || 30} minutes</Text>
+
+          {/* Estimated Time */}
+          <View style={localStyles.detailBox}>
+            <Text style={localStyles.detailLabel}>Estimated Time</Text>
+            <Text style={localStyles.detailValue}>
+              {service.ETC || 30} mins
+            </Text>
           </View>
         </View>
 
-        <Text style={styles.inquiryHeader}>Call for inquiries</Text>
-        <View style={styles.inquiryCard}>
+        {/* Inquiry Section */}
+        <Text style={localStyles.inquiryHeader}>Call for inquiries</Text>
+        <View style={localStyles.inquiryCard}>
           <Image
             source={{
               uri: "https://ui-avatars.com/api/?name=Noreen+Diaz&background=0A2E5C&color=fff",
             }}
-            style={styles.profileImage}
+            style={localStyles.profileImage}
           />
-          <View style={styles.providerInfo}>
-            <Text style={styles.providerName}>Noreen Diaz</Text>
-            <Text style={styles.providerRole}>Supervisor</Text>
+          <View style={localStyles.providerInfo}>
+            <Text style={localStyles.providerName}>Noreen Diaz</Text>
+            <Text style={localStyles.providerRole}>Supervisor</Text>
           </View>
-          <View style={styles.contactIcons}>
+
+          <View style={localStyles.contactIcons}>
             <TouchableOpacity
               onPress={() =>
                 Linking.openURL(
                   `sms:${phoneNumber}?body=${encodeURIComponent(smsBody)}`
                 )
               }
-              style={styles.iconSpacing}
+              style={localStyles.iconSpacing}
             >
               <Ionicons
                 name="chatbox-ellipses-outline"
@@ -89,23 +98,156 @@ export default function ServiceDetails() {
               />
             </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={() => Linking.openURL(`tel:${phoneNumber}`)}
-            >
+            <TouchableOpacity onPress={() => Linking.openURL(`tel:${phoneNumber}`)}>
               <Ionicons name="call-outline" size={20} color="#0A2E5C" />
             </TouchableOpacity>
           </View>
         </View>
 
+        {/* Book Now Button */}
         <TouchableOpacity
-          style={styles.bookButton}
+          style={localStyles.bookButton}
           onPress={() =>
             navigation.navigate("Booking", { service: service.name })
           }
         >
-          <Text style={styles.bookButtonText}>Book Now</Text>
+          <Text style={localStyles.bookButtonText}>Book Now</Text>
         </TouchableOpacity>
-      </View>
+      </ScrollView>
     </ImageBackground>
   );
 }
+
+const localStyles = {
+  scrollContainer: {
+    paddingBottom: 40,
+    paddingHorizontal: 20,
+  },
+  backButton: {
+    position: "absolute",
+    top: 50,
+    left: 20,
+    padding: 8,
+    zIndex: 10,
+  },
+  imageWrapper: {
+    alignItems: "center",
+    marginTop: 90,
+  },
+  serviceImage: {
+    width: "100%",
+    height: 220,
+    borderRadius: 16,
+    resizeMode: "cover",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 5,
+  },
+  infoCard: {
+    backgroundColor: "#fff",
+    marginTop: 20,
+    borderRadius: 16,
+    padding: 20,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    shadowOffset: { width: 0, height: 2 },
+  },
+  headerSection: {
+    marginBottom: 12,
+  },
+  serviceTitle: {
+    fontSize: 22,
+    color: "#0A2E5C",
+    fontFamily: "Poppins-Bold",
+  },
+  locationText: {
+    fontSize: 14,
+    color: "#6b7280",
+    marginTop: 4,
+    fontFamily: "Poppins-Bold",
+  },
+  description: {
+    fontSize: 15,
+    color: "#374151",
+    lineHeight: 22,
+    marginVertical: 10,
+    fontFamily: "Poppins-Regular",
+  },
+  detailBox: {
+    backgroundColor: "#f4f6fb",
+    padding: 12,
+    borderRadius: 10,
+    marginTop: 8,
+  },
+  detailLabel: {
+    fontSize: 14,
+    color: "#0A2E5C",
+    fontFamily: "Poppins-Bold",
+  },
+  detailValue: {
+    fontSize: 15,
+    color: "#111827",
+    marginTop: 2,
+    fontFamily: "Poppins-Regular",
+  },
+  inquiryHeader: {
+    fontSize: 18,
+    fontFamily: "Poppins-Bold",
+    color: "#fff",
+    marginTop: 25,
+    marginBottom: 10,
+  },
+  inquiryCard: {
+    backgroundColor: "#fff",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 15,
+    borderRadius: 15,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  profileImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+  },
+  providerInfo: {
+    flex: 1,
+    marginLeft: 12,
+  },
+  providerName: {
+    fontSize: 16,
+    fontFamily: "Poppins-Bold",
+    color: "#0A2E5C",
+  },
+  providerRole: {
+    fontSize: 13,
+    fontFamily: "Poppins-Regular",
+    color: "#6b7280",
+  },
+  contactIcons: {
+    flexDirection: "row",
+  },
+  iconSpacing: {
+    marginRight: 10,
+  },
+  bookButton: {
+    backgroundColor: "#0A2E5C",
+    marginTop: 30,
+    paddingVertical: 14,
+    borderRadius: 12,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+  },
+  bookButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontFamily: "Poppins-Bold",
+  },
+};

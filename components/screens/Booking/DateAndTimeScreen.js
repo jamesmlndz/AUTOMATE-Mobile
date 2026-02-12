@@ -66,6 +66,21 @@ const DateAndTimeScreen = ({ navigation, route }) => {
     setSelectedSlot(null);
   };
 
+   // ✅ ADD THIS FUNCTION this is what only i added look for here 
+   const buildScheduledDateTime = () => {
+    const [time, modifier] = selectedSlot.time.split(" ");
+    let [hours, minutes] = time.split(":").map(Number);
+
+    if (modifier === "PM" && hours !== 12) hours += 12;
+    if (modifier === "AM" && hours === 12) hours = 0;
+
+    const dateTime = new Date(selectedDate);
+    dateTime.setHours(hours, minutes, 0, 0);
+
+    return dateTime.toISOString(); // IMPORTANT
+  };
+
+
   // Handler for date changes in the calendar
   const handleDateChange = (newDate) => {
     console.log(newDate);
@@ -78,6 +93,7 @@ const DateAndTimeScreen = ({ navigation, route }) => {
       alert("Please select a time slot.");
       return;
     }
+  
 
     // Combine previous form data with the selected date and time
     const combinedData = {
@@ -92,7 +108,7 @@ const DateAndTimeScreen = ({ navigation, route }) => {
 
   return (
     <ImageBackground
-      source={require("../../../assets/automatebg.jpg")} // Make sure the path is correct
+      source={require("../../../assets/tierodmanbg.png")} // Make sure the path is correct
       style={styles.backgroundImage}
       resizeMode="cover"
     >

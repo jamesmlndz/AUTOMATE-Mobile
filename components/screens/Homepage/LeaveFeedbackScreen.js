@@ -49,7 +49,7 @@ const LeaveFeedbackScreen = () => {
       });
       setFeedback(""); // Clear feedback after submission
       setRating(0); // Clear rating after submission
-      navigation.navigate("TrackingProgress");
+      navigation.navigate("HomePage");
     } catch (error) {
       Toast.show({
         type: "error",
