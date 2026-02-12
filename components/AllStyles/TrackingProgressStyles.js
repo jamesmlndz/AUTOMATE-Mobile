@@ -14,6 +14,7 @@ export const TrackingProgressStyles = StyleSheet.create({
     color: "#08285e",
     textAlign: "center",
     marginVertical: 20,
+    
   },
   carDetails: {
     backgroundColor: "rgba(255,255,255,0.85)",

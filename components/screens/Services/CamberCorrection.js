@@ -10,7 +10,7 @@ export default function CamberCorrection() {
 
   return (
     <ImageBackground
-      source={require('../../../assets/automatebg.jpg')}
+      source={require('../../../assets/tierodmanbg.png')}
       style={styles.background}
       resizeMode="cover"
     >

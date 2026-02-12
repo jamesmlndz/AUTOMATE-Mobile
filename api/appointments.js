@@ -53,3 +53,12 @@ export const submitFeedback = async (bookingId, comment, rating) => {
     throw new Error(getAxiosErrorMessage(error));
   }
 };
+
+export const getAllFeedback = async () => {
+  try {
+    const response = await authenticatedApi.get("/appointments/reviews");
+    return response.data.data; // returns the array of reviews
+  } catch (error) {
+    throw new Error(getAxiosErrorMessage(error));
+  }
+};

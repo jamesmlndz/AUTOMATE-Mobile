@@ -79,6 +79,85 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#fff",
   },
+  //updated 
+
+  background: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0,0,0,0.4)", // darker overlay for readability
+  },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 30,
+    zIndex: 2,
+  },
+  title: {
+    fontSize: 36,
+    fontWeight: "bold",
+    color: "#fff",
+    marginBottom: 15,
+    textAlign: "center",
+  },
+  image: {
+    width: 260,
+    height: 260,
+    marginBottom: 20,
+  },
+  subtitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#D39505",
+    textAlign: "center",
+    marginBottom: 15,
+  },
+  description: {
+    fontSize: 15,
+    color: "#ddd",
+    textAlign: "center",
+    lineHeight: 22,
+    marginBottom: 40,
+    paddingHorizontal: 15,
+  },
+  pagination: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginBottom: 30,
+  },
+  dot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: "#aaa",
+    marginHorizontal: 5,
+  },
+  activeDot: {
+    backgroundColor: "#D39505",
+    width: 20,
+  },
+  button: {
+    backgroundColor: "#D39505",
+    paddingVertical: 15,
+    paddingHorizontal: 50,
+    borderRadius: 30,
+    shadowColor: "#000",
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 3 },
+    elevation: 6,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+    letterSpacing: 1,
+    textAlign: "center",
+  },
   
 });
 

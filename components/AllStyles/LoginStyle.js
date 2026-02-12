@@ -27,7 +27,7 @@ const LoginStyle = StyleSheet.create({
   },
   getButton: {
     backgroundColor: '#D39505',
-    paddingVertical: 14,
+    paddingVertical: 15,
     paddingHorizontal: 80,
     borderRadius: 10,
     width: '80%',
@@ -42,28 +42,28 @@ const LoginStyle = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     fontSize: 20,
-    fontFamily: "Messina",
-    fontWeight: 'bold',
+    fontFamily: "Poppins-Bold",
+    
   },
   title: {
     fontSize: 30,
     marginBottom: 24,
-    fontFamily: "Poppins",
+    fontFamily: "Poppins-Bold",
     textAlign: 'center',
-    fontWeight: 'bold',
+    color: '#D39505'
   },
   Regtitle: {
     fontSize: 30,
     marginTop: 50,
     marginBottom: 24,
     color: '#08285E',
-    fontFamily: "Messina",
     textAlign: 'center',
-    fontWeight: 'bold',
+    fontFamily: "Poppins-Bold",
+    
   },
   buttonContainer: {
     flexDirection: 'row',
-    marginBottom: 24,
+    marginBottom: 26,
     borderRadius: 10,
     overflow: 'hidden',
   },
@@ -73,7 +73,7 @@ const LoginStyle = StyleSheet.create({
     paddingHorizontal: 20,
     borderTopLeftRadius: 8,
     borderBottomLeftRadius: 8,
-    fontFamily: "Messina-Regular",
+    fontFamily: "Poppins-Bold",
     height: 45,
     width: '50%',
   },
@@ -93,6 +93,7 @@ const LoginStyle = StyleSheet.create({
     borderBottomLeftRadius: 8,
     height: 45,
     width: '50%',
+    
   },
   ClickregisterButton: {
     backgroundColor: '#08285E',
@@ -104,10 +105,21 @@ const LoginStyle = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    fontFamily: "Poppins", // Updated for consistency
-    fontSize: 16,          // 🆕 Slight increase for readability
+    textAlign: 'center', // Updated for consistency
+    fontSize: 16,
+              // 🆕 Slight increase for readability
+  },
+  buttonTextRegister: {
+    color: 'white',
+    textAlign: 'center', // Updated for consistency
+    fontSize: 14,
+    fontFamily: "Poppins-Bold",          // 🆕 Slight increase for readability
+  },
+  buttonTextLogin: {
+    color: 'white',
+    textAlign: 'center', // Updated for consistency
+    fontSize: 14, 
+    fontFamily: "Poppins-Bold",         // 🆕 Slight increase for readability
   },
   numBox: {
     width: 50,
@@ -127,8 +139,7 @@ const LoginStyle = StyleSheet.create({
   verifyText: {
     textAlign: 'center',
     fontSize: 16,
-    fontWeight: 'bold',
-    fontFamily: 'Poppins',
+    fontFamily: "Poppins-Bold",
     color: '#1F2937',
   },
   otpContainer: {
@@ -146,7 +157,7 @@ const LoginStyle = StyleSheet.create({
     borderRadius: 10,
     textAlign: 'center',
     fontSize: 22,
-    fontWeight: 'bold',
+    fontFamily: "Poppins-Bold",
     color: '#08285E',
     marginHorizontal: 6,
     elevation: 4, // 🆕 Slightly increased for focus
@@ -156,11 +167,10 @@ const LoginStyle = StyleSheet.create({
     marginBottom: 18,
   },
   label: {
-    fontSize: 14,
-    color: '#1F2937', // 🆕 Slightly darker for contrast
+    fontSize: 14, // 🆕 Slightly darker for contrast
     marginBottom: 4,
-    fontWeight: 'bold',
-    fontFamily: 'Poppins',
+    fontFamily: "Poppins-Bold",
+    color: 'black'
   },
   input: {
     borderWidth: 1,
@@ -169,7 +179,7 @@ const LoginStyle = StyleSheet.create({
     padding: 10,
     fontSize: 16,
     color: 'black',
-    fontWeight: '500',
+    fontFamily: "Poppins-Regular",
     backgroundColor: '#FFFFFF',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
@@ -192,8 +202,7 @@ const LoginStyle = StyleSheet.create({
     textAlign: 'center',
     fontSize: 16,
     marginTop: 1,
-    fontFamily: "Poppins",
-    fontWeight: 'bold',
+    fontFamily: "Poppins-Bold",
   },
   dashContainer: {
     padding: 1,
@@ -233,7 +242,7 @@ const LoginStyle = StyleSheet.create({
     color: '#08285E',
     marginBottom: 10,
     textAlign: 'center',
-    fontFamily: 'Poppins',
+    fontFamily: "Poppins-Bold",
   },
   emailText: {
     fontSize: 16,
@@ -248,8 +257,7 @@ const LoginStyle = StyleSheet.create({
     textAlign: 'center',
     fontSize: 14,
     textDecorationLine: 'underline',
-    fontFamily: 'Poppins',
-    fontWeight: 'bold',
+    fontFamily: "Poppins-Regular",
   },
   forgotText: {
     marginTop: 10,
@@ -258,9 +266,12 @@ const LoginStyle = StyleSheet.create({
     fontSize: 14,
     marginBottom: 12,
     marginRight: 8,
-    fontFamily: 'Poppins',
+    fontFamily: "Poppins-Bold",
     textDecorationLine: 'underline',
   },
+  
+  
+  
 });
 
 export default LoginStyle;

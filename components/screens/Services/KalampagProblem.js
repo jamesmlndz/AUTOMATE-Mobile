@@ -8,7 +8,7 @@ import styles from '../../AllStyles/Services style/AllServicesStyle';
 export default function KalampagProblem() {
   const navigation = useNavigation();
   return (
-    <ImageBackground source={require('../../../assets/automatebg.jpg')} style={styles.background} resizeMode="cover">
+    <ImageBackground source={require('../../../assets/tierodmanbg.png')} style={styles.background} resizeMode="cover">
       <View style={styles.container}>
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="white" />
