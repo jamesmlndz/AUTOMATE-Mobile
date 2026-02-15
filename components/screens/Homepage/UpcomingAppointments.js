@@ -25,7 +25,7 @@ const UpcomingAppointments = ({ appointments }) => {
         <View style={styles.headerTitleContainer}>
           <Text style={styles.headerTitle}>HISTORY</Text>
           <Text style={styles.headerSubTitle}>
-            ({vehicle.brand} {vehicle.model} - {filter.plateNumber})
+            ({vehicle?.brand || ""} {vehicle?.model || ""} - {filter?.plateNumber || ""})
           </Text>
         </View>
       );
@@ -34,56 +34,80 @@ const UpcomingAppointments = ({ appointments }) => {
     }
   };
 
-  const renderItem = ({ item, index }) => {
-    console.log({ ...item });
-    return (
-      <TouchableOpacity
-        style={styles.card}
-        activeOpacity={0.8}
-        onPress={() =>
-          navigation.navigate("AptScreen", {
-            bookingData: { ...item },
-          })
-        }
-      >
-        <View style={styles.cardHeader}>
-          <View style={styles.dateBox}>
-            <Text style={styles.dateText}>
-              {new Date(item.scheduledTime).getDate()}
-            </Text>
-            <Text style={styles.monthText}>
-              {new Date(item.scheduledTime).toDateString().split(" ")[0]}
-            </Text>
-          </View>
-          <Text style={styles.titleText}>
-            {item.services[0].service.name || "General Service"}
+  const renderItem = ({ item }) => {
+  const scheduledDate = item?.scheduledTime
+    ? new Date(item.scheduledTime)
+    : null;
+
+  const serviceName =
+    item?.services?.length > 0
+      ? item?.services?.[0]?.service?.name
+      : null;
+
+  const statusStyle = getStatusStyle(item?.status);
+
+  return (
+    <TouchableOpacity
+      style={styles.card}
+      activeOpacity={0.8}
+      onPress={() =>
+        navigation.navigate("AptScreen", {
+          bookingData: { ...item },
+        })
+      }
+    >
+      <View style={styles.cardHeader}>
+        <View style={styles.dateBox}>
+          <Text style={styles.dateText}>
+            {scheduledDate ? scheduledDate.getDate() : "--"}
           </Text>
-          <Ionicons name="chevron-forward" size={22} color="#F9D342" />
+          <Text style={styles.monthText}>
+            {scheduledDate
+              ? scheduledDate.toDateString().split(" ")[0]
+              : "--"}
+          </Text>
         </View>
-        <View style={[styles.cardFooter]}>
-          <View style={{ flex: 1, flexDirection: "row" }}>
-            <Ionicons name="person" size={18} color="#F9D342" />
-            <Text style={styles.userText}>{item.name || "Juan Dela Cruz"}</Text>
-          </View>
-          <View
+
+        <Text style={styles.titleText}>
+          {serviceName || "General Service"}
+        </Text>
+
+        <Ionicons name="chevron-forward" size={22} color="#F9D342" />
+      </View>
+
+      <View style={styles.cardFooter}>
+        <View style={{ flex: 1, flexDirection: "row" }}>
+          <Ionicons name="person" size={18} color="#F9D342" />
+          <Text style={styles.userText}>
+            {item?.name || "No Name"}
+          </Text>
+        </View>
+
+        <View
+          style={[
+            styles.statusBadge,
+            {
+              backgroundColor:
+                statusStyle?.backgroundColor || "#ccc",
+            },
+          ]}
+        >
+          <Text
             style={[
-              styles.statusBadge,
-              { backgroundColor: getStatusStyle(item.status).backgroundColor },
+              styles.statusText,
+              {
+                color: statusStyle?.color || "#000",
+              },
             ]}
           >
-            <Text
-              style={[
-                styles.statusText,
-                { color: getStatusStyle(item.status).color },
-              ]}
-            >
-              {item?.status}
-            </Text>
-          </View>
+            {item?.status || "Unknown"}
+          </Text>
         </View>
-      </TouchableOpacity>
-    );
-  };
+      </View>
+    </TouchableOpacity>
+  );
+};
+
 
   return (
     <ImageBackground
@@ -121,10 +145,10 @@ const UpcomingAppointments = ({ appointments }) => {
         </View>
       )}
 
-      {data?.appointments && (
+      {Array.isArray(data?.appointments) && (
         <FlatList
-          data={[...data?.appointments]}
-          keyExtractor={(item) => item._id}
+          data={data.appointments}
+          keyExtractor={(item) => item._id?.toString()}
           renderItem={renderItem}
           contentContainerStyle={styles.listContent}
           showsVerticalScrollIndicator={false}
