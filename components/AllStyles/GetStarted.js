@@ -63,4 +63,5 @@ export default StyleSheet.create({
     textAlign: 'center',
     letterSpacing: 1,
   },
+  
 });

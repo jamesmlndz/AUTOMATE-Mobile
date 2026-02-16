@@ -87,26 +87,31 @@ const GetStarted = () => {
 
 
      <View style={styles.contentWrapper}>
-       {/* LOGO SECTION - GLASS REMOVED */}
-       <Animated.View style={[styles.topSection, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
-         <Image
-           source={require('../../../assets/Logo.png')}
-           style={styles.logo}
-           resizeMode="contain"
-         />
-       </Animated.View>
+       <Animated.View
+        style={[
+          styles.topSection,
+          { opacity: fadeAnim, transform: [{ translateY: slideAnim }] },
+        ]}
+      >
+        <Image
+          source={require('../../../assets/Logo.png')}
+          style={[styles.logo, { transform: [{ scale: 1.3 }] }]}
+          resizeMode="contain"
+        />
+      </Animated.View>
+
 
 
        {/* INFO SECTION */}
        <View style={styles.bottomSection}>
          <Animated.View style={{ opacity: fadeAnim, transform: [{ translateY: slideAnim }] }}>
-           <Text style={styles.brandTag}>PREMIUM AUTO CARE</Text>
+           <Text style={styles.brandTag}>AUTOMATE</Text>
            <Text style={styles.title}>
              Precision Service,{"\n"}
              <Text style={{ color: '#FFB703' }}>Simplified.</Text>
            </Text>
            <Text style={styles.subtitle}>
-             Experience the future of car maintenance with AutoMate's seamless tracking and booking system.
+             Experience AutoMate's seamless tracking and booking system.
            </Text>
          </Animated.View>
 
