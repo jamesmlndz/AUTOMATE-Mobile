@@ -93,7 +93,7 @@ const Vehicles = () => {
        </View>
       
        <View style={localStyles.headerInfo}>
-         <Text style={localStyles.greeting}>Manage your fleet</Text>
+         <Text style={localStyles.greeting}>Manage your vehicle</Text>
          <Text style={localStyles.subGreeting}>View and select your registered vehicles below.</Text>
        </View>
      </View>
