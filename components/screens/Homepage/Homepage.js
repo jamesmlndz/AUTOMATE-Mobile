@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
  View,
  Text,
@@ -19,8 +19,9 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { SvgUri } from "react-native-svg";
 import { useAuth } from "../../../context/authContext";
+import { getAllFeedback } from "../../../api/appointments";
 
-
+const { width } = Dimensions.get("window");
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 
@@ -37,7 +38,34 @@ const Homepage = () => {
  const { currentUser } = useAuth();
  const navigation = useNavigation();
  const [searchQuery, setSearchQuery] = useState("");
+ 
+ const [reviews, setReviews] = useState([]);
+ const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    const fetchHomepageReviews = async () => {
+      try {
+        const res = await getAllFeedback();
+        
+        // THIS WILL POP UP ON YOUR SCREEN - Check what it says!
+        console.warn("API Data Received:", JSON.stringify(res).substring(0, 100));
+
+        // Handle different API shapes (some return .data, some return the array directly)
+        const rawData = res?.data || res || [];
+        
+        if (Array.isArray(rawData)) {
+          setReviews(rawData);
+        } else {
+          console.warn("API did not return an array. Check console.");
+        }
+      } catch (err) {
+        console.error("Fetch Error:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchHomepageReviews();
+  }, []);
 
  // 🌙 THEME STATE
  const [isDarkMode, setIsDarkMode] = useState(false);
@@ -414,89 +442,179 @@ const Homepage = () => {
        </View>
 
 
-       {/* =====  CUSTOMER STORIES ===== */}
-       <View style={[styles.sectionWrap, { backgroundColor: theme.background, marginTop: 0 }]}>
-         <View style={styles.categoryHeader}>
-           <View>
-             <Text style={[styles.sectionTitle, { color: theme.text, marginLeft: 0 }]}>
-               What Our Customers Say
-             </Text>
-             <Text style={[enhancedStyles.reviewSubtitle, { color: isDarkMode ? "#B0B0B0" : "#64748B" }]}>
-               {customerStories.length}+ satisfied clients
-             </Text>
-           </View>
-           <TouchableOpacity onPress={() => navigation.navigate("AllReviewsScreen")}>
-              <Text style={[styles.viewAll, { color: theme.accentBlue }]}>View All</Text>
-           </TouchableOpacity>
-         </View>
+     {/* ===== CUSTOMER STORIES ===== */}
+      <View style={[styles.sectionWrap, { backgroundColor: theme.background, paddingVertical: 24 }]}>
+        {/* Header Section: Improved Spacing and Alignment */}
+        <View style={{ 
+          flexDirection: 'row', 
+          justifyContent: 'space-between', 
+          alignItems: 'flex-end', 
+          paddingHorizontal: 20, 
+          marginBottom: 20 
+        }}>
+          <View>
+            <Text style={{ color: theme.text, fontSize: 22, fontFamily: 'Poppins-Bold', letterSpacing: -0.5 }}>
+              Customer Stories
+            </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}>
+              <Ionicons name="star" size={14} color="#FFD700" />
+              <Text style={{ 
+                color: isDarkMode ? "rgba(255,255,255,0.5)" : "#64748B", 
+                fontSize: 13, 
+                marginLeft: 6, 
+                fontFamily: 'Poppins-Medium' 
+              }}>
+                {reviews.length} Verified Reviews
+              </Text>
+            </View>
+          </View>
 
+          <TouchableOpacity 
+            onPress={() => navigation.navigate("AllReviewsScreen")}
+            activeOpacity={0.7}
+            style={{ paddingBottom: 2 }}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={{ color: theme.accentBlue, fontFamily: 'Poppins-Bold', fontSize: 14 }}>
+                View All
+              </Text>
+              <Ionicons name="chevron-forward" size={16} color={theme.accentBlue} style={{ marginLeft: 2 }} />
+            </View>
+          </TouchableOpacity>
+        </View>
 
-         <ScrollView
-           horizontal={!expanded}
-           showsHorizontalScrollIndicator={false}
-           contentContainerStyle={[
-             enhancedStyles.storyScrollContainer,
-             expanded && enhancedStyles.expandedGrid,
-           ]}
-         >
-           {visibleStories.map((s, i) => (
-             <View
-               key={i}
-               style={[
-                 enhancedStyles.modernStoryCard,
-                 expanded && enhancedStyles.modernStoryCardExpanded,
-                 { backgroundColor: theme.card, borderColor: theme.border },
-               ]}
-             >
-               {/* Header: Avatar & Name */}
-               <View style={enhancedStyles.storyHeader}>
-                 <Image source={s.img} style={enhancedStyles.userAvatar} />
-                 <View style={enhancedStyles.userInfo}>
-                   <Text style={[enhancedStyles.userNameText, { color: theme.text }]} numberOfLines={1}>
-                     {s.name}
-                   </Text>
-                   <View style={enhancedStyles.ratingRow}>
-                     {[1, 2, 3, 4, 5].map((star) => (
-                       <FontAwesome key={star} name="star" size={10} color="#FFD700" />
-                     ))}
-                   </View>
-                 </View>
-               </View>
+        <ScrollView
+          horizontal
+          snapToInterval={width * 0.85 + 16} // Adjusted for better "peek" of the next card
+          decelerationRate="fast"
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingLeft: 20, paddingRight: 4 }}
+        >
+          {reviews.length > 0 ? (
+            reviews.slice(0, 5).map((review, index) => (
+              <View
+                key={index}
+                style={{
+                  width: width * 0.85,
+                  marginRight: 16,
+                  padding: 20,
+                  borderRadius: 28, // Softer corners
+                  backgroundColor: isDarkMode ? "#1A1A1A" : "#FFFFFF",
+                  borderWidth: 1,
+                  borderColor: isDarkMode ? "#2A2A2A" : "#F1F5F9",
+                  // More natural shadow
+                  elevation: 5,
+                  shadowColor: "#000",
+                  shadowOpacity: isDarkMode ? 0.3 : 0.08,
+                  shadowRadius: 15,
+                  shadowOffset: { width: 0, height: 8 },
+                }}
+              >
+                {/* Top Row: Better Proportions */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 18 }}>
+                  <View style={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: 16,
+                    backgroundColor: isDarkMode ? '#2D2D2D' : '#F8FAFC', 
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginRight: 12,
+                    borderWidth: 1,
+                    borderColor: isDarkMode ? '#3D3D3D' : '#E2E8F0'
+                  }}>
+                    <Text style={{ color: '#FFB703', fontFamily: 'Poppins-Bold', fontSize: 16 }}>
+                      {review.name ? review.name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2) : "AC"}
+                    </Text>
+                  </View>
+                  
+                  <View style={{ flex: 1 }}>
+                    <Text style={{ color: theme.text, fontSize: 16, fontFamily: "Poppins-Bold" }} numberOfLines={1}>
+                      {review.name}
+                    </Text>
+                    <View style={{ flexDirection: 'row', marginTop: 2 }}>
+                      {[...Array(5)].map((_, i) => (
+                        <Ionicons
+                          key={i}
+                          name="star"
+                          size={12}
+                          color={i < (review.rating || 0) ? "#FFD700" : (isDarkMode ? "#333" : "#E2E8F0")}
+                          style={{ marginRight: 2 }}
+                        />
+                      ))}
+                    </View>
+                  </View>
+                  
+                  <View style={{ 
+                    backgroundColor: isDarkMode ? 'rgba(255,183,3,0.1)' : '#FFFBEB', 
+                    paddingHorizontal: 10, 
+                    paddingVertical: 5, 
+                    borderRadius: 10 
+                  }}>
+                    <Text style={{ color: '#D97706', fontSize: 10, fontFamily: 'Poppins-Bold' }}>
+                      #{review.refNo || 'REF'}
+                    </Text>
+                  </View>
+                </View>
 
+                {/* Comment Section: Fixed Spacing */}
+                <View style={{ minHeight: 70, marginBottom: 10 }}>
+                  <Ionicons 
+                    name="quote" 
+                    size={24} 
+                    color={isDarkMode ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.03)"} 
+                    style={{ position: 'absolute', top: -5, left: -10 }} 
+                  />
+                  <Text style={{ 
+                    color: isDarkMode ? "#CBD5E1" : "#475569", 
+                    fontSize: 14, 
+                    lineHeight: 22, 
+                    fontFamily: "Poppins-Regular",
+                  }} numberOfLines={3}>
+                    {review.comment}
+                  </Text>
+                </View>
 
-               {/* Body: Review Text */}
-               <View style={enhancedStyles.reviewBody}>
-                 <Text style={[enhancedStyles.reviewText, { color: isDarkMode ? "#E0E0E0" : "#4A5568" }]} numberOfLines={3}>
-                   “{s.review}”
-                 </Text>
-               </View>
-
-
-               <View style={[enhancedStyles.timeBadge, { backgroundColor: isDarkMode ? "#2D2D2D" : "#F1F5F9" }]}>
-                  <Text style={[enhancedStyles.timeText, { color: isDarkMode ? "#B0B0B0" : "#64748B" }]}>Recently</Text>
-               </View>
-             </View>
-           ))}
-         </ScrollView>
-
-
-         {/* Toggle Expand Button (Nicely Styled) */}
-         <TouchableOpacity
-           activeOpacity={0.8}
-           style={[enhancedStyles.expandToggle, { borderColor: theme.accentBlue }]}
-           onPress={toggleExpand}
-         >
-           <Text style={[enhancedStyles.expandToggleText, { color: theme.accentBlue }]}>
-             {expanded ? "Show Less" : "Quick View All"}
-           </Text>
-           <Ionicons
-             name={expanded ? "chevron-up" : "chevron-down"}
-             size={16}
-             color={theme.accentBlue}
-           />
-         </TouchableOpacity>
-       </View>
-
+                {/* Footer: Cleaner separation */}
+                <View style={{ 
+                  marginTop: 10, 
+                  paddingTop: 15, 
+                  borderTopWidth: 1, 
+                  borderTopColor: isDarkMode ? "#2A2A2A" : "#F8FAFC",
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center'
+                }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <MaterialCommunityIcons name="check-decagram" size={16} color="#10B981" />
+                    <Text style={{ color: "#10B981", fontSize: 11, fontFamily: "Poppins-Bold", marginLeft: 5, letterSpacing: 0.5 }}>
+                      VERIFIED
+                    </Text>
+                  </View>
+                  <Text style={{ color: "#94A3B8", fontSize: 11, fontFamily: 'Poppins-Medium' }}>
+                    {review.date ? new Date(review.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : ""}
+                  </Text>
+                </View>
+              </View>
+            ))
+          ) : (
+            <View style={{ 
+              width: width - 40, 
+              padding: 40, 
+              backgroundColor: isDarkMode ? '#1A1A1A' : '#F8FAFC', 
+              borderRadius: 24, 
+              alignItems: 'center',
+              borderStyle: 'dashed',
+              borderWidth: 2,
+              borderColor: isDarkMode ? '#333' : '#E2E8F0'
+            }}>
+              <Text style={{ color: '#64748B', fontFamily: 'Poppins-Medium' }}>
+                Be the first to leave a review!
+              </Text>
+            </View>
+          )}
+        </ScrollView>
+      </View>
 
        {/* ===== 🛠️ ENHANCED TEAM SECTION (FROM PREVIOUS REQUEST) ===== */}
        <View style={localStyles.sectionWrapper}>
