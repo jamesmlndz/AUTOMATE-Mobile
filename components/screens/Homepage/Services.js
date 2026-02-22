@@ -1,3 +1,4 @@
+// Services.jsx
 import React from "react";
 import {
   View,
@@ -18,23 +19,30 @@ const Services = () => {
 
   const { data: services, isLoading, error } = useGetAllServices(filter);
 
-  const renderItem = ({ item }) => (
-    <TouchableOpacity
-      style={styles.card}
-      onPress={() =>
-        navigation.navigate("ServiceDetails", {
-          service: { ...item, image: item.imageUrl },
-        })
-      }
-    >
-      <Image source={{ uri: item.imageUrl }} style={styles.cardImage} />
+  const renderItem = ({ item }) => {
+    // Use first image from imageUrls array if available
+    const imageUri = item.imageUrls && item.imageUrls.length > 0
+      ? item.imageUrls[0]
+      : item.image; // fallback for old single image
 
-      <View style={styles.cardFooter}>
-        <Text style={styles.cardTitle}>{item.title || item.name}</Text>
-        <AntDesign name="right" size={18} color="#111" />
-      </View>
-    </TouchableOpacity>
-  );
+    return (
+      <TouchableOpacity
+        style={styles.card}
+        onPress={() =>
+          navigation.navigate("ServiceDetails", {
+            service: { ...item, image: imageUri },
+          })
+        }
+      >
+        <Image source={{ uri: imageUri }} style={styles.cardImage} />
+
+        <View style={styles.cardFooter}>
+          <Text style={styles.cardTitle}>{item.title || item.name}</Text>
+          <AntDesign name="right" size={18} color="#111" />
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View style={styles.container}>
