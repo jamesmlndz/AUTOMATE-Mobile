@@ -15,6 +15,7 @@ import Homepage from "./components/screens/Homepage/Homepage";
 import Services from "./components/screens/Homepage/Services";
 import Login from "./components/screens/Login/Login";
 import Register from "./components/screens/Login/Register";
+import TermsAndConditions from "./components/screens/Login/TermsAndConditions";
 import GetStarted from "./components/screens/Login/GetStarted";
 import Verify from "./components/screens/Login/Verify";
 import AccountCreated from "./components/screens/Login/AccountCreated";
@@ -94,6 +95,7 @@ export default function RootNavigator() {
         <Stack.Screen name="AllReviewsScreen"component={AllReviewsScreen}options={{ headerShown: false }}/>
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
         <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen name="TermsAndConditions" component={TermsAndConditions} />
         <Stack.Screen name="Verify" component={Verify} />
         <Stack.Screen name="ResetPassword" component={ResetPassword} />
         <Stack.Screen name="VerifyResetOtp" component={VerifyResetOtp} />

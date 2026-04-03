@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import LoginStyle from "../../AllStyles/LoginStyle";
+import CustomCheckbox from "../../CustomCheckbox";
 import authenticatedApi, {
   getAxiosErrorMessage,
 } from "../../../api/axiosInstance";
@@ -25,6 +26,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
 
   const handleRegister = async () => {
     if (
@@ -46,6 +48,14 @@ const Register = () => {
 
     if (!/\S+@\S+\.\S+/.test(email)) {
       Alert.alert("Error", "Enter a valid email.");
+      return;
+    }
+
+    if (!agreedToTerms) {
+      Alert.alert(
+        "Terms Required",
+        "You must agree to the Terms and Conditions to register."
+      );
       return;
     }
 
@@ -193,6 +203,21 @@ const Register = () => {
           />
         </View>
 
+        {/* Terms and Conditions Checkbox */}
+        <View style={styles.termsContainer}>
+          <CustomCheckbox
+            checked={agreedToTerms}
+            onPress={() => setAgreedToTerms(!agreedToTerms)}
+          />
+          <TouchableOpacity
+            onPress={() => navigation.navigate("TermsAndConditions")}
+            disabled={isLoading}
+            style={styles.termsLinkContainer}
+          >
+            <Text style={styles.termsLink}>Terms and Conditions</Text>
+          </TouchableOpacity>
+        </View>
+
         {/* Register Button */}
         <TouchableOpacity
           style={LoginStyle.sendCodeButton}
@@ -228,6 +253,22 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 10,
     elevation: 6,
+  },
+  termsContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 16,
+    paddingHorizontal: 8,
+  },
+  termsLinkContainer: {
+    marginLeft: 8,
+    flex: 1,
+  },
+  termsLink: {
+    fontSize: 13,
+    color: "#D39505",
+    fontFamily: "Poppins-Bold",
+    textDecorationLine: "underline",
   },
 });
 
