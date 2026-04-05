@@ -1,7 +1,8 @@
 import React from "react";
-import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, Image, StyleSheet, ScrollView } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { format } from "date-fns";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 const BookedScreen = () => {
   const navigation = useNavigation();
@@ -11,47 +12,71 @@ const BookedScreen = () => {
 
   return (
     <View style={styles.overlay}>
-      <View style={styles.popup}>
-        {/* Header */}
-        <View style={styles.header}>
-          {/* <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-            <Ionicons name="close" size={28} color="#C9A23F" />
-          </TouchableOpacity> */}
-          <Text style={styles.headerTitle}>Booking Confirmed</Text>
-          <View style={{ width: 28 }} />
-        </View>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1, justifyContent: "center", alignItems: "center" }}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.popup}>
+          {/* Header */}
+          <View style={styles.header}>
+            <Text style={styles.headerTitle}>Booking Confirmed</Text>
+            <View style={{ width: 28 }} />
+          </View>
 
-        {/* Confirmation Icon */}
-        <Image
-          source={require("../../../assets/completed.png")}
-          style={styles.logo}
-          resizeMode="contain"
-        />
+          {/* Confirmation Icon */}
+          <Image
+            source={require("../../../assets/completed.png")}
+            style={styles.logo}
+            resizeMode="contain"
+          />
 
-        {/* Thank You Message */}
-        <Text style={styles.thankYouText}>Thank You, {name || "Guest"}!</Text>
-        <Text style={styles.subText}>
-          Your appointment has been successfully booked.
-        </Text>
-
-        {/* Booking Details */}
-        <Text style={styles.detailsText}>
-          Date:
-          <Text style={styles.boldText}>
-            {date ? format(new Date(date), "yyyy-MM-dd") : "N/A"}
+          {/* Thank You Message */}
+          <Text style={styles.thankYouText}>Thank You, {name || "Guest"}!</Text>
+          <Text style={styles.subText}>
+            Your appointment has been successfully booked.
           </Text>
-          {"\n"}
-          Time: <Text style={styles.boldText}>{time || "N/A"}</Text>
-        </Text>
 
-        {/* Done Button */}
-        <TouchableOpacity
-          style={styles.doneButton}
-          onPress={() => navigation.navigate("HomePage")}
-        >
-          <Text style={styles.doneText}>Done</Text>
-        </TouchableOpacity>
-      </View>
+          {/* Booking Details */}
+          <Text style={styles.detailsText}>
+            Date:
+            <Text style={styles.boldText}>
+              {date ? format(new Date(date), "yyyy-MM-dd") : "N/A"}
+            </Text>
+            {"\n"}
+            Time: <Text style={styles.boldText}>{time || "N/A"}</Text>
+          </Text>
+
+          {/* Important Notice Box - No Show Policy */}
+          <View style={styles.noticeBox}>
+            <View style={styles.noticeHeader}>
+              <MaterialIcons name="info" size={20} color="#D97706" />
+              <Text style={styles.noticeTitle}>Important Notice</Text>
+            </View>
+            <Text style={styles.noticeText}>
+              Please arrive <Text style={styles.boldText}>at least 15 minutes</Text> before your scheduled appointment time.
+            </Text>
+            <Text style={styles.noticeText}>
+              If you do not arrive within <Text style={styles.boldText}>30 minutes</Text> of your appointment start time, your appointment will be <Text style={styles.boldText}>automatically cancelled</Text>.
+            </Text>
+          </View>
+
+          {/* Reference Number */}
+          {refNo && (
+            <View style={styles.refnoContainer}>
+              <Text style={styles.refnoLabel}>Reference Number</Text>
+              <Text style={styles.refnoValue}>{refNo}</Text>
+            </View>
+          )}
+
+          {/* Done Button */}
+          <TouchableOpacity
+            style={styles.doneButton}
+            onPress={() => navigation.navigate("HomePage")}
+          >
+            <Text style={styles.doneText}>Done</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -136,6 +161,55 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     fontSize: 18,
     fontFamily: "Messina-Regular",
+  },
+  noticeBox: {
+    width: "100%",
+    backgroundColor: "#FEF3C7",
+    borderRadius: 12,
+    borderLeftWidth: 4,
+    borderLeftColor: "#D97706",
+    padding: 16,
+    marginBottom: 25,
+  },
+  noticeHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 12,
+  },
+  noticeTitle: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#92400E",
+    marginLeft: 10,
+    fontFamily: "Messina-Regular",
+  },
+  noticeText: {
+    fontSize: 14,
+    color: "#78350F",
+    lineHeight: 22,
+    marginBottom: 8,
+    fontFamily: "Messina-Regular",
+  },
+  refnoContainer: {
+    width: "100%",
+    backgroundColor: "#F3F4F6",
+    borderRadius: 10,
+    padding: 14,
+    marginBottom: 20,
+    alignItems: "center",
+  },
+  refnoLabel: {
+    fontSize: 12,
+    color: "#6B7280",
+    marginBottom: 6,
+    fontFamily: "Messina-Regular",
+  },
+  refnoValue: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#12264A",
+    fontFamily: "Messina-Regular",
+    letterSpacing: 2,
   },
 });
 
