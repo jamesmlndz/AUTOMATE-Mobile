@@ -168,9 +168,9 @@ const TermsAndConditions = () => {
               If you have any questions about these Terms and Conditions, please contact us at:
             </Text>
             <Text style={styles.contactInfo}>
-              Email: support@automate-services.com{"\n"}
-              Phone: +63 (2) 1234-5678{"\n"}
-              Address: Your Address Here
+              Email: tierodmanautoc@yahoo.com{"\n"}
+              Phone: +63 (2) 917 849 6894{"\n"}
+              Address: 246 P. Ocampo Ext., cor. Sampaloc St., San Antonio Makati City
             </Text>
           </View>
 
@@ -178,7 +178,7 @@ const TermsAndConditions = () => {
           <View style={styles.footer}>
             <Text style={styles.lastUpdated}>
               Last Updated: April 2026{"\n"}
-              © 2026 AUTOMATE. All rights reserved.
+              © 2026 AUTOMATE | Tierodman Auto Center. All rights reserved.
             </Text>
           </View>
         </ScrollView>
