@@ -3,6 +3,8 @@ import { ActivityIndicator } from "react-native";
 import * as Font from "expo-font";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Toast from "react-native-toast-message";
+import { NotificationHandler } from "./components/NotificationHandler";
 
 // Import screens
 import Bookingform from "./components/screens/Booking/Bookingform";
@@ -159,6 +161,8 @@ export default function RootNavigator() {
 
         <Stack.Screen name="EditProfile" component={EditProfileScreen} />
       </Stack.Navigator>
+      <NotificationHandler />
+      <Toast />
     </NavigationContainer>
   );
 }

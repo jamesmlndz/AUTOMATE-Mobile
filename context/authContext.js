@@ -1,13 +1,12 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import * as SecureStore from "expo-secure-store";
 import {
   deleteToken,
-  getCurrentUser,
   getToken,
-  getUser,
   saveCurrentUser,
   saveToken,
 } from "../utils/secureStore";
+import { usePushNotifications } from "../hooks/usePushNotifications";
+import { BASE_API_URL } from "../utils/helpers";
 
 const AuthContext = createContext(null);
 
@@ -15,19 +14,29 @@ export const AuthProvider = ({ children }) => {
   const [userToken, setUserToken] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [notificationPayload, setNotificationPayload] = useState(null);
+
+  const handleNotificationReceived = (remoteMessage) => {
+    console.log("Notification payload received in context:", remoteMessage);
+    setNotificationPayload(remoteMessage);
+  };
+
+  
+  usePushNotifications(
+    handleNotificationReceived,
+    userToken ? BASE_API_URL : null,  
+    userToken                        
+  );
 
   useEffect(() => {
     const bootstrapAsync = async () => {
       let token;
       try {
-        token = await getToken();
-      } catch (e) {
-        // Restoring token failed
-      }
+        token = await getToken(); 
+      } catch (e) {}
       setUserToken(token);
       setIsLoading(false);
     };
-
     bootstrapAsync();
   }, []);
 
@@ -35,18 +44,19 @@ export const AuthProvider = ({ children }) => {
     signIn: async (token) => {
       await saveToken(token);
       setUserToken(token);
-      console.log("Sign in successful.");
     },
     signOut: async () => {
       await deleteToken();
       setUserToken(null);
-      console.log("Sign out successful.");
     },
     setUser: async (user) => {
-      setCurrentUser(user), await saveCurrentUser(user);
+      setCurrentUser(user);
+      await saveCurrentUser(user);
     },
     userToken,
     currentUser,
+    notificationPayload,
+    setNotificationPayload,
   };
 
   return (
@@ -54,6 +64,4 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+export const useAuth = () => useContext(AuthContext);
