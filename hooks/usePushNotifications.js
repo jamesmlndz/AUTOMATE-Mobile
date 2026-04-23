@@ -20,6 +20,14 @@ export const usePushNotifications = (onNotificationReceived, apiBaseUrl, userTok
         
         const token = await registerForPushNotificationsAsync();
         console.log('[PushNotifications] FCM Token:', token ? token.substring(0, 50) + '...' : 'NULL');
+        
+        
+        if (token) {
+          console.log('========================================');
+          console.log('[DEBUG] FULL FCM TOKEN:', token);
+          console.log('[DEBUG] First 20 chars:', token.substring(0, 20));
+          console.log('========================================');
+        }
 
         if (token) {
           await AsyncStorage.setItem('fcmToken', token);
@@ -27,6 +35,7 @@ export const usePushNotifications = (onNotificationReceived, apiBaseUrl, userTok
          
           const url = `${apiBaseUrl}/users/push-token`;
           console.log('[PushNotifications] Sending token to:', url);
+          console.log('[DEBUG] User Token (JWT):', userToken ? userToken.substring(0, 30) + '...' : 'NULL');
 
           try {
             const response = await axios.post(
@@ -39,12 +48,19 @@ export const usePushNotifications = (onNotificationReceived, apiBaseUrl, userTok
                 },
               }
             );
-            console.log('[PushNotifications] Backend response:', response.data);
+            console.log('========================================');
+            console.log('[PUSH-TOKEN-SUCCESS] ✓ Token sent to backend!');
+            console.log('[PUSH-TOKEN-SUCCESS] Response:', response.data);
+            console.log('========================================');
           } catch (err) {
-            console.error('[PushNotifications] Error sending token to backend:', err.message);
+            console.log('========================================');
+            console.error('[PUSH-TOKEN-ERROR] ✗ Failed to send token to backend!');
+            console.error('[PUSH-TOKEN-ERROR] Error message:', err.message);
             if (err.response) {
-              console.error('[PushNotifications] Backend error:', err.response.data);
+              console.error('[PUSH-TOKEN-ERROR] Backend error:', err.response.data);
+              console.error('[PUSH-TOKEN-ERROR] Status code:', err.response.status);
             }
+            console.log('========================================');
           }
         } else {
           console.log('[PushNotifications] Failed to get push token');

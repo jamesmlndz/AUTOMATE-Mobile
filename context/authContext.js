@@ -44,12 +44,24 @@ export const AuthProvider = ({ children }) => {
     signIn: async (token) => {
       await saveToken(token);
       setUserToken(token);
+      console.log('========================================');
+      console.log('[DEBUG] USER SIGNED IN');
+      console.log('[DEBUG] JWT Token (first 30 chars):', token.substring(0, 30) + '...');
+      console.log('========================================');
     },
     signOut: async () => {
+      console.log('[DEBUG] USER SIGNED OUT');
       await deleteToken();
       setUserToken(null);
     },
     setUser: async (user) => {
+      console.log('========================================');
+      console.log('[DEBUG] CURRENT USER SET:');
+      console.log('[DEBUG] User ID:', user?._id);
+      console.log('[DEBUG] User Name:', user?.name);
+      console.log('[DEBUG] User Email:', user?.email);
+      console.log('[DEBUG] Full User Object:', user);
+      console.log('========================================');
       setCurrentUser(user);
       await saveCurrentUser(user);
     },
