@@ -1,8 +1,8 @@
 import messaging from '@react-native-firebase/messaging';
 import { Platform, PermissionsAndroid } from 'react-native';
+import notifee, { AndroidImportance } from '@notifee/react-native';
 
 export async function registerForPushNotificationsAsync() {
-  // Request permission (Android 13+)
   if (Platform.OS === 'android') {
     await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
@@ -19,9 +19,15 @@ export async function registerForPushNotificationsAsync() {
     return null;
   }
 
+  //  notification channel
+  await notifee.createChannel({
+    id: 'default',
+    name: 'Default Channel',
+    importance: AndroidImportance.HIGH,
+    sound: 'default',
+  });
+
   const token = await messaging().getToken();
-  console.log('[PushNotifications] FCM Token:', token.substring(0, 50) + '...');
-  console.log('[DEBUG] FULL FCM TOKEN:', token);
   console.log('========================================');
   console.log('[DEBUG] FULL FCM TOKEN:', token);
   console.log('[DEBUG] First 20 chars:', token.substring(0, 20));
@@ -30,7 +36,7 @@ export async function registerForPushNotificationsAsync() {
 }
 
 export function setupNotificationListeners(onNotificationReceived) {
-  // Foreground messages
+  // Foreground messages - display using notifee
   const unsubscribeForeground = messaging().onMessage(async remoteMessage => {
     console.log('========================================');
     console.log('[PushNotifications] Foreground message received!');
@@ -38,6 +44,19 @@ export function setupNotificationListeners(onNotificationReceived) {
     console.log('[PushNotifications] Body:', remoteMessage.notification?.body);
     console.log('[PushNotifications] Data:', remoteMessage.data);
     console.log('========================================');
+
+    // Display the notification 
+    await notifee.displayNotification({
+      title: remoteMessage.notification?.title,
+      body: remoteMessage.notification?.body,
+      android: {
+        channelId: 'default',
+        importance: AndroidImportance.HIGH,
+        pressAction: { id: 'default' },
+        sound: 'default',
+      },
+    });
+
     if (onNotificationReceived) onNotificationReceived(remoteMessage);
   });
 
