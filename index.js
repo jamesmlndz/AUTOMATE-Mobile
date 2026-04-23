@@ -1,14 +1,15 @@
 import { registerRootComponent } from 'expo';
-import * as Notifications from 'expo-notifications';
+import messaging from '@react-native-firebase/messaging';
 import App from './App';
 
-
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-  }),
+// Handles notifications when app is in background or killed
+messaging().setBackgroundMessageHandler(async remoteMessage => {
+  console.log('========================================');
+  console.log('[PushNotifications] Background message received!');
+  console.log('[PushNotifications] Title:', remoteMessage.notification?.title);
+  console.log('[PushNotifications] Body:', remoteMessage.notification?.body);
+  console.log('[PushNotifications] Data:', remoteMessage.data);
+  console.log('========================================');
 });
 
 registerRootComponent(App);
