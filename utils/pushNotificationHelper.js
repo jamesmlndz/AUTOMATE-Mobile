@@ -40,15 +40,15 @@ export function setupNotificationListeners(onNotificationReceived) {
   const unsubscribeForeground = messaging().onMessage(async remoteMessage => {
     console.log('========================================');
     console.log('[PushNotifications] Foreground message received!');
-    console.log('[PushNotifications] Title:', remoteMessage.notification?.title);
-    console.log('[PushNotifications] Body:', remoteMessage.notification?.body);
+    console.log('[PushNotifications] Title:', remoteMessage.data?.title);
+    console.log('[PushNotifications] Body:', remoteMessage.data?.body);
     console.log('[PushNotifications] Data:', remoteMessage.data);
     console.log('========================================');
 
     // Display the notification 
     await notifee.displayNotification({
-      title: remoteMessage.notification?.title,
-      body: remoteMessage.notification?.body,
+      title: remoteMessage.data?.title,
+      body: remoteMessage.data?.body,
       android: {
         channelId: 'default',
         importance: AndroidImportance.HIGH,
